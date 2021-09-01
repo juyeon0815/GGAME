@@ -1,10 +1,13 @@
-from config import config
-from data import preprocess 
+# from config import config
+import config
+from data import preprocess
 from utils import utils
 
 
 # config 저장
 utils.save_config()
+# config.ini 파일 읽어오기
+utils.config_read('caption_path')
 
 
 # 이미지 경로 및 캡션 불러오기
