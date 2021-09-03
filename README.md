@@ -373,4 +373,309 @@ image_path = .\datasets\images
 
 - 참고: 
   - https://docs.python.org/ko/3/library/configparser.html
+  
   - https://deep-eye.tistory.com/17
+  
+    
+
+## 3. Req.3: 이미지 캡셔닝 데이터 전처리
+
+### (1) 이미지 경로 및 캡션 불러오기
+
+- config.ini 에 저장된 캡션 경로(.csv 파일)와 이미지 경로를 이용해서 캡션이 저장된 csv 파일을 파싱하여 리턴한다.
+- 캡션을 파싱할 때, 이미지마다 그에 해당된 캡션을 묶는다.
+
+``` python
+# train.py: 이미지 경로 및 캡션 불러오기
+img_paths, captions = preprocess.get_path_caption()
+```
+
+``` python
+# Req. 3-1	이미지 경로 및 캡션 불러오기
+def get_path_caption():
+    # config.ini에 저장된 캡션 경로와 이미지 경로 호출
+    caption_path = utils.config_read('caption_path')
+    image_path = utils.config_read('image_path')
+    # 캡션이 저장된 csv 파일 읽어오기
+    captions_data = [e.strip().split('|') for e in list(map(str, open(caption_path, 'r')))]
+    # csv 파일 파싱 [ [img_name1, cap1, cap2, ...], [img_name2, cap1, cap2, ...], ... ]
+    captions = []
+    pre_img = ''
+    for i in range(1, len(captions_data)):
+        now_img = captions_data[i][0]
+        now_comment = captions_data[i][2]
+        if pre_img == now_img:
+            captions[-1].append(now_comment)
+        else:
+            captions.append([now_img, now_comment])
+        pre_img = now_img
+    # 이미지 경로 및 캡션 리턴
+    return image_path, captions
+```
+
+#### `open()`
+
+파일을 읽거나 쓸 때 사용한다.
+
+``` python
+# Read
+open(파일 경로, 'r')
+
+# string형태, list로 파싱
+list(map(str, open(파일 경로, 'r')))
+```
+
+
+
+### (2) 전체 데이터셋을 분리해 저장하기
+
+![image-20210903113856111](README.assets/image-20210903113856111.png)
+
+- valiable dataset에 사용할 비율을 입력하면 데이터셋을 **val_dataset**과 **train_dataset** 으로 나누어 저장한다.
+- 각각의 파일은 **json** 형태이며, datasets/ 안에 저장된다.
+- 이미지도 새로운 파일을 만들어 각각의 데이터셋에 맞추어 복사하려고 했으나, 처리 시간이 너무 길어 현재 데이터를 그대로 유지한다.
+
+``` python
+# train.py: 전체 데이터셋을 분리해 저장하기 (val_ratio, dataset)
+train_dataset_path, val_dataset_path = preprocess.dataset_split_save(config.val_ratio, captions)
+```
+
+``` python
+# Req. 3-2	전체 데이터셋을 분리해 저장하기
+def dataset_split_save(val_ratio, dataset):
+    # 데이터셋 셔플
+    shuffle(dataset)
+    # 파라미터로 전달된 비율에 따라 데이터를 몇 개씩 나눌지 계산한다.
+    val_range = int(val_ratio * len(dataset))
+    # json 파일을 만들 딕셔너리
+    val_data, train_data = {}, {}
+
+    # 새로운 이미지 폴더
+    # if os.path.isdir('.\\datasets\\val_images'):
+    #     os.remove('.\\datasets\\val_images')
+    # os.makedirs('.\\datasets\\val_images')
+    # if os.path.isdir('.\\datasets\\train_images'):
+    #     os.remove('.\\datasets\\train_images')
+    # os.makedirs('.\\datasets\\train_images')
+    
+    # val_data 만들기 data = { img: [캡션1, 캡션2, ...], ... }
+    for i in range(val_range):
+        img = dataset[i][0]
+        # 이미지 새로운 경로에 복사
+        # shutil.copy2(f'.\\datasets\\images\\{img}', f'.\\datasets\\val_images\\{img}')
+        # 캡션을 딕셔너리에 옮긴다.
+        val_data[img] = []
+        val_data[img].extend(dataset[i][1:])
+
+    # train_data 만들기 data = { img: [캡션1, 캡션2, ...], ... }
+    for i in range(val_range, len(dataset)):
+        img = dataset[i][0]
+        # 이미지 새로운 경로에 복사
+        # shutil.copy2(f'.\\datasets\\images\\{img}', f'.\\datasets\\val_images\\{img}')
+        # 캡션을 딕셔너리에 옮긴다.
+        train_data[img] = []
+        train_data[img].extend(dataset[i][1:])
+
+    # json 파일로 저장
+    with open('.\\datasets\\val_data.json', 'w', encoding='utf-8') as json_file:
+        json.dump(val_data, json_file, indent='\t')
+    with open('.\\datasets\\train_data.json', 'w', encoding='utf-8') as json_file:
+        json.dump(train_data, json_file, indent='\t')
+
+    # 경로 리턴
+    val_dataset_path = '.\\datasets\\val_data.json'
+    train_dataset_path = '.\\datasets\\train_data.json'
+    return train_dataset_path, val_dataset_path
+```
+
+#### `os.path.isdir()`
+
+주어진 경로에 같은 이름의 폴더가 있는지 검사. 있으면 **True** 리턴
+
+```  python
+os.path.isdir(경로\\폴더 이름)
+```
+
+#### `os.remove()`
+
+폴더를 삭제
+
+``` python
+os.remove(경로\\폴더 이름)
+```
+
+#### `os.madirs()`
+
+폴더를 생성
+
+``` python
+os.makedirs(경로\\폴더 이름)
+```
+
+#### `shutil.copy2()`
+
+```python
+shutil.copy2(기존 경로, 새로운 경로)
+```
+
+#### `with open() as 파일: json.dump()`
+
+새로운 json 파일 작성
+
+```python
+with open(경로\\파일명.json, 'w', encoding='utf-8') as (임시 파일명):
+        json.dump(파일명, 임시 파일명, indent='\t')
+```
+
+`indent` : 라인마다 들여쓰기 적용 (여기서는 \\t 로 적용)
+
+
+
+### (3) 저장된 데이터셋 불러오기
+
+함수 인자에 따라 저장된 데이터셋 불러오기
+
+``` python
+# train.py: 저장된 데이터셋 불러오기 (path: train_dataset_path / val_dataset_path)
+if config.dataset_path == 'train':
+    dataset_path = train_dataset_path
+else:
+    dataset_path = val_dataset_path
+img_paths, caption = preprocess.get_data_file(dataset_path)
+```
+
+``` python
+# Req. 3-3	저장된 데이터셋 불러오기
+def get_data_file(path):
+    img_paths = utils.config_read('image_path')
+    with open(path) as json_file:
+        dataset = json.load(json_file)
+    return img_paths, dataset
+```
+
+#### `with open() as 파일: json.load()`
+
+json 파일을 읽어온다.
+
+``` python
+with open(경로) as 임시 파일명:
+        dataset = json.load(임시 파일명)
+```
+
+
+
+### (4) 데이터 샘플링
+
+데이터를 원하는 비율만큼 샘플링한다.
+
+``` python
+# train.py: 데이터 샘플링 (img_paths, caption, sample_ratio)
+if config.do_sampling:
+    img_paths, caption = preprocess.sampling_data(img_paths, caption, config.sample_ratio)
+```
+
+``` python
+# Req. 3-4	데이터 샘플링
+def sampling_data(img_paths, caption, sample_ratio):
+    sp_range = int(sample_ratio * len(caption))
+    # caption 에서 샘플 추출
+    sp_keys = sample(list(caption), sp_range)
+    sp_values = [caption[k] for k in sp_keys]
+    sample_caption = dict(zip(sp_keys, sp_values))
+    print(f'Total: {len(caption)}, Sample: {len(sample_caption)}, %: {sample_ratio * 100}%')
+    return img_paths, sample_caption
+```
+
+
+
+## 4. Req.4: 데이터 시각화 (이미지와 캡션 시각화)
+
+이미지 경로와 샘플링한 캡션을 전달하면 matplotlib를 이용해서 첫번째 이미지의 첫번째 캡션을 시각화한다.
+
+![image-20210903114051100](README.assets/image-20210903114051100.png)
+
+``` python
+# train.py 이미지와 캡션 시각화 하기
+utils.visualize_img_caption(img_paths, caption)
+```
+
+``` python
+# Req. 4-1	이미지와 캡션 시각화
+def visualize_img_caption(img_paths, caption):
+    # 딕셔너리에서 이미지와 캡션 분리
+    keys = list(caption.keys())
+    values = list(caption.values())
+    # matplotlib 로 이미지 출력
+    image = img.imread(img_paths + '\\' + keys[0])
+    plt.imshow(image)
+    # plt.xlabel(values[0][0])
+    plt.text(0, -10, values[0][0], fontsize=15, wrap=True)
+
+    plt.show()
+```
+
+
+
+## *2-1 config.py 파일 수정
+
+- 샘플링을 하지 않을 때
+
+![image-20210903115132710](README.assets/image-20210903115132710.png)
+
+- 샘플링을 할 때
+
+![image-20210903114310972](README.assets/image-20210903114310972.png)
+
+
+
+명령 인터프리터에서 받아야하는 인자를 위해 config.py를 수정한다.
+
+``` python
+import argparse
+
+# Req. 2-1	Config.py 파일 생성
+
+parser = argparse.ArgumentParser(description='Process datasets.')
+# 캡션 데이터가 있는 파일 경로
+parser.add_argument('--caption_file_path', type=str, default='.\\datasets\\captions.csv')
+# 이미지 파일들이 저장된 경로
+parser.add_argument('--image_file_path', type=str, default='.\\datasets\\images')
+
+# Req. 3-2 val_ratio
+parser.add_argument('val_ratio', type=float)
+
+# Req. 3-3 dataset_path (path: train / val)
+parser.add_argument('dataset_path', type=str)
+
+# Req. 3-4 do_sampling
+parser.add_argument('--do_sampling', type=float)
+
+args = parser.parse_args()
+
+val_ratio = args.val_ratio
+dataset_path = args.dataset_path
+do_sampling = sample_ratio =args.do_sampling
+
+print(f'val_ratio: {val_ratio * 100}%')
+print(f'do_sampling: {do_sampling}')
+# print(args.caption_file_path)
+# print(args.image_file_path)
+```
+
+#### `add_argument 의 action`
+
+`'store_true'` 와 `'store_false'` - 각각 `True` 와 `False` 값을 저장
+
+`'store'` - 인자 값을 저장
+
+`'store_const'` - [const](https://docs.python.org/ko/3/library/argparse.html?highlight=argparse#const) 키워드 인자에 의해 지정된 값을 저장
+
+``` python
+>>> parser = argparse.ArgumentParser()
+>>> parser.add_argument('--foo', action='store_const', const=42)
+>>> parser.parse_args(['--foo'])
+Namespace(foo=42)
+```
+
+
+
