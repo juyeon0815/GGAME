@@ -47,8 +47,8 @@ def dataset_split_save(val_ratio, dataset):
     # if os.path.isdir('.\\datasets\\train_images'):
     #     os.remove('.\\datasets\\train_images')
     # os.makedirs('.\\datasets\\train_images')
-    # val_data 만들기 data = { img: [캡션1, 캡션2, ...], ... }
 
+    # val_data 만들기 data = { img: [캡션1, 캡션2, ...], ... }
     for i in range(val_range):
         img = dataset[i][0]
         # 이미지 새로운 경로에 복사

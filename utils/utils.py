@@ -36,6 +36,6 @@ def visualize_img_caption(img_paths, caption):
     image = img.imread(img_paths + '\\' + keys[0])
     plt.imshow(image)
     # plt.xlabel(values[0][0])
-    plt.text(0, -10, values[0][0], fontsize=15, wrap=True)
+    plt.text(-10, -10, values[0][0], fontsize=15, wrap=True)
 
     plt.show()
