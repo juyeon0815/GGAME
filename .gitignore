@@ -9,3 +9,5 @@ __pycache__/
 *$py.class
 
 .idea/
+train_data.json
+val_data.json
