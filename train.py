@@ -14,11 +14,15 @@ img_paths, captions = preprocess.get_path_caption()
 
 
 # 전체 데이터셋을 분리해 저장하기 (val_ratio, dataset)
-train_dataset_path, val_dataset_path = preprocess.dataset_split_save(0.2, captions)
+train_dataset_path, val_dataset_path = preprocess.dataset_split_save(config.val_ratio, captions)
 
 
 # 저장된 데이터셋 불러오기 (path: train_dataset_path / val_dataset_path)
-img_paths, caption = preprocess.get_data_file(val_dataset_path)
+if config.dataset_path == 'train':
+    dataset_path = train_dataset_path
+else:
+    dataset_path = val_dataset_path
+img_paths, caption = preprocess.get_data_file(dataset_path)
 
 
 # 데이터 샘플링 (img_paths, caption, sample_ratio)
