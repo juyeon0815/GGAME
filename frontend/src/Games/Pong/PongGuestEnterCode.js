@@ -12,7 +12,7 @@ class GuestEnterCode extends React.Component{
 
     enterCode = (e)=>{
         console.log(e.target.value);
-        code = e.target.value;
+        code = parseInt(e.target.value);
     }
 
     enterRoom = ()=>{
