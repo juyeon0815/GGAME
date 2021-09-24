@@ -6,7 +6,6 @@ let object = {}
 exports.Pong = function (io) {
     let namespace = io.of(URI);
 
-    console.log("여기는와?")
     namespace.on('connection', function (socket){
         console.log("PONG CONNECT : ", socket.id);
         
@@ -24,9 +23,20 @@ exports.Pong = function (io) {
             object[roomId].push(socket.id);
 
             console.log(object)
+
+            console.log(object[roomId].length);
             
-            namespace.to(roomId).emit('msg', "방에 새로운사람이 접속했습니다.")
+            namespace.to(roomId).emit('msg', `방에 새로운사람이 접속했습니다.`)
+            namespace.to(roomId).emit('currentUser',object[roomId].length)
+
+
         });
+
+        socket.on('game start', (data)=>{
+            console.log('게임을 시작할 방은 ', data)
+
+            namespace.to(data).emit('start game','게임을 시작합니다.')
+        })
 
     });
 }

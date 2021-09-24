@@ -1,22 +1,25 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import { Link } from 'react-router-dom'
 
 
 import io from "socket.io-client";
-
+const socket = io.connect("http://localhost:5000/pong");
 let code;
 
-class GuestEnterCode extends React.Component{
+function GuestEnterCode (pros){
 
-
-
-    enterCode = (e)=>{
+    useEffect(()=>{
+        socket.on('start game', (data)=>{
+            console.log(data)
+        })
+    })
+    
+    function enterCode(e){
         console.log(e.target.value);
         code = parseInt(e.target.value);
     }
 
-    enterRoom = ()=>{
-        const socket = io.connect("http://localhost:5000/pong");
+    function enterRoom(){
         socket.emit("join room", code);
 
         socket.on('msg', (data)=>{
@@ -24,30 +27,27 @@ class GuestEnterCode extends React.Component{
         })
     }
 
-
-    render(){
-        const {isOpen, close} = this.props
         return(
-            <div className={isOpen ? 'openModal modal' : 'modal'}>
-            {isOpen ? (
+            <div className={pros.isOpen ? 'openModal modal' : 'modal'}>
+            {pros.isOpen ? (
               <section>
                 <header>
                     방 참가하기   
-                  <button className="close" onClick={close}>X</button>
+                  <button className="close" onClick={pros.close}>X</button>
                 </header>
                 <main>
                   입장 코드 : 
-                  <input onChange={this.enterCode}></input>
+                  <input onChange={enterCode}></input>
                 </main>
                 <footer>
                 <Link to="/pongwaiting/guest">
-                  <button className="close" onClick={this.enterRoom}>방 입장</button></Link>
+                  <button className="close" onClick={enterRoom}>방 입장</button></Link>
                 </footer>
               </section>
             ) : null}
           </div>
         )
-    }
+
 }
 
 export {
