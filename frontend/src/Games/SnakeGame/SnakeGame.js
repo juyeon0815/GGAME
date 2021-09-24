@@ -341,12 +341,13 @@ class SnakeGame extends Component {
 
   render() {
     return (
-      <div>
+      <div className={"container"}>
         <canvas 
           id="canvas"
           tabIndex="0"
-          width="600px" height="600px" 
+          width={CANVAS_WIDTH} height={CANVAS_HEIGHT} 
           onClick={this.handleClick}/>
+        <VisionRecognition />
       </div>
     );
   }

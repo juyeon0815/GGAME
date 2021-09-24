@@ -1,3 +1,5 @@
+import React from 'react'
+import SnakeTrain from './SnakeTrain';
 import * as mobilenetModule from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import * as knnClassifier from '@tensorflow-models/knn-classifier';
@@ -10,94 +12,51 @@ const IMAGE_SIZE = 227;
 // K value for KNN
 const TOPK = 10;
 
-const DIRECTION = ["위", "아래", "왼쪽", "오른쪽"];
+class VisionRecognition extends React.Component {
+  constructor(props) {
+    super(props)
 
+    this.state = {
+      video: null,
+      stream: null,
+    }
 
-export default class VisionRecognition {
-  constructor() {
     // Initiate variables
-    this.infoTexts = [];
+    this.infoTexts = [" No examples added", " No examples added", " No examples added", " No examples added"];
     this.training = -1; // -1 when no class is being trained
     this.videoPlaying = false;
+    this.thumbNails = [];
+    this.videoTag = React.createRef()
 
     // Initiate deeplearn.js math and knn classifier objects
     this.bindPage();
+    this.mouseDownControl = this.mouseDownControl.bind(this)
 
     // Direction of hand (where to move paddle): 1 if up, 0 if down (-1 if no direction set)
     this.direction = -1;
 
     // Create video element that will contain the webcam image
-    this.video = document.createElement('video');
-    this.video.setAttribute('autoplay', '');
-    this.video.setAttribute('playsinline', '');
-
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('class', 'calibration-wrapper');
-    document.body.appendChild(wrapper);
-
-    const infoBtn = document.createElement('button')
-    infoBtn.innerText = "게임방법";
-    wrapper.appendChild(infoBtn);
-
-    const textCalib = document.createElement('p');
-    textCalib.innerHTML = "사용자 모션 입력";
-    wrapper.appendChild(textCalib);
-
-    // Add video element to DOM
-    wrapper.appendChild(this.video);
-
-    // thumbNail
-    for (let i = 0; i < NUM_CLASSES; i++) {
-      const thumbNail = document.createElement('img');
-      thumbNail.setAttribute('width', '100px')
-      thumbNail.setAttribute('height', '100px')
-      wrapper.appendChild(thumbNail)
-    }
-
-    const subWrapper = document.createElement('div');
-    subWrapper.setAttribute('class', 'calibration-btns-wrapper');
-    wrapper.appendChild(subWrapper);
-
-    // Create training buttons and info texts    
-    for (let i = 0; i < NUM_CLASSES; i++) {
-      const div = document.createElement('div');
-      div.setAttribute('class', 'calibration-btn');
-      subWrapper.appendChild(div);
-      div.style.marginBottom = '10px';
-
-      // Create training button
-      const button = document.createElement('button')
-      //button.innerText = "Train " + DIRECTION[i];
-      button.innerText = DIRECTION[i];
-      div.appendChild(button);
-
-      // Listen for mouse events when clicking the button
-      button.addEventListener('mousedown', () => {
-        this.training = i
-        this.getImage(i)
-      });
-      button.addEventListener('mouseup', () => this.training = -1);
-
-      // Create info text
-      const infoText = document.createElement('span')
-      infoText.innerText = " No examples added";
-      div.appendChild(infoText);
-      this.infoTexts.push(infoText); 
-    }
-
-    const exitBtn = document.createElement('button')
-    exitBtn.innerText = "게임나가기";
-    wrapper.appendChild(exitBtn);
-
+    const video = document.createElement('video');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('playsinline', '');
+    // this.setState({ video: video })
+    this.state.video = video
+    // document.getElementById("videoDiv").appendChild(this.state.video);
+    // document.body.appendChild(this.state.video)
+    
     // Setup webcam
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then((stream) => {
-        this.video.srcObject = stream;
-        this.video.width = IMAGE_SIZE;
-        this.video.height = IMAGE_SIZE;
+        if (this.videoTag.current) {
+          this.videoTag.current.srcObject = stream;
+        }
 
-        this.video.addEventListener('playing', () => this.videoPlaying = true);
-        this.video.addEventListener('paused', () => this.videoPlaying = false);
+        this.state.video.srcObject = stream;
+        this.state.video.width = IMAGE_SIZE;
+        this.state.video.height = IMAGE_SIZE;
+
+        this.state.video.addEventListener('playing', () => this.videoPlaying = true);
+        this.state.video.addEventListener('paused', () => this.videoPlaying = false);
       })
   }
 
@@ -106,9 +65,8 @@ export default class VisionRecognition {
       .then((stream) => {       
         const track = stream.getVideoTracks()[0];
         let imageCapture = new ImageCapture(track);
-        imageCapture.takePhoto().then(function(imageBlob) {
-          const thumbNails = document.querySelectorAll('img');
-          thumbNails[i].setAttribute('src', window.URL.createObjectURL(imageBlob))
+        imageCapture.takePhoto().then((imageBlob) => {
+          this.thumbNails[i] = window.URL.createObjectURL(imageBlob)
         })
       })
   }
@@ -120,23 +78,28 @@ export default class VisionRecognition {
     this.start();
   }
 
+  mouseDownControl(i) {
+    this.training = i
+    this.getImage(i)
+  }
+
   start() {
     if (this.timer) {
       this.stop();
     }
-    this.video.play();
+    this.state.video.play();
     this.timer = requestAnimationFrame(this.animate.bind(this));
   }
 
   stop() {
-    this.video.pause();
+    this.state.video.pause();
     cancelAnimationFrame(this.timer);
   }
 
   async animate() {
     if (this.videoPlaying) {
       // Get image data from video element
-      const image = tf.browser.fromPixels(this.video);
+      const image = tf.browser.fromPixels(this.state.video);
 
       let logits;
       // 'conv_preds' is the logits activation of MobileNet.
@@ -166,11 +129,11 @@ export default class VisionRecognition {
           const exampleCount = this.knn.getClassExampleCount();
 
           // Make the predicted class bold
-          if (res.classIndex == i) {
-            this.infoTexts[i].style.fontWeight = 'bold';
-          } else {
-            this.infoTexts[i].style.fontWeight = 'normal';
-          }
+          // if (res.classIndex == i) {
+          //   this.infoTexts[i].style.fontWeight = 'bold';
+          // } else {
+          //   this.infoTexts[i].style.fontWeight = 'normal';
+          // }
 		
     			let percentString = res.confidences[i];
     			let percent = parseFloat(percentString);
@@ -184,7 +147,7 @@ export default class VisionRecognition {
       
           // Update info text
           if (exampleCount[i] > 0) {
-            this.infoTexts[i].innerText = ` ${exampleCount[i]} examples - ${percent}%` 
+            this.infoTexts[i] = ` ${exampleCount[i]} examples - ${percent}%` 
           }
         }
         //reset
@@ -199,4 +162,83 @@ export default class VisionRecognition {
     }
     this.timer = requestAnimationFrame(this.animate.bind(this));
   }
+
+
+
+  render() {
+    return (
+      <div>
+        <button>게임방법</button>
+        <p>사용자 모션 입력</p>
+        <video
+          autoPlay
+          playsInline
+          width="227"
+          height="227"
+          ref={this.videoTag}
+        />
+        {/* <SnakeVideo /> */}
+        <div>
+          <img 
+            width="100px"
+            height="100px"
+            src={this.thumbNails[0]}
+          />
+          <img 
+            width="100px"
+            height="100px"
+            src={this.thumbNails[1]}
+          />
+          <img 
+            width="100px"
+            height="100px"
+            src={this.thumbNails[2]}
+          />
+          <img 
+            width="100px"
+            height="100px"
+            src={this.thumbNails[3]}
+          />
+        </div>
+        {/* <SnakeTrain /> */}
+        <div>
+          <div>
+            <button 
+              onMouseDown={() => this.mouseDownControl(0)}
+              onMouseUp={() => this.training = -1}
+            >위
+            </button>
+            <span>{this.infoTexts[0]}</span>
+          </div>
+          <div>
+            <button 
+              onMouseDown={() => this.mouseDownControl(1)}
+              onMouseUp={() => this.training = -1}
+            >아래
+            </button>
+            <span>{this.infoTexts[1]}</span>
+          </div>
+          <div>
+            <button 
+              onMouseDown={() => this.mouseDownControl(2)}
+              onMouseUp={() => this.training = -1}
+            >왼쪽
+            </button>
+            <span>{this.infoTexts[2]}</span>
+          </div>
+          <div>
+            <button 
+              onMouseDown={() => this.mouseDownControl(3)}
+              onMouseUp={() => this.training = -1}
+            >오른쪽
+            </button>
+            <span>{this.infoTexts[3]}</span>
+          </div>
+        </div>
+        <button>게임나가기</button>
+      </div>
+    )
+  }
 }
+
+export default VisionRecognition
