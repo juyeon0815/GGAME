@@ -10,10 +10,13 @@ const io = require('socket.io')(server,{
     }
 });
 
-
+const cors = require('cors')
+app.use(cors());
 
 const Pong = require('./public/Pong/Pong')
-Pong.Pong(io)
+// app.use('/pong',Pong)
+Pong.pong(io)
+
 
 const port = 5000;
 server.listen(port, ()=>console.log(`Listening on port ${port}`));

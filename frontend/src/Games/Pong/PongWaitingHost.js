@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react'
+import { Link } from 'react-router-dom';
 
 
 import io from "socket.io-client";
 
-const socket = io.connect("http://localhost:5000/pong");
+let socket
 function PongWaitingHost (props) {
 
   const [currentUser, setCurrentUser] = useState();
 
   useEffect(()=>{
+    socket = io.connect("http://localhost:5000/pong");
     console.log("namespace 연결 완료!");
     console.log(props.location.code.code)
 
@@ -34,7 +36,10 @@ function PongWaitingHost (props) {
       <div>
         <h1>PongWaitingHost</h1>
         <h2>현재 참여인원은 {currentUser}</h2>
+        <div>방 번호 : {props.location.code.code}</div>
+        <Link to="/pong">
         <button onClick={gameStart}>게임시작</button>
+        </Link>
       </div>
     )
 }

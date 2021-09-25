@@ -1,30 +1,18 @@
 import React, {useEffect, useState} from "react"
 import { Link } from 'react-router-dom'
+import axios from "axios"
 
-
-import io from "socket.io-client";
-const socket = io.connect("http://localhost:5000/pong");
-let code;
 
 function GuestEnterCode (pros){
-
-    useEffect(()=>{
-        socket.on('start game', (data)=>{
-            console.log(data)
-        })
-    })
-    
+    const [code, setCode] = useState()
+   
     function enterCode(e){
         console.log(e.target.value);
-        code = parseInt(e.target.value);
+        setCode(parseInt(e.target.value));
     }
 
     function enterRoom(){
-        socket.emit("join room", code);
-
-        socket.on('msg', (data)=>{
-            console.log('data :',data);
-        })
+        console.log("보내는 데이터 ", code);   
     }
 
         return(
@@ -40,8 +28,12 @@ function GuestEnterCode (pros){
                   <input onChange={enterCode}></input>
                 </main>
                 <footer>
-                <Link to="/pongwaiting/guest">
-                  <button className="close" onClick={enterRoom}>방 입장</button></Link>
+                <Link to={{
+                  pathname:"/pongwaiting/guest",
+                  enterCode : code
+                }}>
+                  <button className="close" onClick={enterRoom}>방 입장</button>
+                  </Link>
                 </footer>
               </section>
             ) : null}
