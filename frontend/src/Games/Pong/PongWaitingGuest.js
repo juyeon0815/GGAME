@@ -15,7 +15,10 @@ function PongWaitingGuest (props) {
     })
     socket.on('start game', (data)=>{
         console.log(data)
-        history.push("/pong")
+        history.push({
+          pathname:"/pong",
+          socket : socket
+        })
     })
   })
 

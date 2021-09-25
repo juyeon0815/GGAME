@@ -46,6 +46,8 @@ exports.pong = function (io) {
             console.log('게임을 시작할 방은 ', data)
 
             namespace.to(data).emit('start game','게임을 시작합니다.')
+
+            namespace.to(data).emit('currentUser',object[data]);
         })
 
     });
