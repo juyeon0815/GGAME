@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { Link } from 'react-router-dom';
-
+import PongGameView from './PongGameView';
 
 import io from "socket.io-client";
 
@@ -38,14 +38,18 @@ function PongWaitingHost (props) {
     return (
       <div>
         <h1>PongWaitingHost</h1>
-        <h2>현재 참여인원은 {currentUser}</h2>
+      
+        <PongGameView />
         <div>방 번호 : {props.location.code.code}</div>
-        <Link to={{
-          pathname:"/pong",
-          socket : socket
-          }}>
-        <button onClick={gameStart}>게임시작</button>
-        </Link>
+        <span>
+        <h2>{currentUser}명 대기중...</h2>
+          <Link to={{
+            pathname:"/pong",
+            socket : socket
+            }}>
+          <button onClick={gameStart}>게임시작</button>
+          </Link>
+        </span>
       </div>
     )
 }
