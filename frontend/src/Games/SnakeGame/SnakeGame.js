@@ -30,8 +30,9 @@ class SnakeGame extends Component {
       ctx: null,
       vision: null,
       gameActive: false,
-      direction: 2
+      direction: -1
     }
+    this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
 
   componentDidMount() {
@@ -46,9 +47,6 @@ class SnakeGame extends Component {
   }
 
   update() {
-    this.setState({
-      direction: this.state.vision.direction
-    });
     this.movePlayer();
     requestAnimationFrame(() => {this.update()});
   }
@@ -58,6 +56,12 @@ class SnakeGame extends Component {
     let vision = new VisionRecognition();
     this.setState({
       vision: vision
+    });
+  }
+
+  handleDirectionChange(newdirection) {
+    this.setState({
+      direction: newdirection
     });
   }
 
@@ -285,8 +289,12 @@ class SnakeGame extends Component {
   };
 
   drawStartButton = ctx => {
-    ctx.fillStyle = "blue";
-    ctx.strokeStyle = "blue";
+    ctx.fillStyle = "green";
+    ctx.font = "50px Arial";
+    ctx.fillText("Snake Game", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 3);
+
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "green";
     ctx.strokeRect(
       START_BUTTON.x,
       START_BUTTON.y,
@@ -298,7 +306,7 @@ class SnakeGame extends Component {
     ctx.fillStyle = "black";
     ctx.fillText(
       "학습을 완료하고 게임을 시작하세요",
-      CANVAS_WIDTH / 3,
+      CANVAS_WIDTH / 4,
       (2 * CANVAS_HEIGHT) / 3
     );
   };
@@ -347,7 +355,9 @@ class SnakeGame extends Component {
           tabIndex="0"
           width={CANVAS_WIDTH} height={CANVAS_HEIGHT} 
           onClick={this.handleClick}/>
-        <VisionRecognition />
+        <VisionRecognition 
+          onDirectionChange={this.handleDirectionChange}
+        />
       </div>
     );
   }

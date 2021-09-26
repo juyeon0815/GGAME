@@ -17,32 +17,23 @@ class VisionRecognition extends React.Component {
     super(props)
 
     this.state = {
-      video: null,
-      stream: null,
+      training: -1,
+      videoPlaying: false,
     }
-
-    // Initiate variables
-    this.infoTexts = [" No examples added", " No examples added", " No examples added", " No examples added"];
-    this.training = -1; // -1 when no class is being trained
-    this.videoPlaying = false;
+    this.video = null;
     this.thumbNails = [];
-    this.videoTag = React.createRef()
+    this.infoTexts = [" No examples added", " No examples added", " No examples added", " No examples added"];
+    this.videoTag = React.createRef();
 
     // Initiate deeplearn.js math and knn classifier objects
     this.bindPage();
     this.mouseDownControl = this.mouseDownControl.bind(this)
 
-    // Direction of hand (where to move paddle): 1 if up, 0 if down (-1 if no direction set)
-    this.direction = -1;
-
     // Create video element that will contain the webcam image
     const video = document.createElement('video');
     video.setAttribute('autoplay', '');
     video.setAttribute('playsinline', '');
-    // this.setState({ video: video })
-    this.state.video = video
-    // document.getElementById("videoDiv").appendChild(this.state.video);
-    // document.body.appendChild(this.state.video)
+    this.video = video
     
     // Setup webcam
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
@@ -51,12 +42,12 @@ class VisionRecognition extends React.Component {
           this.videoTag.current.srcObject = stream;
         }
 
-        this.state.video.srcObject = stream;
-        this.state.video.width = IMAGE_SIZE;
-        this.state.video.height = IMAGE_SIZE;
+        this.video.srcObject = stream;
+        this.video.width = IMAGE_SIZE;
+        this.video.height = IMAGE_SIZE;
 
-        this.state.video.addEventListener('playing', () => this.videoPlaying = true);
-        this.state.video.addEventListener('paused', () => this.videoPlaying = false);
+        this.video.addEventListener('playing', () => this.setState({ videoPlaying: true }));
+        this.video.addEventListener('paused', () => this.setState({ videoPlaying: false }));
       })
   }
 
@@ -79,7 +70,7 @@ class VisionRecognition extends React.Component {
   }
 
   mouseDownControl(i) {
-    this.training = i
+    this.setState({ training: i})
     this.getImage(i)
   }
 
@@ -87,30 +78,30 @@ class VisionRecognition extends React.Component {
     if (this.timer) {
       this.stop();
     }
-    this.state.video.play();
+    this.video.play();
     this.timer = requestAnimationFrame(this.animate.bind(this));
   }
 
   stop() {
-    this.state.video.pause();
+    this.video.pause();
     cancelAnimationFrame(this.timer);
   }
 
   async animate() {
-    if (this.videoPlaying) {
+    if (this.state.videoPlaying) {
       // Get image data from video element
-      const image = tf.browser.fromPixels(this.state.video);
+      const image = tf.browser.fromPixels(this.video);
 
       let logits;
       // 'conv_preds' is the logits activation of MobileNet.
       const infer = () => this.mobilenet.infer(image, 'conv_preds');
 
       // Train class if one of the buttons is held down
-      if (this.training != -1) {
+      if (this.state.training != -1) {
         logits = infer();
 
         // Add current image to classifier
-        this.knn.addExample(logits, this.training);
+        this.knn.addExample(logits, this.state.training);
 		    //console.log("help");
       }
 
@@ -140,9 +131,8 @@ class VisionRecognition extends React.Component {
     			percent = Math.floor(percent * 100);
 
     			if(percent > max){
-              //console.log("Up: " + direction);
-              this.direction = i;
-              max = percent;
+            this.props.onDirectionChange(i);
+            max = percent;
     		  }
       
           // Update info text
@@ -168,74 +158,35 @@ class VisionRecognition extends React.Component {
   render() {
     return (
       <div>
-        <button>게임방법</button>
-        <p>사용자 모션 입력</p>
+        <div className="btn-wrapper">
+          <button className="btn-snake">게임방법</button>
+          <button className="btn-snake">게임나가기</button>
+        </div>
         <video
           autoPlay
           playsInline
-          width="227"
-          height="227"
+          width="227px"
+          height="227px"
           ref={this.videoTag}
         />
-        {/* <SnakeVideo /> */}
-        <div>
-          <img 
-            width="100px"
-            height="100px"
-            src={this.thumbNails[0]}
-          />
-          <img 
-            width="100px"
-            height="100px"
-            src={this.thumbNails[1]}
-          />
-          <img 
-            width="100px"
-            height="100px"
-            src={this.thumbNails[2]}
-          />
-          <img 
-            width="100px"
-            height="100px"
-            src={this.thumbNails[3]}
-          />
+        <div className="snake-img">
+          {this.infoTexts.map((infoText, index) => (
+            <div>
+              <img 
+                width="220px"
+                height="170px"
+                src={this.thumbNails[index]}
+              />
+              <SnakeTrain 
+                key={index}
+                num={index}
+                infoText={infoText}
+                handleMouseDown={() => this.mouseDownControl(index)} 
+                handleMouseUp={() => this.setState({training: -1})}
+              />
+            </div>
+          ))}
         </div>
-        {/* <SnakeTrain /> */}
-        <div>
-          <div>
-            <button 
-              onMouseDown={() => this.mouseDownControl(0)}
-              onMouseUp={() => this.training = -1}
-            >위
-            </button>
-            <span>{this.infoTexts[0]}</span>
-          </div>
-          <div>
-            <button 
-              onMouseDown={() => this.mouseDownControl(1)}
-              onMouseUp={() => this.training = -1}
-            >아래
-            </button>
-            <span>{this.infoTexts[1]}</span>
-          </div>
-          <div>
-            <button 
-              onMouseDown={() => this.mouseDownControl(2)}
-              onMouseUp={() => this.training = -1}
-            >왼쪽
-            </button>
-            <span>{this.infoTexts[2]}</span>
-          </div>
-          <div>
-            <button 
-              onMouseDown={() => this.mouseDownControl(3)}
-              onMouseUp={() => this.training = -1}
-            >오른쪽
-            </button>
-            <span>{this.infoTexts[3]}</span>
-          </div>
-        </div>
-        <button>게임나가기</button>
       </div>
     )
   }
