@@ -21,7 +21,19 @@ exports.pong = function (io) {
         
 
         socket.on('disconnect', function(){
-            console.log('namespace disconnected: ', socket.id);
+            console.log('disconnected: ', socket.id);
+            
+            loop :for(var key in object){
+                console.log("key : ",key+"/ ", object[key])
+                console.log("length",object[key].length)
+                for(var item in object[key]){
+                    if(socket.id===object[key][item]){
+                        object[key].splice(item);
+                        namespace.to(parseInt(key)).emit('currentUser',object[key].length)
+                        break loop;
+                    }
+                }
+            }
         });
 
         socket.on("join room", (roomId) => {
@@ -31,10 +43,6 @@ exports.pong = function (io) {
             
             if(!object[roomId]) object[roomId] = [];
             object[roomId].push(socket.id);
-
-            console.log(object)
-
-            console.log(object[roomId].length);
             
             namespace.to(roomId).emit('msg', `방에 새로운사람이 접속했습니다.`)
             namespace.to(roomId).emit('currentUser',object[roomId].length)

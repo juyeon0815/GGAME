@@ -22,6 +22,11 @@ function PongWaitingGuest (props) {
     })
   })
 
+  // window.addEventListener('beforeunload', (event)=>{
+  //   event.preventDefault();
+  //   event.returnValue ="페이지 닫는당"
+  // })
+
     return (
       <div>
         <h1>PongWaitingGuest</h1>
