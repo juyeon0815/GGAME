@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef} from 'react'
 import { Link } from 'react-router-dom';
 import PongGameView from './PongGameView';
+import MyView from './MyView';
 
 import io from "socket.io-client";
 
@@ -9,9 +10,14 @@ function PongWaitingHost (props) {
 
   const [currentUser, setCurrentUser] = useState();
 
+  const [socketId, setSocketId] = useState();
+
   useEffect(()=>{
     socket = io.connect("http://localhost:5000/pong");
-    console.log("socket", socket)
+    socket.on('connect',()=>{
+      console.log(socket.id)
+      setSocketId(socket.id);
+    })
     console.log("namespace 연결 완료!");
     console.log(props.location.code.code)
 
@@ -35,11 +41,19 @@ function PongWaitingHost (props) {
     socket.emit('game start',props.location.code.code)
   }
 
+  const canvasStyle = {
+    display : "flex"
+  }
+
     return (
       <div>
         <h1>PongWaitingHost</h1>
-      
-        <PongGameView />
+        <div>NAME : {socketId}</div>
+        <div style={canvasStyle}>
+          <PongGameView />
+          <MyView />
+        </div>
+
         <div>방 번호 : {props.location.code.code}</div>
         <span>
         <h2>{currentUser}명 대기중...</h2>
