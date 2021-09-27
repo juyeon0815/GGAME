@@ -11,9 +11,9 @@ const MakeRoomModal = (props) => {
   const enterCode = useRef()
 
   const create = () => {
-    const new_room = document.querySelector('#new_room').value
-    const new_nickname = document.querySelector('#new_nickname').value
-    if (new_room === "" || new_nickname === "") {
+    const newRoom = document.querySelector('#new_room').value
+    const newNickname = document.querySelector('#new_nickname').value
+    if (newRoom === "" || newNickname === "") {
       alert('방 이름과 닉네임은 필수 입력 사항입니다.')
     }
     else {
@@ -40,6 +40,7 @@ const MakeRoomModal = (props) => {
         isShowEnter={isShowEnterHost}
         footerBtnName="create"
       >
+        <h1>방 만들기</h1>
         <div>
           <label htmlFor="new_room" className="modal-label">방 이름</label>
           <input
@@ -104,12 +105,18 @@ const EnterRoomModal = (props) => {
   let history = useHistory()
   const enter = () => {
     // 서버에 소켓 넘버 맞는지 체크
-    const res = true
-    if (res) {
-      history.push('/pongwaiting/guest')
+    const res = false
+    const newNickname = document.querySelector('#new_nickname').value
+    if (newNickname === "" || !res) {
+      if (newNickname === "") {
+        alert('닉네임은 필수 입력 사항입니다.')
+      }
+      else {
+        alert('입장 코드가 잘못되었습니다.')
+      }
     }
     else {
-      alert('입장 코드가 잘못되었습니다.')
+      history.push('/pongwaiting/guest')
     }
   }
   const { isOpen, close } = props
@@ -120,12 +127,25 @@ const EnterRoomModal = (props) => {
       footerBtn={enter}
       footerBtnName="enter">
       <div>
-        <h2>입장 코드 입력</h2>
-        <input
-          type="text"
-          id="enter_room_guest"
-          className="modal-input"
-        />
+        <h1>참가하기</h1>
+        <div>
+          <label htmlFor="new_nickname" className="modal-label">닉네임</label>
+          <input
+            type="text"
+            id="new_nickname"
+            placeholder="사용할 닉네임을 입력하세요"
+            className="modal-input"
+          />
+        </div>
+        <div>
+          <label htmlFor="enter_code" className="modal-label">입장 코드</label>
+          <input
+            type="text"
+            id="enter_room_guest"
+            placeholder="입장코드를 입력하세요"
+            className="modal-input"
+          />
+        </div>
       </div>
     </Modal>
   )
