@@ -9,9 +9,16 @@ const MakeRoomModal = (props) => {
   const [socketNumber, setSocketNumber] = useState('')
   let history = useHistory()
   const create = () => {
-    // 서버에 소켓 넘버 요청
-    setSocketNumber('받아온 소켓 넘버')
-    setShowEnterHost(true)
+    const new_room = document.querySelector('#new_room').value
+    const new_nickname = document.querySelector('#new_nickname').value
+    if (new_room === "" || new_nickname === "") {
+      alert('방 이름과 닉네임은 필수 입력 사항입니다.')
+    }
+    else {
+      // 서버에 소켓 넘버 요청
+      setSocketNumber('받아온 소켓 넘버')
+      setShowEnterHost(true)
+    }
   }
   const isShowEnterHost = () => {
     setShowEnterHost(false)
