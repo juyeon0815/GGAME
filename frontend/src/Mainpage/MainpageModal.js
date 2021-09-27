@@ -1,74 +1,35 @@
-import React from "react"
+import React, { useState } from "react"
 import './Mainpage.css'
-import { Link } from 'react-router-dom'
+import NestedModal from './MainPageNestedModal'
+import Modal from '../Common/Modal'
+import { useHistory } from 'react-router-dom'
 
-class Modal extends React.Component {
-  render() {
-    const { isOpen, close, footerBtn, footerBtnName } = this.props
-    return (
-      <div className={isOpen ? "modal open-modal" : "modal"}>
-        {isOpen ? (
-          <section>
-            <header>
-              <button onClick={() => { close(); this.props.isShowEnter() }}>X</button>
-            </header>
-            <main className="main-box">
-              {this.props.children}
-            </main>
-            <footer>
-              {/* <button onClick={() => { close(); footerBtn() }}>{footerBtnName}</button> */}
-              {footerBtnName === 'create' ? 
-                <button onClick={() => { footerBtn() }}>{footerBtnName}</button>
-                :
-                <Link
-                  className="router-link-btn"
-                  to={`/pongwaiting/${this.props.enterType}`}
-                  onClick={() => { close(); footerBtn() }}
-                >
-                  {footerBtnName}
-                </Link>
-              }
-            </footer>
-          </section>
-        ) : null}
-      </div>
-    )
-  }
-}
-
-class ModalCommand extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isCreate: false,
-      showEnterHost: false,
-    }
-    this.create = this.create.bind(this)
-    this.isShowEnterHost = this.isShowEnterHost.bind(this)
-  }
-  create() {
-    console.log('test')
+const MakeRoomModal = (props) => {
+  const [showEnterHost, setShowEnterHost] = useState(false)
+  const [socketNumber, setSocketNumber] = useState('')
+  let history = useHistory()
+  const create = () => {
     // 서버에 소켓 넘버 요청
-    this.setState(() => {
-      this.showEnterHost = true
-    })
-    this.forceUpdate()
+    setSocketNumber('받아온 소켓 넘버')
+    setShowEnterHost(true)
   }
-  isShowEnterHost() {
-    this.setState(() => {
-      this.showEnterHost = false
-    })
+  const isShowEnterHost = () => {
+    setShowEnterHost(false)
   }
-  render() {
-    const { isOpen, close } = this.props
-    if (!this.showEnterHost) {
-      return (
-        <Modal
-          isOpen={isOpen}
-          close={close}
-          footerBtn={this.create}
-          isShowEnter={this.isShowEnterHost}
-          footerBtnName="create">
+  const enterHost = () => {
+    isShowEnterHost()
+    history.push('/pongwaiting/host')
+  }
+  const { isOpen, close } = props
+  if (!showEnterHost) {
+    return (
+      <NestedModal
+        isOpen={isOpen}
+        close={close}
+        footerBtn={create}
+        isShowEnter={isShowEnterHost}
+        footerBtnName="create"
+      >
         <div>
           <label htmlFor="new_room" className="modal-label">방 이름</label>
           <input
@@ -96,35 +57,64 @@ class ModalCommand extends React.Component {
             className="modal-textarea"
           />
         </div>
-      </Modal>
-      )
-    }
-    else if (this.showEnterHost) {
-      return (
-        <Modal
-          isOpen={isOpen}
-          close={close}
-          footerBtn={this.isShowEnterHost}
-          isShowEnter={this.isShowEnterHost}
-          enterType="host"
-          footerBtnName="enter">
-          <div>
-            <input
-              type="text"
-              id="enter_room_host"
-              className="modal-input"
-              value="소켓 넘버"
-              disabled
-            />
-          </div>
-        </Modal>
-      )
-    }
-    
+      </NestedModal>
+    )
+  }
+  else {
+    return (
+      <NestedModal
+        isOpen={isOpen}
+        close={close}
+        footerBtn={enterHost}
+        isShowEnter={isShowEnterHost}
+        footerBtnName="enter">
+        <div>
+          <h2>입장 코드</h2>
+          <input
+            type="text"
+            id="enter_room_host"
+            className="modal-input"
+            value={socketNumber}
+            disabled
+          />
+        </div>
+      </NestedModal>
+    )
   }
 }
 
+const EnterRoomModal = (props) => {
+  let history = useHistory()
+  const enter = () => {
+    // 서버에 소켓 넘버 맞는지 체크
+    const res = true
+    if (res) {
+      history.push('/pongwaiting/guest')
+    }
+    else {
+      alert('입장 코드가 잘못되었습니다.')
+    }
+  }
+  const { isOpen, close } = props
+  return (
+    <Modal
+      isOpen={isOpen}
+      close={close}
+      footerBtn={enter}
+      footerBtnName="enter">
+      <div>
+        <h2>입장 코드 입력</h2>
+        <input
+          type="text"
+          id="enter_room_guest"
+          className="modal-input"
+        />
+      </div>
+    </Modal>
+  )
+}
+
 export {
-  Modal,
-  ModalCommand,
+  MakeRoomModal,
+  EnterRoomModal,
 }
