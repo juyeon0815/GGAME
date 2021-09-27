@@ -1,30 +1,29 @@
-import React, { Component } from "react";
+import React, { useRef } from "react";
+import Webcam from "react-webcam";
 
 
 let width = 300, height =300;
-class MyView extends Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            canvas : null,
-            context : null,
-        }
-    }
-
-    componentDidMount(){
-        const context = this.refs.canvas.getContext('2d');
-        context.fillStyle = 'green'
-        context.fillRect(100,100,250,250)
-        this.setState({context : context});
-    }
-
-    render(){
+function MyView (){
+    const webcamRef = useRef(null);
+   
         return(
             <div>
-                <canvas ref="canvas" width={width} height={height} />
+                 <Webcam
+                    ref={webcamRef}
+                    style={{
+                        position: "absolute",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        left: 0,
+                        right: 0,
+                        textAlign: "center",
+                        zindex: 9,
+                        width: 300,
+                        height: 300,
+                    }}
+                    />
             </div>
         )
-    }
 }
 
 export default MyView

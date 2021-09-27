@@ -44,6 +44,8 @@ exports.pong = function (io) {
             if(!object[roomId]) object[roomId] = [];
             object[roomId].push(socket.id);
             
+            console.log(object)
+
             namespace.to(roomId).emit('msg', `방에 새로운사람이 접속했습니다.`)
             namespace.to(roomId).emit('currentUser',object[roomId].length)
 

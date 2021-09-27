@@ -49,10 +49,14 @@ function PongWaitingHost (props) {
       <div>
         <h1>PongWaitingHost</h1>
         <div>NAME : {socketId}</div>
-        <div style={canvasStyle}>
+        <p id="game_menu"></p>
+        <div>
+        <PongGameView />
+        </div>
+        {/* <div style={canvasStyle}>
           <PongGameView />
           <MyView />
-        </div>
+        </div> */}
 
         <div>방 번호 : {props.location.code.code}</div>
         <span>
