@@ -183,6 +183,14 @@
     border-radius: 5px;
     font-size: 1.25rem;
 }
+.router-link-btn {
+    padding: .3rem 1rem;
+    color: #ffffff;
+    background-color: #0088ff;
+    border-radius: 5px;
+    font-size: 1.25rem;
+    text-decoration: none;
+}
 /* modal: MakeRoom */
 .modal-label {
   display: flex;
