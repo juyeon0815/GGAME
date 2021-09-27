@@ -3,7 +3,7 @@ import './Modal.css'
 
 class Modal extends React.Component {
   render() {
-    const {isOpen, close} = this.props
+    const {isOpen, close, footerBtn, footerBtnName} = this.props
     return (
       <div className={isOpen ? "modal open-modal" : "modal"}>
         {isOpen ? (
@@ -14,9 +14,9 @@ class Modal extends React.Component {
             <main className="main-box">
               {this.props.children}
             </main>
-            {/* <footer>
-              <button onClick={close}>close</button>
-            </footer> */}
+            <footer>
+              <button onClick={footerBtn}>{footerBtnName}</button>
+            </footer>
           </section>
         ) : null}
       </div>
