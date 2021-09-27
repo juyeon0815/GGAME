@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import './Mainpage.css'
 import NestedModal from './MainPageNestedModal'
 import Modal from '../Common/Modal'
@@ -8,6 +8,8 @@ const MakeRoomModal = (props) => {
   const [showEnterHost, setShowEnterHost] = useState(false)
   const [socketNumber, setSocketNumber] = useState('')
   let history = useHistory()
+  const enterCode = useRef()
+
   const create = () => {
     const new_room = document.querySelector('#new_room').value
     const new_nickname = document.querySelector('#new_nickname').value
@@ -27,6 +29,7 @@ const MakeRoomModal = (props) => {
     isShowEnterHost()
     history.push('/pongwaiting/host')
   }
+
   const { isOpen, close } = props
   if (!showEnterHost) {
     return (
@@ -68,6 +71,10 @@ const MakeRoomModal = (props) => {
     )
   }
   else {
+    const style = {
+      marginRight: '10px',
+      width: '90%'
+    }
     return (
       <NestedModal
         isOpen={isOpen}
@@ -82,8 +89,11 @@ const MakeRoomModal = (props) => {
             id="enter_room_host"
             className="modal-input"
             value={socketNumber}
+            ref={enterCode}
+            style={style}
             disabled
           />
+          <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>복사</button>
         </div>
       </NestedModal>
     )
