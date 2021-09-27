@@ -1,7 +1,7 @@
 import React from "react"
 import './Mainpage.css'
 import FlipCard from 'react-flipcard'
-import { MakeRoom } from './MainpageModal'
+import { ModalCommand } from './MainpageModal'
 import { Link } from 'react-router-dom'
 
 class GameCard extends React.Component {
@@ -9,7 +9,6 @@ class GameCard extends React.Component {
     super(props)
     this.state = {
       showMR: false,
-      showEnterHost: false,
       showEnterGuest: false,
     }
   }
@@ -32,9 +31,9 @@ class GameCard extends React.Component {
               </div>
             </div>
           </FlipCard>
-          <MakeRoom
+          <ModalCommand
             isOpen={this.state.showMR}
-            close={() => this.setState({showMR: false})}
+            close={() => this.setState({ showMR: false })}
           />
         </div>
       )
