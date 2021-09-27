@@ -10,11 +10,12 @@ class SnakeTrain extends React.Component {
     return (
       <div>
         <button 
+          className="btn-snake"
           onMouseDown={() => this.props.handleMouseDown(this.props.num)}
           onMouseUp={() => this.props.handleMouseUp()}
         >{DIRECTIONS[this.props.num]}
         </button>
-        <span>{this.props.infoText}</span>
+        <p className="snake-infotext">{this.props.infoText}</p>
       </div>
     )
   }

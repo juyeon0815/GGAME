@@ -1,9 +1,11 @@
 import React from 'react'
 import SnakeTrain from './SnakeTrain';
+import { SnakeRule } from './SnakeRule';
 import * as mobilenetModule from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import * as knnClassifier from '@tensorflow-models/knn-classifier';
 import { range } from '@tensorflow/tfjs';
+import { Link } from 'react-router-dom'
 
 // Number of classes to classify
 const NUM_CLASSES = 4;
@@ -19,6 +21,7 @@ class VisionRecognition extends React.Component {
     this.state = {
       training: -1,
       videoPlaying: false,
+      showSR: false,
     }
     this.video = null;
     this.thumbNails = [];
@@ -159,8 +162,10 @@ class VisionRecognition extends React.Component {
     return (
       <div>
         <div className="btn-wrapper">
-          <button className="btn-snake">게임방법</button>
-          <button className="btn-snake">게임나가기</button>
+          <button className="btn-snake" onClick={() => this.setState({showSR: true})}>게임방법</button>
+          <Link to="/" className="btn-snake">
+            <div>게임 나가기</div>
+          </Link>
         </div>
         <video
           autoPlay
@@ -187,6 +192,10 @@ class VisionRecognition extends React.Component {
             </div>
           ))}
         </div>
+        <SnakeRule
+          isOpen={this.state.showSR}
+          close={() => this.setState({showSR: false})}
+        />
       </div>
     )
   }
