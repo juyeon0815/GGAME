@@ -118,25 +118,19 @@ const EnterRoomModal = (props) => {
 
     const enterRoom = document.querySelector('#enter_room_guest').value
 
-    axios.get("http://localhost:5000/pong/roomExist", { params:{
+    axios.get("http://localhost:5000/pong/room-exist", { params:{
       roomId : parseInt(enterRoom)
     }}).then((res)=>{
       console.log("roomExist", res.data);
-      if(res.data===true) {
-        let  res = false
-        res = true;
-        const newNickname = document.querySelector('#new_nickname').value
     
-        if (newNickname === "") {
-          alert('닉네임은 필수 입력 사항입니다.')
-        }
-        else if(!res) {
-          alert('입장 코드가 잘못되었습니다.')
-        }
-        else {
-          history.push('/pongwaiting/guest')
-        }
-      }
+      const newNickname = document.querySelector('#new_nickname').value
+      if (newNickname === "") alert('닉네임은 필수 입력 사항입니다.')
+      else if(!res.data) alert('입장 코드가 잘못되었습니다.')
+      else history.push({
+        pathname: '/pongwaiting/guest',
+        roomId : parseInt(enterRoom),
+        newNickName : newNickname,
+      })
     }).catch((error)=>{
       console.log("error", error);
     })

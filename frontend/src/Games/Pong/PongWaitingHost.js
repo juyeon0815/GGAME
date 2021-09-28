@@ -1,8 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react'
+import { useHistory } from 'react-router-dom'
 import io from "socket.io-client"
 
+let socket;
 const PongWaitingHost = (props) =>{
 
+  let history = useHistory()
   const roomNumber = props.history.location.newRoom;
   const nickName = props.history.location.newNickName;
 
@@ -11,16 +14,23 @@ const PongWaitingHost = (props) =>{
   const enterCode = useRef()
 
   useEffect(()=>{
-    const socket = io.connect("http://localhost:5000/pong");
-    socket.emit("join room", roomNumber);
+    socket = io.connect("http://localhost:80/pong");
+    socket.emit("join room", roomNumber, nickName);
 
-    socket.on('currentUser',(data)=>{
-      setCurrentUser(data);
+    socket.on('userList',(data)=>{
+      console.log(data);
+      console.log(data.length)
+      setCurrentUser(data.length);
     })
+
   },[])
 
   const gameStart = ()=>{
-    alert("버튼클릭!");
+    socket.emit('game start',roomNumber)
+    history.push({
+      pathname: "/pong",
+      socket : socket
+    })
   }
 
   const style = {

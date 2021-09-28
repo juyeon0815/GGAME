@@ -1,3 +1,5 @@
+const { clientList } = require("./PongState");
+
 let URI = "/pong"
 
 let object = {}
@@ -9,21 +11,7 @@ let object = {}
 
 // module.exports = router;
 
-exports.pong = function (io, app) {
-
-    app.get(URI+"/roomExist",(res, req)=>{
-        const roomId = res.query.roomId;
-        let flag = false;
-
-        for(let key in object){
-            console.log("key :", key);
-            if(key===roomId){
-                console.log("존재하는 방 찾았당~")
-                flag = true;
-            }
-        }
-        req.send(flag);
-    })
+exports.pong = function (io, pong_state) {
     
     let namespace = io.of(URI);
 
@@ -33,42 +21,42 @@ exports.pong = function (io, app) {
 
         socket.on('disconnect', function(){
             console.log('disconnected: ', socket.id);
-            
-            loop :for(var key in object){
-                console.log("key : ",key+"/ ", object[key])
-                console.log("length",object[key].length)
-                for(var item in object[key]){
-                    if(socket.id===object[key][item]){
-                        object[key].splice(item);
-                        namespace.to(parseInt(key)).emit('currentUser',object[key].length)
-                        break loop;
-                    }
-                }
-            }
+            console.log(socket.roomId)
+            pong_state.removeClient(socket.roomId, socket.id)
+            namespace.to(socket.roomId).emit('userList',pong_state.clientList[socket.roomId])
         });
 
-        socket.on("join room", (roomId) => {
-            // roomId 에 입장
+        socket.on("join room", (roomId, name) => {
+
             console.log(roomId, "방에 접속하였습니다.");
+            console.log("nickName: ",name);
+            
+            //disconnect할때 쉽게 방찾기 위해서 설정
+            socket.roomId = roomId;
+
             socket.join(roomId);
             
-            if(!object[roomId]) object[roomId] = [];
-            object[roomId].push(socket.id);
-            
-            console.log(object)
+            //방이 존재하면 입장, 없으면 생성하고 입장
+            if(!(pong_state.isExistRoom(roomId))){
+                pong_state.createRoom(roomId);
+                pong_state.addClient(roomId, socket.id, name)
+            }else{
+                pong_state.addClient(roomId, socket.id, name)
+            }
 
-            namespace.to(roomId).emit('msg', `방에 새로운사람이 접속했습니다.`)
-            namespace.to(roomId).emit('currentUser',object[roomId].length)
+            console.log(pong_state.clientList)
+
+            console.log(pong_state.clientList[roomId].length);
+            namespace.to(roomId).emit('userList',pong_state.clientList[roomId])
 
 
         });
 
         socket.on('game start', (data)=>{
             console.log('게임을 시작할 방은 ', data)
+            namespace.to(data).emit('start game')
 
-            namespace.to(data).emit('start game','게임을 시작합니다.')
-
-            namespace.to(data).emit('currentUser',object[data]);
+            namespace.to(data).emit('userList',pong_state.clientList[data]);
         })
 
     });
