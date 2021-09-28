@@ -6,7 +6,9 @@ import { useHistory } from 'react-router-dom'
 
 const MakeRoomModal = (props) => {
   const [showEnterHost, setShowEnterHost] = useState(false)
-  const [socketNumber, setSocketNumber] = useState('')
+  const [roomNumber, setRoomNumber] = useState('')
+  const [nickName, setNickName] = useState('');
+
   let history = useHistory()
   const enterCode = useRef()
 
@@ -18,7 +20,10 @@ const MakeRoomModal = (props) => {
     }
     else {
       // 서버에 소켓 넘버 요청
-      setSocketNumber('받아온 소켓 넘버')
+      console.log("방 이름 : ", newRoom);
+      console.log("닉네임 : ", newNickname);
+      setRoomNumber(Math.floor(Math.random()*(10000-1000)+1000))
+      setNickName(newNickname);
       setShowEnterHost(true)
     }
   }
@@ -27,7 +32,11 @@ const MakeRoomModal = (props) => {
   }
   const enterHost = () => {
     isShowEnterHost()
-    history.push('/pongwaiting/host')
+    history.push({
+      pathname:'/pongwaiting/host',
+      newRoom : roomNumber,
+      newNickName : nickName,
+    })
   }
 
   const { isOpen, close } = props
@@ -59,7 +68,7 @@ const MakeRoomModal = (props) => {
             className="modal-input"
           />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="info" className="modal-label">설명</label>
           <textarea
             type="text"
@@ -67,7 +76,7 @@ const MakeRoomModal = (props) => {
             placeholder="방에 대한 정보를 입력하세요"
             className="modal-textarea"
           />
-        </div>
+        </div> */}
       </NestedModal>
     )
   }
@@ -89,7 +98,7 @@ const MakeRoomModal = (props) => {
             type="text"
             id="enter_room_host"
             className="modal-input"
-            value={socketNumber}
+            value={roomNumber}
             ref={enterCode}
             style={style}
             disabled
