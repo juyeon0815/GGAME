@@ -1,19 +1,20 @@
-// const express = require("express")
-// const router = express.Router();
+const express = require("express")
+const router = express.Router();
 
 let URI = "/pong"
 
 
 let object = {}
 
-// router.get("pong/api/roomExist",(req,res)=>{
-//     console.log("넘어온 데이터 : ", req.query.code)
-//     res.send("잘넘어왔다!");
-// })
+router.get("pong/api/roomExist",(req,res)=>{
+    console.log("넘어온 데이터 : ", req.query.code)
+    res.send("잘넘어왔다!");
+})
 
-// module.exports = router;
+module.exports = router;
 
 exports.pong = function (io) {
+    
     let namespace = io.of(URI);
 
     namespace.on('connection', function (socket){

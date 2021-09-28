@@ -10,7 +10,7 @@ function GuestEnterCode (pros){
         console.log(e.target.value);
         setCode(parseInt(e.target.value));
     }
-
+    
     function enterRoom(){
         console.log("보내는 데이터 ", code);   
     }

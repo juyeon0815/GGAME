@@ -135,3 +135,11 @@ video {
 #canvas{
     display: inline-flex;
 }
+
+/* #game{
+  display: inline-flex;
+} */
+
+#pong{
+  margin-right: 100px;
+}

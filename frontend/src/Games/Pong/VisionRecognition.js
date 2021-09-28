@@ -8,9 +8,9 @@
  *      for the project to impliment if created from scratch.
  */
 
-import * as mobilenetModule from '@tensorflow-models/mobilenet';
+import * as mobilenetModule from '@tensorflow-models/mobilenet'; // 가장 가능성이 높은 예측 및 신뢰도 배열 반환
 import * as tf from '@tensorflow/tfjs';
-import * as knnClassifier from '@tensorflow-models/knn-classifier';
+import * as knnClassifier from '@tensorflow-models/knn-classifier'; //유사 속성에 따라 데이터 분류
 
 // Number of classes to classify
 const NUM_CLASSES = 3;
@@ -37,8 +37,8 @@ export default class VisionRecognition {
 
     // Create video element that will contain the webcam image
     this.video = document.createElement('video');
-    this.video.setAttribute('autoplay', '');
-    this.video.setAttribute('playsinline', '');
+    this.video.setAttribute('autoplay', ''); //비디오 자동재생
+    this.video.setAttribute('playsinline', ''); //ios 비디오 자동 재생
 
     const wrapper = document.createElement('div');
     wrapper.setAttribute('class', 'calibration-wrapper');
@@ -57,7 +57,7 @@ export default class VisionRecognition {
     wrapper.appendChild(subWrapper);
 
     // Create training buttons and info texts    
-    for (let i = 0; i < NUM_CLASSES; i++) {
+    for (let i = 0; i < NUM_CLASSES; i++) { //학습하는 부분
       const div = document.createElement('div');
       div.setAttribute('class', 'calibration-btn');
       subWrapper.appendChild(div);
@@ -82,7 +82,7 @@ export default class VisionRecognition {
 
 
     // Setup webcam
-    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false }) //미디어 입력 장치 사용 권한을 요청
       .then((stream) => {
         this.video.srcObject = stream;
         this.video.width = IMAGE_SIZE;
@@ -94,7 +94,10 @@ export default class VisionRecognition {
   }
 
   async bindPage() {
+    // create the classifier
     this.knn = knnClassifier.create();
+
+    //모델 로드
     this.mobilenet = await mobilenetModule.load();
 
     this.start();

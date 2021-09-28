@@ -15,6 +15,8 @@ import Player from './Player';
 import VisionRecognition from './VisionRecognition';
 import './Pong.css';
 
+import GestureRecognition from './GestureRecognition'
+
 let gameWidth=600, gameHeight=400;
 let rounds = [5, 3, 1];
 let colors = ['#202020', '#2ecc71', '#3498db'];
@@ -34,7 +36,7 @@ class App extends Component {
       gameActive: false,
       round: 0,
       boardColor: "#202020",
-      direction: 2   //0 = UP, 1 = DOWN, 2 = IDDLE
+      direction: 2   //0 = UP, 1 = DOWN, 2 = IDDLE //초기 dirction 멈춤
     }
     this.initialSpeed = 250;
     this.ball = null;
@@ -44,18 +46,18 @@ class App extends Component {
   //React native fct: invoked immediately after a component is mounted (inserted into the tree)
   componentDidMount()  //컴포넌트 마운트된 직후 호출
   {
-    const context = this.refs.canvas.getContext('2d');
+    const context = this.refs.canvas.getContext('2d'); //드로잉 컨텍스트에 액세스
     this.setState({ context: context });
     this.setVisionRecognition();
     this.initialize();
-    requestAnimationFrame(() => {this.update()});
+    requestAnimationFrame(() => {this.update()}); //애니메이션 구동 == 부드럽게 표현하기 위해서
   }
 
   update() 
   {
     const cvs = this.state.canvas;
 
-    if(this.state.gameActive) 
+    if(this.state.gameActive)  //만약 게임 활성화되어있으면
     {
       let dt = 0.02;
       const ball = this.ball;
@@ -101,9 +103,9 @@ class App extends Component {
       this.renderScore();
 
       this.setState({
-        direction: this.state.vision.direction
+        direction: this.state.vision.direction //여기서 방향 전환
       });
-
+      console.log("방향~",this.state.direction);
       this.movePlayer();
 
     }
@@ -153,15 +155,17 @@ class App extends Component {
 
   setVisionRecognition() {
     //Display webcam + training model for recognition
-    let vision = new VisionRecognition();
+    let vision = GestureRecognition;
 
     this.setState({
       vision: vision
     });
 
+    // console.log("vision ", vision)
+
   }
 
-  initialize()
+  initialize() //게임 초기화 ( 공 + 플레이어 생성 )
   {
     const cvs = this.refs.canvas;
     const context = cvs.getContext('2d');
@@ -172,7 +176,7 @@ class App extends Component {
       gameActive: true,
       round: 0,
       boardColor: "#202020",
-      direction: 2
+      direction: 2 //초기 상태는 멈춤
     });
 
     //Create ball and players
@@ -210,15 +214,15 @@ class App extends Component {
       const len = ball.vel.len;
       ball.vel.y += player.vel.y * .2;
       ball.vel.len = len;
-      beep.play();
+      beep.play(); //충돌 소리
     }
   }
 
   listen(canvas) 
   {
-    canvas.addEventListener('click', () => this.play());
+    canvas.addEventListener('click', () => this.play()); // canvas 클릭 시 게임 시작
     
-    canvas.addEventListener('mousemove', event => {
+    canvas.addEventListener('mousemove', event => { // paddle mouse로 조작가능
       const scale = event.offsetY / event.target.getBoundingClientRect().height;
       this.players[0].pos.y = canvas.height * scale;
     });
@@ -265,10 +269,10 @@ class App extends Component {
     {
       this.helpPlayer();
     }
-    if(this.state.direction == 0) {
+    if(this.state.direction == 0) { //위로 
       this.players[0].pos.y -= 10;
     } 
-    else if(this.state.direction == 1) {
+    else if(this.state.direction == 1) { //아래로
       this.players[0].pos.y += 10;
     }
   }
@@ -298,7 +302,7 @@ class App extends Component {
 
     this.ball.render(ctx);
     //this.players.forEach(player => player.render(context));
-    this.players[0].renderPlayer1(ctx);
+    this.players[0].renderPlayer1(ctx); //player paddle 그리기
     this.players[1].renderPlayer2(ctx);
   }
 
@@ -339,8 +343,11 @@ class App extends Component {
 
   render() {
     return (
-      <div id="canvas">
-        <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
+      <div id="game">
+         <div id="canvas">
+          <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
+          <GestureRecognition />
+        </div>
       </div>
     );
   }
