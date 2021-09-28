@@ -59,7 +59,7 @@ const MakeRoomModal = (props) => {
             className="modal-input"
           />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="info" className="modal-label">설명</label>
           <textarea
             type="text"
@@ -67,7 +67,7 @@ const MakeRoomModal = (props) => {
             placeholder="방에 대한 정보를 입력하세요"
             className="modal-textarea"
           />
-        </div>
+        </div> */}
       </NestedModal>
     )
   }
@@ -104,7 +104,7 @@ const MakeRoomModal = (props) => {
 const EnterRoomModal = (props) => {
   let history = useHistory()
   const enter = () => {
-    // 서버에 소켓 넘버 맞는지 체크
+    // 서버에 소켓 넘버 맞는지 체크, 닉네임 전송
     const res = false
     const newNickname = document.querySelector('#new_nickname').value
     if (newNickname === "" || !res) {
