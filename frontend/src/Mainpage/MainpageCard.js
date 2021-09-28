@@ -1,7 +1,7 @@
 import React from "react"
 import './Mainpage.css'
 import FlipCard from 'react-flipcard'
-import { MakeRoom } from './MainpageModal'
+import { MakeRoomModal, EnterRoomModal } from './MainpageModal'
 import { Link } from 'react-router-dom'
 
 class GameCard extends React.Component {
@@ -9,7 +9,6 @@ class GameCard extends React.Component {
     super(props)
     this.state = {
       showMR: false,
-      showEnterHost: false,
       showEnterGuest: false,
     }
   }
@@ -28,13 +27,17 @@ class GameCard extends React.Component {
                 <div className="btn-text-align" onClick={() => this.setState({showMR: true})}>방 만들기</div>
               </div>
               <div className="btn-enterroom">
-                <div className="btn-text-align">참가하기</div>
+                <div className="btn-text-align" onClick={() => this.setState({showEnterGuest: true})}>참가하기</div>
               </div>
             </div>
           </FlipCard>
-          <MakeRoom
+          <MakeRoomModal
             isOpen={this.state.showMR}
-            close={() => this.setState({showMR: false})}
+            close={() => this.setState({ showMR: false })}
+          />
+          <EnterRoomModal
+            isOpen={this.state.showEnterGuest}
+            close={() => this.setState({ showEnterGuest: false })}
           />
         </div>
       )
