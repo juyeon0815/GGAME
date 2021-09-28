@@ -1,0 +1,229 @@
+/* Flip Card */
+.container {
+  display: flex;
+  margin-top: 10vh;
+  justify-content: space-evenly;
+  overflow: auto;
+}
+@media screen and (max-width: 768px) {
+  .container {
+    margin-top: 10vh;
+    overflow: auto;
+    display: block;
+  }
+}
+.ReactFlipCard {
+  /* margin: auto; */
+  max-width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  width: 364px;
+  height: 550px;
+}
+.flip-card-front {
+  max-width: 100%;
+  margin: 1rem;
+}
+.flip-card-back-pong {
+  width: 330px;
+  height: 500px;
+  border-radius: 30px;
+  margin: 1rem;
+  background-color: rgb(255, 183, 0);
+}
+.flip-card-back-snake {
+  width: 330px;
+  height: 500px;
+  border-radius: 30px;
+  margin: 1rem;
+  background-color: #9DE87B;
+}
+.img-container {
+  /* max-width: 100%; */
+  width: 330px;
+  height: 500px;
+  border-radius: 30px;
+}
+/* Button */
+.btn-makeroom {
+  position: relative;
+  width: 90%;
+  height: 10%;
+  top: 30%;
+  margin: auto;
+  border-radius: 30px;
+  background-color: aliceblue;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: table;
+  font-weight: bold;
+  transition: all ease 0.2s;
+}
+.btn-makeroom:hover {
+  transform: rotate(-5deg) scale(1.05);
+}
+.btn-enterroom {
+  position: relative;
+  width: 90%;
+  height: 10%;
+  top: 50%;
+  margin: auto;
+  border-radius: 30px;
+  background-color: aliceblue;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: table;
+  font-weight: bold;
+  transition: all ease 0.3s;
+}
+.btn-enterroom:hover {
+  transform: rotate(-5deg) scale(1.05);
+}
+.btn-play {
+  position: relative;
+  width: 90%;
+  height: 10%;
+  top: 45%;
+  margin: auto;
+  border-radius: 30px;
+  background-color: aliceblue;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: table;
+  font-weight: bold;
+  transition: all ease 0.3s;
+}
+.btn-play:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+/* Text on the button */
+.btn-text-align {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.link-text {
+  text-decoration: none;
+  color: black;
+}
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.open-modal {
+    display: flex;
+    align-items: center;
+    animation: modal-show .3s;
+}
+.modal button {
+    outline: none;
+    cursor: pointer;
+    border: 0;
+}
+.modal header button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    font-size: 25px;
+    /* font-weight: bold; */
+    text-align: center;
+    margin: .3rem;
+    color: rgb(150, 150, 150);
+    background-color: transparent;
+}
+.modal header {
+    position: relative;
+    padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+    background-color: rgb(204, 247, 255);
+}
+.modal section {
+    width: 90%;
+    max-width: 700px;
+    margin:0 auto;
+    border-radius: .5rem;
+    background-color: rgb(204, 247, 255);
+    overflow: auto;
+}
+@keyframes modal-show {
+    from {
+        opacity: 0;
+        margin-top: -10%;
+    }
+    to {
+        opacity: 1;
+        margin-top: 0;
+    }
+}
+.modal main {
+    padding: 1rem;
+}
+.modal .main-box {
+  opacity: 0.7;
+  width: 85%;
+  margin: .3rem auto;
+  border-radius: .5rem;
+  background-color: #ffffff;
+}
+.modal footer {
+    padding: .8rem;
+    text-align: right;
+}
+.modal footer button {
+    padding: .3rem 1rem;
+    color: #ffffff;
+    background-color: #0088ff;
+    border-radius: 5px;
+    font-size: 1.25rem;
+}
+/* .router-link-btn {
+    padding: .3rem 1rem;
+    color: #ffffff;
+    background-color: #0088ff;
+    border-radius: 5px;
+    font-size: 1.25rem;
+    text-decoration: none;
+} */
+/* modal: MakeRoom */
+.modal-label {
+  display: flex;
+  justify-content: start;
+  font-size: .8rem;
+  padding-bottom: 5px;
+  text-indent: .5rem;
+}
+.modal-input {
+  width: 100%;
+  height: 30px;
+  font-size: 1rem;
+  text-indent: 2%;
+  border: solid 1px #c4c4c4;
+  border-radius: 30px;
+  margin-bottom: 30px;
+  padding-top: 4px;
+}
+.modal-input:focus {
+  outline: none;
+  box-shadow: 0px 0px 7px 0px #58A7FF;
+}
+.modal-textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 1rem;
+  text-indent: 2%;
+  border: solid 1px #c4c4c4;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  line-height: 40px;
+}
+.modal-textarea:focus {
+  outline: none;
+  box-shadow: 0px 0px 7px 0px #58A7FF;
+}
