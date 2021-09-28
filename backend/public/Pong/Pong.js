@@ -1,8 +1,4 @@
-const express = require("express")
-const router = express.Router();
-
 let URI = "/pong"
-
 
 let object = {}
 
@@ -13,7 +9,21 @@ let object = {}
 
 // module.exports = router;
 
-exports.pong = function (io) {
+exports.pong = function (io, app) {
+
+    app.get(URI+"/roomExist",(res, req)=>{
+        const roomId = res.query.roomId;
+        let flag = false;
+
+        for(let key in object){
+            console.log("key :", key);
+            if(key===roomId){
+                console.log("존재하는 방 찾았당~")
+                flag = true;
+            }
+        }
+        req.send(flag);
+    })
     
     let namespace = io.of(URI);
 

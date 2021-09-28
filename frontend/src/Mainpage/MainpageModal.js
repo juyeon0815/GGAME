@@ -3,6 +3,7 @@ import './Mainpage.css'
 import NestedModal from './MainPageNestedModal'
 import Modal from '../Common/Modal'
 import { useHistory } from 'react-router-dom'
+import axios from "axios"
 
 const MakeRoomModal = (props) => {
   const [showEnterHost, setShowEnterHost] = useState(false)
@@ -22,7 +23,7 @@ const MakeRoomModal = (props) => {
       // 서버에 소켓 넘버 요청
       console.log("방 이름 : ", newRoom);
       console.log("닉네임 : ", newNickname);
-      setRoomNumber(Math.floor(Math.random()*(10000-1000)+1000))
+      setRoomNumber(parseInt(Math.floor(Math.random()*(10000-1000)+1000)))
       setNickName(newNickname);
       setShowEnterHost(true)
     }
@@ -114,19 +115,31 @@ const EnterRoomModal = (props) => {
   let history = useHistory()
   const enter = () => {
     // 서버에 소켓 넘버 맞는지 체크
-    const res = false
-    const newNickname = document.querySelector('#new_nickname').value
-    if (newNickname === "" || !res) {
-      if (newNickname === "") {
-        alert('닉네임은 필수 입력 사항입니다.')
+
+    const enterRoom = document.querySelector('#enter_room_guest').value
+
+    axios.get("http://localhost:5000/pong/roomExist", { params:{
+      roomId : parseInt(enterRoom)
+    }}).then((res)=>{
+      console.log("roomExist", res.data);
+      if(res.data===true) {
+        let  res = false
+        res = true;
+        const newNickname = document.querySelector('#new_nickname').value
+    
+        if (newNickname === "") {
+          alert('닉네임은 필수 입력 사항입니다.')
+        }
+        else if(!res) {
+          alert('입장 코드가 잘못되었습니다.')
+        }
+        else {
+          history.push('/pongwaiting/guest')
+        }
       }
-      else {
-        alert('입장 코드가 잘못되었습니다.')
-      }
-    }
-    else {
-      history.push('/pongwaiting/guest')
-    }
+    }).catch((error)=>{
+      console.log("error", error);
+    })
   }
   const { isOpen, close } = props
   return (

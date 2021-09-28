@@ -15,7 +15,7 @@ app.use(cors());
 
 const Pong = require('./public/Pong/Pong')
 // app.use('/pong',Pong)
-Pong.pong(io)
+Pong.pong(io,app)
 
 
 const port = 5000;
