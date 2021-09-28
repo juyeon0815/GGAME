@@ -12,6 +12,9 @@ const FRAME_RATE = 30;
 const START_BUTTON = { width: 200, height: 50 };
 START_BUTTON.x = CANVAS_WIDTH / 3;
 START_BUTTON.y = CANVAS_HEIGHT / 2 - START_BUTTON.height / 2;
+const RESTART_BUTTON = { width: 200, height: 50 };
+RESTART_BUTTON.x = CANVAS_WIDTH / 3;
+RESTART_BUTTON.y = (4 * CANVAS_HEIGHT) / 5;
 
 class SnakeGame extends Component {
   initialSnakeBody = [
@@ -30,8 +33,9 @@ class SnakeGame extends Component {
       ctx: null,
       vision: null,
       gameActive: false,
-      direction: 2
+      direction: -1
     }
+    this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
 
   componentDidMount() {
@@ -46,9 +50,6 @@ class SnakeGame extends Component {
   }
 
   update() {
-    this.setState({
-      direction: this.state.vision.direction
-    });
     this.movePlayer();
     requestAnimationFrame(() => {this.update()});
   }
@@ -58,6 +59,12 @@ class SnakeGame extends Component {
     let vision = new VisionRecognition();
     this.setState({
       vision: vision
+    });
+  }
+
+  handleDirectionChange(newdirection) {
+    this.setState({
+      direction: newdirection
     });
   }
 
@@ -91,11 +98,11 @@ class SnakeGame extends Component {
 
   drawRanking = (ctx, my_score) => {
     ctx.fillStyle = "RGB(179,161,151)";
-    ctx.clearRect(50, 50, CANVAS_WIDTH-100, CANVAS_HEIGHT-150);
-    ctx.fillRect(50, 50, CANVAS_WIDTH-100, CANVAS_HEIGHT-150);
+    ctx.clearRect(50, 50, CANVAS_WIDTH-100, CANVAS_HEIGHT-100);
+    ctx.fillRect(50, 50, CANVAS_WIDTH-100, CANVAS_HEIGHT-100);
 
     ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
+    ctx.font = "50px arcade-font";
     ctx.fillText(
       `RANKING`,
       CANVAS_WIDTH / 3,
@@ -127,7 +134,17 @@ class SnakeGame extends Component {
       })
       .catch((Error)=>{console.log(Error)})
 
-    this.drawStartButton(this.state.ctx); // 다시하기/메인으로 대체
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "white";
+    ctx.strokeRect(
+      CANVAS_WIDTH / 3,
+      (4 * CANVAS_HEIGHT) / 5,
+      START_BUTTON.width,
+      START_BUTTON.height
+    );
+    ctx.font = "20px arcade-font";
+    ctx.fillStyle = "black";
+    ctx.fillText("다시하기", (2*CANVAS_WIDTH) / 5, (4 * CANVAS_HEIGHT) / 5 + 25);
   }
 
   drawGame = ctx => {
@@ -284,21 +301,26 @@ class SnakeGame extends Component {
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   };
 
-  drawStartButton = ctx => {
-    ctx.fillStyle = "blue";
-    ctx.strokeStyle = "blue";
+  drawStartButton = ctx => {      
+    ctx.font = "60px arcade-font";
+    ctx.fillStyle = "green";
+    ctx.fillText("Snake Game", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 3);
+
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "green";
     ctx.strokeRect(
       START_BUTTON.x,
       START_BUTTON.y,
       START_BUTTON.width,
       START_BUTTON.height
     );
-    ctx.font = "20px Arial";
-    ctx.fillText("Click to Start", (2*CANVAS_WIDTH) / 5, CANVAS_HEIGHT / 2);
+    ctx.font = "20px arcade-font";
     ctx.fillStyle = "black";
+    ctx.fillText("Click to Start", (2*CANVAS_WIDTH) / 5, CANVAS_HEIGHT / 2);
+
     ctx.fillText(
       "학습을 완료하고 게임을 시작하세요",
-      CANVAS_WIDTH / 3,
+      CANVAS_WIDTH / 4,
       (2 * CANVAS_HEIGHT) / 3
     );
   };
@@ -306,12 +328,23 @@ class SnakeGame extends Component {
   handleClick = e => {
     const { layerX, layerY } = e.nativeEvent;
     const { gameActive } = this.state;
+    // start
     if (
       !gameActive &&
       layerX > START_BUTTON.x &&
       layerX < START_BUTTON.x + START_BUTTON.width &&
       layerY > START_BUTTON.y &&
       layerY < START_BUTTON.y + START_BUTTON.height
+    ) {
+      this.startGame();
+    }
+    // restart
+    if (
+      !gameActive &&
+      layerX > RESTART_BUTTON.x &&
+      layerX < RESTART_BUTTON.x + RESTART_BUTTON.width &&
+      layerY > RESTART_BUTTON.y &&
+      layerY < RESTART_BUTTON.y + RESTART_BUTTON.height
     ) {
       this.startGame();
     }
@@ -341,12 +374,15 @@ class SnakeGame extends Component {
 
   render() {
     return (
-      <div>
+      <div className={"container"}>
         <canvas 
           id="canvas"
           tabIndex="0"
-          width="600px" height="600px" 
-          onClick={this.handleClick}/>
+          width={CANVAS_WIDTH} height={CANVAS_HEIGHT} 
+          onClick={this.handleClick}/> 
+        <VisionRecognition 
+          onDirectionChange={this.handleDirectionChange}
+        />
       </div>
     );
   }
