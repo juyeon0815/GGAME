@@ -169,7 +169,7 @@ const PongWaitingHost = (props) =>{
         
         <div style={center}>
         <div>NAME : {nickName}</div>
-        {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!! */}
+        {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
         <div>
         <Webcam
           ref={webcamRef}
