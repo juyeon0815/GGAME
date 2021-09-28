@@ -14,7 +14,7 @@ const cors = require('cors')
 app.use(cors());
 
 const Pong = require('./public/Pong/Pong')
-app.use('/pong',Pong)
+// app.use('/pong',Pong)
 Pong.pong(io)
 
 

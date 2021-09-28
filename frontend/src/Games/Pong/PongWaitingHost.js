@@ -1,13 +1,28 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
+import io from "socket.io-client"
 
 const PongWaitingHost = (props) =>{
-  const enterCode = useRef()
+
   const roomNumber = props.history.location.newRoom;
   const nickName = props.history.location.newNickName;
 
-  useEffect(()=>{
+  const [currentUser, setCurrentUser] = useState();
 
-  })
+  const enterCode = useRef()
+
+  useEffect(()=>{
+    const socket = io.connect("http://localhost:5000/pong");
+    socket.emit("join room", roomNumber);
+
+    socket.on('currentUser',(data)=>{
+      setCurrentUser(data);
+    })
+  },[])
+
+  const gameStart = ()=>{
+    alert("버튼클릭!");
+  }
+
   const style = {
     marginRight: '10px',
     width: '30%'
@@ -29,6 +44,9 @@ const PongWaitingHost = (props) =>{
             disabled
           />
           <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>복사</button>
+        </div>
+        <div>{currentUser}명 대기중..
+          <button onClick={gameStart}>게임시작</button>
         </div>
       </div>
 
