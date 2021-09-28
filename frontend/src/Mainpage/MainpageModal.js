@@ -3,10 +3,13 @@ import './Mainpage.css'
 import NestedModal from './MainPageNestedModal'
 import Modal from '../Common/Modal'
 import { useHistory } from 'react-router-dom'
+import axios from "axios"
 
 const MakeRoomModal = (props) => {
   const [showEnterHost, setShowEnterHost] = useState(false)
-  const [socketNumber, setSocketNumber] = useState('')
+  const [roomNumber, setRoomNumber] = useState('')
+  const [nickName, setNickName] = useState('');
+
   let history = useHistory()
   const enterCode = useRef()
 
@@ -18,7 +21,10 @@ const MakeRoomModal = (props) => {
     }
     else {
       // 서버에 소켓 넘버 요청
-      setSocketNumber('받아온 소켓 넘버')
+      console.log("방 이름 : ", newRoom);
+      console.log("닉네임 : ", newNickname);
+      setRoomNumber(parseInt(Math.floor(Math.random()*(10000-1000)+1000)))
+      setNickName(newNickname);
       setShowEnterHost(true)
     }
   }
@@ -27,7 +33,11 @@ const MakeRoomModal = (props) => {
   }
   const enterHost = () => {
     isShowEnterHost()
-    history.push('/pongwaiting/host')
+    history.push({
+      pathname:'/pongwaiting/host',
+      newRoom : roomNumber,
+      newNickName : nickName,
+    })
   }
 
   const { isOpen, close } = props
@@ -59,7 +69,7 @@ const MakeRoomModal = (props) => {
             className="modal-input"
           />
         </div>
-        <div>
+        {/* <div>
           <label htmlFor="info" className="modal-label">설명</label>
           <textarea
             type="text"
@@ -67,7 +77,7 @@ const MakeRoomModal = (props) => {
             placeholder="방에 대한 정보를 입력하세요"
             className="modal-textarea"
           />
-        </div>
+        </div> */}
       </NestedModal>
     )
   }
@@ -89,7 +99,7 @@ const MakeRoomModal = (props) => {
             type="text"
             id="enter_room_host"
             className="modal-input"
-            value={socketNumber}
+            value={roomNumber}
             ref={enterCode}
             style={style}
             disabled
@@ -105,19 +115,25 @@ const EnterRoomModal = (props) => {
   let history = useHistory()
   const enter = () => {
     // 서버에 소켓 넘버 맞는지 체크
-    const res = false
-    const newNickname = document.querySelector('#new_nickname').value
-    if (newNickname === "" || !res) {
-      if (newNickname === "") {
-        alert('닉네임은 필수 입력 사항입니다.')
-      }
-      else {
-        alert('입장 코드가 잘못되었습니다.')
-      }
-    }
-    else {
-      history.push('/pongwaiting/guest')
-    }
+
+    const enterRoom = document.querySelector('#enter_room_guest').value
+
+    axios.get("http://localhost:5000/pong/room-exist", { params:{
+      roomId : parseInt(enterRoom)
+    }}).then((res)=>{
+      console.log("roomExist", res.data);
+    
+      const newNickname = document.querySelector('#new_nickname').value
+      if (newNickname === "") alert('닉네임은 필수 입력 사항입니다.')
+      else if(!res.data) alert('입장 코드가 잘못되었습니다.')
+      else history.push({
+        pathname: '/pongwaiting/guest',
+        roomId : parseInt(enterRoom),
+        newNickName : newNickname,
+      })
+    }).catch((error)=>{
+      console.log("error", error);
+    })
   }
   const { isOpen, close } = props
   return (
