@@ -1,4 +1,4 @@
-canvas {
+/* canvas {
   position: absolute;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@ canvas {
   image-rendering: auto;
   width: 100%;
   box-shadow: 0 5px 10px 2px #00000075;
-}
+} */
 
 /* .buttons {
   position: fixed;
