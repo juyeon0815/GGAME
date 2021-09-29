@@ -1,7 +1,11 @@
+import React from 'react'
+import SnakeTrain from './SnakeTrain';
+import { SnakeRule } from './SnakeRule';
 import * as mobilenetModule from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import * as knnClassifier from '@tensorflow-models/knn-classifier';
 import { range } from '@tensorflow/tfjs';
+import { Link } from 'react-router-dom'
 
 // Number of classes to classify
 const NUM_CLASSES = 4;
@@ -10,94 +14,43 @@ const IMAGE_SIZE = 227;
 // K value for KNN
 const TOPK = 10;
 
-const DIRECTION = ["위", "아래", "왼쪽", "오른쪽"];
+class VisionRecognition extends React.Component {
+  constructor(props) {
+    super(props)
 
-
-export default class VisionRecognition {
-  constructor() {
-    // Initiate variables
-    this.infoTexts = [];
-    this.training = -1; // -1 when no class is being trained
-    this.videoPlaying = false;
+    this.state = {
+      training: -1,
+      videoPlaying: false,
+      showSR: false,
+    }
+    this.video = null;
+    this.thumbNails = [];
+    this.infoTexts = [" No examples added", " No examples added", " No examples added", " No examples added"];
+    this.videoTag = React.createRef();
 
     // Initiate deeplearn.js math and knn classifier objects
     this.bindPage();
-
-    // Direction of hand (where to move paddle): 1 if up, 0 if down (-1 if no direction set)
-    this.direction = -1;
+    this.mouseDownControl = this.mouseDownControl.bind(this)
 
     // Create video element that will contain the webcam image
-    this.video = document.createElement('video');
-    this.video.setAttribute('autoplay', '');
-    this.video.setAttribute('playsinline', '');
-
-    const wrapper = document.createElement('div');
-    wrapper.setAttribute('class', 'calibration-wrapper');
-    document.body.appendChild(wrapper);
-
-    const infoBtn = document.createElement('button')
-    infoBtn.innerText = "게임방법";
-    wrapper.appendChild(infoBtn);
-
-    const textCalib = document.createElement('p');
-    textCalib.innerHTML = "사용자 모션 입력";
-    wrapper.appendChild(textCalib);
-
-    // Add video element to DOM
-    wrapper.appendChild(this.video);
-
-    // thumbNail
-    for (let i = 0; i < NUM_CLASSES; i++) {
-      const thumbNail = document.createElement('img');
-      thumbNail.setAttribute('width', '100px')
-      thumbNail.setAttribute('height', '100px')
-      wrapper.appendChild(thumbNail)
-    }
-
-    const subWrapper = document.createElement('div');
-    subWrapper.setAttribute('class', 'calibration-btns-wrapper');
-    wrapper.appendChild(subWrapper);
-
-    // Create training buttons and info texts    
-    for (let i = 0; i < NUM_CLASSES; i++) {
-      const div = document.createElement('div');
-      div.setAttribute('class', 'calibration-btn');
-      subWrapper.appendChild(div);
-      div.style.marginBottom = '10px';
-
-      // Create training button
-      const button = document.createElement('button')
-      //button.innerText = "Train " + DIRECTION[i];
-      button.innerText = DIRECTION[i];
-      div.appendChild(button);
-
-      // Listen for mouse events when clicking the button
-      button.addEventListener('mousedown', () => {
-        this.training = i
-        this.getImage(i)
-      });
-      button.addEventListener('mouseup', () => this.training = -1);
-
-      // Create info text
-      const infoText = document.createElement('span')
-      infoText.innerText = " No examples added";
-      div.appendChild(infoText);
-      this.infoTexts.push(infoText); 
-    }
-
-    const exitBtn = document.createElement('button')
-    exitBtn.innerText = "게임나가기";
-    wrapper.appendChild(exitBtn);
-
+    const video = document.createElement('video');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('playsinline', '');
+    this.video = video
+    
     // Setup webcam
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then((stream) => {
+        if (this.videoTag.current) {
+          this.videoTag.current.srcObject = stream;
+        }
+
         this.video.srcObject = stream;
         this.video.width = IMAGE_SIZE;
         this.video.height = IMAGE_SIZE;
 
-        this.video.addEventListener('playing', () => this.videoPlaying = true);
-        this.video.addEventListener('paused', () => this.videoPlaying = false);
+        this.video.addEventListener('playing', () => this.setState({ videoPlaying: true }));
+        this.video.addEventListener('paused', () => this.setState({ videoPlaying: false }));
       })
   }
 
@@ -106,9 +59,8 @@ export default class VisionRecognition {
       .then((stream) => {       
         const track = stream.getVideoTracks()[0];
         let imageCapture = new ImageCapture(track);
-        imageCapture.takePhoto().then(function(imageBlob) {
-          const thumbNails = document.querySelectorAll('img');
-          thumbNails[i].setAttribute('src', window.URL.createObjectURL(imageBlob))
+        imageCapture.takePhoto().then((imageBlob) => {
+          this.thumbNails[i] = window.URL.createObjectURL(imageBlob)
         })
       })
   }
@@ -118,6 +70,11 @@ export default class VisionRecognition {
     this.mobilenet = await mobilenetModule.load();
 
     this.start();
+  }
+
+  mouseDownControl(i) {
+    this.setState({ training: i})
+    this.getImage(i)
   }
 
   start() {
@@ -134,7 +91,7 @@ export default class VisionRecognition {
   }
 
   async animate() {
-    if (this.videoPlaying) {
+    if (this.state.videoPlaying) {
       // Get image data from video element
       const image = tf.browser.fromPixels(this.video);
 
@@ -143,11 +100,11 @@ export default class VisionRecognition {
       const infer = () => this.mobilenet.infer(image, 'conv_preds');
 
       // Train class if one of the buttons is held down
-      if (this.training != -1) {
+      if (this.state.training != -1) {
         logits = infer();
 
         // Add current image to classifier
-        this.knn.addExample(logits, this.training);
+        this.knn.addExample(logits, this.state.training);
 		    //console.log("help");
       }
 
@@ -166,25 +123,24 @@ export default class VisionRecognition {
           const exampleCount = this.knn.getClassExampleCount();
 
           // Make the predicted class bold
-          if (res.classIndex == i) {
-            this.infoTexts[i].style.fontWeight = 'bold';
-          } else {
-            this.infoTexts[i].style.fontWeight = 'normal';
-          }
+          // if (res.classIndex == i) {
+          //   this.infoTexts[i].style.fontWeight = 'bold';
+          // } else {
+          //   this.infoTexts[i].style.fontWeight = 'normal';
+          // }
 		
     			let percentString = res.confidences[i];
     			let percent = parseFloat(percentString);
     			percent = Math.floor(percent * 100);
 
     			if(percent > max){
-              //console.log("Up: " + direction);
-              this.direction = i;
-              max = percent;
+            this.props.onDirectionChange(i);
+            max = percent;
     		  }
       
           // Update info text
           if (exampleCount[i] > 0) {
-            this.infoTexts[i].innerText = ` ${exampleCount[i]} examples - ${percent}%` 
+            this.infoTexts[i] = ` ${exampleCount[i]} examples - ${percent}%` 
           }
         }
         //reset
@@ -199,4 +155,50 @@ export default class VisionRecognition {
     }
     this.timer = requestAnimationFrame(this.animate.bind(this));
   }
+
+
+
+  render() {
+    return (
+      <div>
+        <div className="btn-wrapper">
+          <button className="btn-snake" onClick={() => this.setState({showSR: true})}>게임방법</button>
+          <Link to="/" className="btn-snake">
+            <div>게임 나가기</div>
+          </Link>
+        </div>
+        <video
+          autoPlay
+          playsInline
+          width="227px"
+          height="227px"
+          ref={this.videoTag}
+        />
+        <div className="snake-img">
+          {this.infoTexts.map((infoText, index) => (
+            <div>
+              <img 
+                width="220px"
+                height="170px"
+                src={this.thumbNails[index]}
+              />
+              <SnakeTrain 
+                key={index}
+                num={index}
+                infoText={infoText}
+                handleMouseDown={() => this.mouseDownControl(index)} 
+                handleMouseUp={() => this.setState({training: -1})}
+              />
+            </div>
+          ))}
+        </div>
+        <SnakeRule
+          isOpen={this.state.showSR}
+          close={() => this.setState({showSR: false})}
+        />
+      </div>
+    )
+  }
 }
+
+export default VisionRecognition
