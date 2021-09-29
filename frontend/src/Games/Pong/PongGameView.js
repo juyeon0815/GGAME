@@ -102,10 +102,10 @@ class App extends Component {
 
       this.renderScore();
 
-      this.setState({
-        direction: this.state.vision.direction //여기서 방향 전환
-      });
-      console.log("방향~",this.state.direction);
+      // this.setState({
+      //   direction: this.state.vision.direction //여기서 방향 전환
+      // });
+      // console.log("방향~",this.state.direction);
       this.movePlayer();
 
     }
@@ -155,13 +155,13 @@ class App extends Component {
 
   setVisionRecognition() {
     //Display webcam + training model for recognition
-    let vision = GestureRecognition;
+    // let vision = GestureRecognition;
 
-    this.setState({
-      vision: vision
-    });
+    // this.setState({
+    //   vision: vision
+    // });
 
-    // console.log("vision ", vision)
+    // // console.log("vision ", vision)
 
   }
 
@@ -341,12 +341,19 @@ class App extends Component {
     ctx.fillText(text, canvas.width/2, canvas.height/2);
   }
 
+  direction = (text)=>{
+    console.log(text)
+    this.setState({
+      direction: text
+    });
+  }
+
   render() {
     return (
       <div id="game">
          <div id="canvas">
           <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
-          <GestureRecognition />
+          <GestureRecognition direction={this.direction} />
         </div>
       </div>
     );

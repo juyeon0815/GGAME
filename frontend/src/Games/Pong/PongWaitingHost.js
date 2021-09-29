@@ -57,6 +57,7 @@ const PongWaitingHost = (props) =>{
         <div>
         <div style={center}>NAME : {nickName}</div>
         {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
+        <p id="game_menu"></p>
         <PongGameView />
         <div style={center}>
           <div>

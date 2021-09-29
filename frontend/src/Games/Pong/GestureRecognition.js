@@ -22,13 +22,13 @@ import * as fp from "fingerpose"; //손가락 분류
 ///////// NEW STUFF IMPORTS
 
 
-function GestureRecognition({getData}) {
+function GestureRecognition({direction}) {
   //useRef는 .current 프로퍼티로 전달된 인자를 초기화된 변경 가능한 ref객체 반환
   //useRef로 관리하는 변수는 값이 바뀐다고해서 컴포넌트 리렌더링 x
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const [direction, setDirection] = useState();
+  // console.log("props",direction);
   ///////// NEW STUFF ADDED STATE HOOK
 
   ///////// NEW STUFF ADDED STATE HOOK
@@ -87,16 +87,18 @@ function GestureRecognition({getData}) {
           );
           let ges = gesture.gestures[maxConfidence].name;  
           if (ges === "victory") {
+            direction(0)
             console.log("======위 방향 상상상=======");
           }
           else if (ges === "thumbs_up") {
+            direction(1)
             console.log("=========아래 방향 하하하하=========");
           }
 
         //   console.log(gesture.gestures[maxConfidence].name);
         }
       }else{
-          setDirection(2);
+        direction(2)
         console.log("멈춰!")
       }
 
