@@ -159,8 +159,9 @@ class VisionRecognition extends React.Component {
 
 
   render() {
+    const imgClassname = ['snake-img-up', 'snake-img-down', 'snake-img-left', 'snake-img-right']
     return (
-      <div>
+      <div className="vision-wrapper">
         <div className="btn-wrapper">
           <button className="btn-snake" onClick={() => this.setState({showSR: true})}>게임방법</button>
           <Link to="/" className="btn-snake">
@@ -174,9 +175,12 @@ class VisionRecognition extends React.Component {
           height="227px"
           ref={this.videoTag}
         />
-        <div className="snake-img">
+        <div>
           {this.infoTexts.map((infoText, index) => (
-            <div>
+            <div 
+              key={index} 
+              className={imgClassname[index]}
+            >
               <img 
                 width="220px"
                 height="170px"

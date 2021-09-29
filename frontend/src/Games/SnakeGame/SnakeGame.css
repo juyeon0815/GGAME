@@ -3,7 +3,7 @@
   src: url("../../assets/fonts/ARCADECLASSIC.TTF");
 }
 
-.container {
+.snake-container {
   display: flex;
   margin-top: 10vh;
   justify-content: space-evenly;
@@ -43,19 +43,50 @@
   transform: rotate(5deg) scale(1.05);
 } */
 
+.vision-wrapper {
+  width: 600px;
+  height: 600px;
+}
+
 video {
+  position: absolute;
+  top: 450px;
+  right: 350px;
+
   margin: auto;
   display: flex;
   height: auto;
   box-shadow: 1px 3px 8px 2px #0000008f;
+
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg);
 }
 
-.snake-img {
-  display: flex;
-  justify-content: center;
-  margin-top: 50px;
+.snake-img-up {
+  position: absolute;
+  top: 200px;
+  right: 350px;
+}
+
+.snake-img-down {
+  position: absolute;
+  top: 650px;
+  right: 350px;
+}
+
+.snake-img-left {
+  position: absolute;
+  top: 450px;
+  right: 600px;
+}
+
+.snake-img-right {
+  position: absolute;
+  top: 450px;
+  right: 100px;
 }
 
 .snake-infotext {
   text-align: center;
+  margin: 0;
 }

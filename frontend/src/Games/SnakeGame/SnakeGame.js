@@ -374,7 +374,7 @@ class SnakeGame extends Component {
 
   render() {
     return (
-      <div className={"container"}>
+      <div className={"snake-container"}>
         <canvas 
           id="canvas"
           tabIndex="0"
