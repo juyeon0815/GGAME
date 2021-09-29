@@ -1,5 +1,5 @@
 import React from "react"
-import { Modal } from '../../Mainpage/MainpageModal'
+import  Modal from '../../Common/Modal'
 
 class SnakeRule extends React.Component {
   render() {
