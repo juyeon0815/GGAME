@@ -9,7 +9,7 @@ import { faArrow, faMypage, faRanking } from '../assets/icon'
 const Mainpage = () => {
   const user = 'user'
   const [isMenu, setIsMenu] = useState(false)
-  const visiblityChange = (isMenuOpen) => {
+  const visiblityChange = () => {
     
     const icons = document.querySelectorAll('.icon-circle')
     if (isMenu) {
