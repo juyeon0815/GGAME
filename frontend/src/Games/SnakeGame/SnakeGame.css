@@ -17,31 +17,35 @@
   }
 }
 
-.btn-wrapper {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px 0 30px 0;
-}
-
 .btn-snake {
-  width: 40%;
-  height: 20%;
-  margin: auto;
-  border-radius: 30px;
-  background-color: aliceblue;
+  border: 2px solid #547aa5;
   cursor: pointer;
-  font-size: 1.2rem;
-  display: table;
-  font-weight: bold;
-  transition: all ease 0.3s;
-  text-decoration: none;
-  color: black;
-  text-align: center;
+  background: none;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 17px;
+  transition: 0.25s;
 }
 
-/* .btn-snake:hover {
-  transform: rotate(5deg) scale(1.05);
-} */
+.btn-snake:hover {
+  box-shadow: inset 0 -3.25em 0 0 #547aa5;
+  border: none;
+  color: white;
+}
+
+.btn-snake-rule {
+  position: absolute;
+  top: 100px;
+  right: 50px;
+  width: 130px;
+}
+
+.btn-snake-out {
+  position: absolute;
+  top: 150px;
+  right: 50px;
+  width: 130px;
+}
 
 .vision-wrapper {
   width: 600px;
@@ -50,7 +54,7 @@
 
 video {
   position: absolute;
-  top: 450px;
+  top: 350px;
   right: 350px;
 
   margin: auto;
@@ -62,27 +66,37 @@ video {
   -webkit-transform:rotateY(180deg);
 }
 
+.snake-capture {
+  transform:rotate(0deg);
+  -moz-transform: scaleX(-1); 
+  -o-transform: scaleX(-1); 
+  -webkit-transform: scaleX(-1); 
+  transform: scaleX(-1);   
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
 .snake-img-up {
   position: absolute;
-  top: 200px;
+  top: 100px;
   right: 350px;
 }
 
 .snake-img-down {
   position: absolute;
-  top: 650px;
+  top: 550px;
   right: 350px;
 }
 
 .snake-img-left {
   position: absolute;
-  top: 450px;
+  top: 350px;
   right: 600px;
 }
 
 .snake-img-right {
   position: absolute;
-  top: 450px;
+  top: 350px;
   right: 100px;
 }
 
