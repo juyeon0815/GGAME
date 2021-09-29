@@ -1,13 +1,13 @@
 /* Flip Card */
 .container {
   display: flex;
-  margin-top: 10vh;
+  padding-top: 10vh;
   justify-content: space-evenly;
   overflow: auto;
 }
 @media screen and (max-width: 768px) {
   .container {
-    margin-top: 10vh;
+    padding-top: 10vh;
     overflow: auto;
     display: block;
   }
@@ -226,4 +226,67 @@
 .modal-textarea:focus {
   outline: none;
   box-shadow: 0px 0px 7px 0px #58A7FF;
+}
+/* menu icon */
+.menu-container {
+  margin: 3vh 0;
+  position: relative;
+  z-index: 99;
+}
+.icon-arrow {
+  color: #58A7FF;
+  position: absolute;
+  right: 50px;
+  cursor: pointer;
+  animation: icon-arrow 1s infinite;
+}
+@keyframes icon-arrow {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translateY(5px);
+  }
+}
+.icon-mypage {
+  position: absolute;
+  color: #fff;
+  top: 100px;
+  cursor: pointer;
+}
+.icon-ranking {
+  position: absolute;
+  color: #fff;
+  top: 174px;
+  cursor: pointer;
+}
+.icon-circle {
+  visibility: hidden;
+  background-color: #0088ff;
+  width: 50px;
+  height: 50px;
+  right: 40px;
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+  /* vertical-align: middle; */
+  text-align: center;
+  line-height: 60px;
+  padding: 5px;
+}
+.menu-open {
+  animation: menu-open 3s ease-in-out forwards;
+}
+.menu-open:nth-child(3) {
+  transform: translateY(-30px);
+  animation-delay: .1s;
+}
+@keyframes menu-open {
+  20%, 50%, 80%, 100% {transform: translateY(0);} 
+  0% {transform: translateY(-30px);}
+  40% {transform: translateY(-15px);} 
+  60% {transform: translateY(-7px);} 
+  90% {transform: translateY(-1px);}
 }
