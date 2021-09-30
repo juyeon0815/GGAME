@@ -25,7 +25,7 @@ class VisionRecognition extends React.Component {
     }
     this.video = null;
     this.thumbNails = [];
-    this.infoTexts = [" No examples added", " No examples added", " No examples added", " No examples added"];
+    this.infoTexts = ["  동작을 등록해주세요!", "  동작을 등록해주세요!", "  동작을 등록해주세요!", "  동작을 등록해주세요!"];
     this.videoTag = React.createRef();
 
     // Initiate deeplearn.js math and knn classifier objects
@@ -45,6 +45,7 @@ class VisionRecognition extends React.Component {
           this.videoTag.current.srcObject = stream;
         }
 
+        this.videoStream = stream;
         this.video.srcObject = stream;
         this.video.width = IMAGE_SIZE;
         this.video.height = IMAGE_SIZE;
@@ -157,17 +158,27 @@ class VisionRecognition extends React.Component {
     this.timer = requestAnimationFrame(this.animate.bind(this));
   }
 
+  stopVideo() {
+    if(this.videoStream) {
+      console.log(this.videoStream)
+      this.videoStream.getVideoTracks().forEach((track) => {
+        track.stop();
+      });
+      this.videoStream.getAudioTracks().forEach((track) => {
+        track.stop();
+      });
+      
+      this.videoStream = null;
+      this.videoTag.current.srcObject = null;
+    }
+  }
+
 
 
   render() {
+    const imgClassname = ['snake-img-up', 'snake-img-down', 'snake-img-left', 'snake-img-right']
     return (
-      <div>
-        <div className="btn-wrapper">
-          <button className="btn-snake" onClick={() => this.setState({showSR: true})}>게임방법</button>
-          <Link to="/" className="btn-snake">
-            <div>게임 나가기</div>
-          </Link>
-        </div>
+      <div className="vision-wrapper">
         <video
           autoPlay
           playsInline
@@ -175,13 +186,17 @@ class VisionRecognition extends React.Component {
           height="227px"
           ref={this.videoTag}
         />
-        <div className="snake-img">
+        <div>
           {this.infoTexts.map((infoText, index) => (
-            <div>
+            <div 
+              key={index} 
+              className={imgClassname[index]}
+            >
               <img 
                 width="220px"
                 height="170px"
                 src={this.thumbNails[index]}
+                className="snake-capture"
               />
               <SnakeTrain 
                 key={index}
@@ -192,6 +207,12 @@ class VisionRecognition extends React.Component {
               />
             </div>
           ))}
+        </div>
+        <div>
+          <button className="btn-snake btn-snake-rule" onClick={() => this.setState({showSR: true})}>게임방법</button>
+          <Link to="/">
+            <button className="btn-snake btn-snake-out" onClick={() => this.stopVideo()}>게임 나가기</button>
+          </Link>
         </div>
         <SnakeRule
           isOpen={this.state.showSR}
