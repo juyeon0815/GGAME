@@ -4,13 +4,12 @@ import './Mainpage.css'
 import Pong from '../assets/images/pong.png'
 import Snake from '../assets/images/snake.png'
 import GameCard from './MainpageCard'
-import { faArrow, faMypage, faRanking } from '../assets/icon'
+import { faArrow, faMypage, faRanking } from '../assets/icons/menu_icon'
 
 const Mainpage = () => {
   const user = 'user'
   const [isMenu, setIsMenu] = useState(false)
   const visiblityChange = () => {
-    
     const icons = document.querySelectorAll('.icon-circle')
     if (isMenu) {
       setIsMenu(false)
