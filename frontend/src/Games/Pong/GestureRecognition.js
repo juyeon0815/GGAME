@@ -88,18 +88,13 @@ function GestureRecognition({direction}) {
           let ges = gesture.gestures[maxConfidence].name;  
           if (ges === "victory") {
             direction(0)
-            console.log("======위 방향 상상상=======");
           }
           else if (ges === "thumbs_up") {
             direction(1)
-            console.log("=========아래 방향 하하하하=========");
           }
-
-        //   console.log(gesture.gestures[maxConfidence].name);
         }
       }else{
         direction(2)
-        console.log("멈춰!")
       }
 
       ///////// NEW STUFF ADDED GESTURE HANDLING
