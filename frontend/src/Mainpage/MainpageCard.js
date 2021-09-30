@@ -23,11 +23,16 @@ class GameCard extends React.Component {
             </div>
             {/* back */}
             <div className="flip-card-back-pong">
-              <div className="btn-makeroom">
+              {/* <div className="btn-makeroom">
                 <div className="btn-text-align" onClick={() => this.setState({showMR: true})}>방 만들기</div>
               </div>
               <div className="btn-enterroom">
                 <div className="btn-text-align" onClick={() => this.setState({showEnterGuest: true})}>참가하기</div>
+              </div> */}
+              <div className="btn-play">
+                <Link to="/pong" className="link-text btn-text-align">
+                  <div>게임하기</div>
+                </Link>
               </div>
             </div>
           </FlipCard>

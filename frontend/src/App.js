@@ -26,8 +26,6 @@ function App() {
         <Link to="/snake"> 뱀 게임</Link> |
         <Link to="/pong"> 탁구 게임</Link> |
         <Link to="/ranking"> 랭킹</Link> |
-        <Link to="/pongwaiting/host"> 호스트 대기실</Link> |
-        <Link to="/pongwaiting/guest"> 게스트 대기실</Link> |
       </nav>
       {/* Router setting */}
       <Switch>
@@ -37,8 +35,6 @@ function App() {
         <Route path="/snake" component={SnakeGame}></Route>
         <Route path="/pong" component={Pong}></Route>
         <Route path="/ranking" component={Ranking}></Route>
-        <Route path="/pongwaiting/host" component={PongWaitingHost}></Route>
-        <Route path="/pongwaiting/guest" component={PongWaitingGeust}></Route>
       </Switch>
     </div>
   )
