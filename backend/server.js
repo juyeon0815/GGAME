@@ -22,10 +22,23 @@
 // server.listen(port, ()=>console.log(`Listening on port ${port}`));
 
 const express = require('express');
+const path = require("path"); // react build 파일에 접근하기 위해 필요함
+const port = process.env.PORT || 5000;
+
 const app = express();
 
 const cors = require('cors')
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, "build")));
+ 
+app.use("/", function (req, res, next) {
+  res.sendFile(path.join(__dirname + "/build", "index.html"));
+});
+
+app.listen(port, function () {
+  console.log("server works on port :" + port);
+});
 
 // back/app.js
 const httpServer = require("http").createServer();

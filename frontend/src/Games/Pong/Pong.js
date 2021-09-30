@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import * as tf from "@tensorflow/tfjs";
 import * as handpose from "@tensorflow-models/handpose";
 import Webcam from "react-webcam";
-import { drawHand } from "./utilities";
+import { drawHand } from "./Utilities";
 
 import * as fp from "fingerpose";
 import { logSoftmax } from "@tensorflow/tfjs";
