@@ -15,7 +15,7 @@ class SnakeTrain extends React.Component {
           onMouseUp={() => this.props.handleMouseUp()}
         >{DIRECTIONS[this.props.num]}
         </button>
-        <p className="snake-infotext">{this.props.infoText}</p>
+        <span className="snake-infotext">{this.props.infoText}</span>
       </div>
     )
   }

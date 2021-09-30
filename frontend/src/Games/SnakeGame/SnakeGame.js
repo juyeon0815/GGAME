@@ -1,26 +1,28 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import VisionRecognition from './VisionRecognition';
+import SnakeTitle from '../../assets/images/snake_title.GIF'
+import SnakeImg from '../../assets/images/snake_main.png'
 import './SnakeGame.css';
-import { div } from '@tensorflow/tfjs';
 
 // game constants
-const CANVAS_WIDTH = 600;
-const CANVAS_HEIGHT = 600;
+const CANVAS_WIDTH = 650;
+const CANVAS_HEIGHT = 650;
 const SNAKE_LENGTH = 15; // should be divisible by both canvas height and width
 const FRAME_RATE = 30;
 const START_BUTTON = { width: 200, height: 50 };
 START_BUTTON.x = CANVAS_WIDTH / 3;
-START_BUTTON.y = CANVAS_HEIGHT / 2 - START_BUTTON.height / 2;
+START_BUTTON.y = (4 * CANVAS_HEIGHT) / 5 - START_BUTTON.height / 2;
+
 const RESTART_BUTTON = { width: 200, height: 50 };
 RESTART_BUTTON.x = CANVAS_WIDTH / 3;
-RESTART_BUTTON.y = (4 * CANVAS_HEIGHT) / 5;
+RESTART_BUTTON.y = (4 * CANVAS_HEIGHT) / 5 - START_BUTTON.height / 2;
 
 class SnakeGame extends Component {
   initialSnakeBody = [
-    { x: 0 * SNAKE_LENGTH, y: 5 * SNAKE_LENGTH },
-    { x: 1 * SNAKE_LENGTH, y: 6 * SNAKE_LENGTH },
-    { x: 2 * SNAKE_LENGTH, y: 7 * SNAKE_LENGTH }
+    { x: 0 * SNAKE_LENGTH, y: 0 * SNAKE_LENGTH },
+    { x: 1 * SNAKE_LENGTH, y: 1 * SNAKE_LENGTH },
+    { x: 2 * SNAKE_LENGTH, y: 2 * SNAKE_LENGTH }
   ];
   initialDirections = { x: 1, y: 0 };
   initialSnakeSpeed = 5;
@@ -33,7 +35,8 @@ class SnakeGame extends Component {
       ctx: null,
       vision: null,
       gameActive: false,
-      direction: -1
+      direction: -1,
+      isNew: true,
     }
     this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
@@ -42,7 +45,6 @@ class SnakeGame extends Component {
     const cvs = document.getElementById('canvas');
     const ctx = cvs.getContext('2d');
     this.setState({ ctx: ctx });
-    this.setVisionRecognition();
 
     this.clearCanvas(ctx);
     this.drawStartButton(ctx);
@@ -52,14 +54,6 @@ class SnakeGame extends Component {
   update() {
     this.movePlayer();
     requestAnimationFrame(() => {this.update()});
-  }
-
-  setVisionRecognition() {
-    //Display webcam + training model for recognition
-    let vision = new VisionRecognition();
-    this.setState({
-      vision: vision
-    });
   }
 
   handleDirectionChange(newdirection) {
@@ -92,7 +86,7 @@ class SnakeGame extends Component {
     const { highScore } = this.props;
     this.setState({ gameActive: false }, () => clearInterval(gameInterval));
     this.clearCanvas(ctx);
-    this.setState({snakeBody: null, food: null});
+    this.setState({snakeBody: null, food: null, isNew: false});
     this.drawRanking(ctx, score);
   };
 
@@ -137,8 +131,8 @@ class SnakeGame extends Component {
     ctx.fillStyle = "black";
     ctx.strokeStyle = "white";
     ctx.strokeRect(
-      CANVAS_WIDTH / 3,
-      (4 * CANVAS_HEIGHT) / 5,
+      RESTART_BUTTON.x,
+      RESTART_BUTTON.y,
       START_BUTTON.width,
       START_BUTTON.height
     );
@@ -225,6 +219,7 @@ class SnakeGame extends Component {
   };
 
   changeSnakeDirection = (x, y) => {
+    // 위-아래 / 좌-우는 방향 안바뀌게
     this.setState(
       {
         snakeDirection: { x, y }
@@ -302,9 +297,17 @@ class SnakeGame extends Component {
   };
 
   drawStartButton = ctx => {      
-    ctx.font = "60px arcade-font";
-    ctx.fillStyle = "green";
-    ctx.fillText("Snake Game", CANVAS_WIDTH / 4, CANVAS_HEIGHT / 3);
+    const titleImage = new Image();
+    titleImage.src = SnakeTitle
+    titleImage.onload = function () {
+      ctx.drawImage(titleImage, CANVAS_WIDTH / 6, CANVAS_HEIGHT / 10)
+    }
+
+    const mainImage = new Image();
+    mainImage.src = SnakeImg
+    mainImage.onload = function () {
+      ctx.drawImage(mainImage, CANVAS_WIDTH / 5, CANVAS_HEIGHT / 4, 350, 250)
+    }
 
     ctx.fillStyle = "black";
     ctx.strokeStyle = "green";
@@ -316,21 +319,22 @@ class SnakeGame extends Component {
     );
     ctx.font = "20px arcade-font";
     ctx.fillStyle = "black";
-    ctx.fillText("Click to Start", (2*CANVAS_WIDTH) / 5, CANVAS_HEIGHT / 2);
+    ctx.fillText("Click to Start", START_BUTTON.x + 30, START_BUTTON.y + 30);
 
     ctx.fillText(
       "학습을 완료하고 게임을 시작하세요",
       CANVAS_WIDTH / 4,
-      (2 * CANVAS_HEIGHT) / 3
+      START_BUTTON.y + 100
     );
   };
 
   handleClick = e => {
     const { layerX, layerY } = e.nativeEvent;
-    const { gameActive } = this.state;
+    const { gameActive, isNew } = this.state;
     // start
     if (
       !gameActive &&
+      isNew &&
       layerX > START_BUTTON.x &&
       layerX < START_BUTTON.x + START_BUTTON.width &&
       layerY > START_BUTTON.y &&
@@ -341,6 +345,7 @@ class SnakeGame extends Component {
     // restart
     if (
       !gameActive &&
+      !isNew &&
       layerX > RESTART_BUTTON.x &&
       layerX < RESTART_BUTTON.x + RESTART_BUTTON.width &&
       layerY > RESTART_BUTTON.y &&
@@ -371,10 +376,9 @@ class SnakeGame extends Component {
     }
   }
 
-
   render() {
     return (
-      <div className={"container"}>
+      <div className={"snake-container"}>
         <canvas 
           id="canvas"
           tabIndex="0"
