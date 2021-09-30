@@ -35,6 +35,6 @@ io.on('connection', socket=>{
     })
 })
 
-server.listen(5000, function(){
-    console.log('listening on port 5000');
-})
+// server.listen(5000, function(){
+//     console.log('listening on port 5000');
+// })
