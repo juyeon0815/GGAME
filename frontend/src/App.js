@@ -5,7 +5,7 @@ import Login from './Mainpage/Login'
 import Mypage from './Mypage/Mypage'
 import SnakeGame from './Games/SnakeGame/SnakeGame'
 import Pong from './Games/Pong/Pong'
-import Ranking from './Ranking'
+import Ranking from './Ranking/Ranking'
 import PongWaitingHost from './Games/Pong/PongWaitingHost'
 import PongWaitingGeust from './Games/Pong/PongWaitingGuest'
 
