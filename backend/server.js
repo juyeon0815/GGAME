@@ -30,10 +30,15 @@ const app = express();
 const cors = require('cors')
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "../fronted/build")));
  
-app.use("/", function (req, res, next) {
-  res.sendFile(path.join(__dirname + "/build", "index.html"));
+// app.use("/", function (req, res, next) {
+//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+// });
+app.get("/", (req, res) => {
+  console.log(__dirname);
+  // index.html 파일 응답
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
 app.listen(port, function () {
