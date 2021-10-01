@@ -9,6 +9,8 @@ import Ranking from "./Ranking";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
 
+import LoginRedirect from "./Mainpage/LoginRedirect"
+
 function App() {
   const user = "user";
   return (
@@ -38,6 +40,7 @@ function App() {
         <Route path="/ranking" component={Ranking}></Route>
         <Route path="/air-drawing/host" component={AirDrawingHost}></Route>
         <Route path="/air-drawing/guest" component={AirDrawingGuest}></Route>
+        <Route path="/callback/kakao" component={LoginRedirect}></Route>
       </Switch>
     </div>
   );
