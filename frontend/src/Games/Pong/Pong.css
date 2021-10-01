@@ -1,6 +1,6 @@
-#canvas{
-    display: inline-flex;
+#pongCanvas {
+  display: inline-flex;
 }
-#pong{
-    margin-right: 100px;
-  }
+#pong {
+  margin-right: 100px;
+}

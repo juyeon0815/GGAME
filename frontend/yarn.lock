@@ -9311,11 +9311,14 @@
     "nanoid" "^3.1.23"
     "source-map-js" "^0.6.2"
 
+<<<<<<< HEAD
+=======
 "postinstall-postinstall@^2.1.0":
   "integrity" "sha512-7hQX6ZlZXIoRiWNrbMQaLzUUfH+sSx39u8EJ9HYuDc1kLo9IXKWjM5RSquZN1ad5GnH8CGFM78fsAAQi3OKEEQ=="
   "resolved" "https://registry.npmjs.org/postinstall-postinstall/-/postinstall-postinstall-2.1.0.tgz"
   "version" "2.1.0"
 
+>>>>>>> 967eb210bc3089f4425b0afd2239cd158f401090
 "prelude-ls@^1.2.1":
   "integrity" "sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g=="
   "resolved" "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
