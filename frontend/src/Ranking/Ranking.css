@@ -1,7 +1,10 @@
+.rankings {
+  display: flex;
+}
 .rank-container {
   width: 100%;
+  margin: 30px;
   max-width: 1000px;
-  margin-left: 300px;
   padding: 2em 0;
   display: grid;
   grid-template-rows: 400px 1fr;
@@ -9,14 +12,20 @@
 }
 
 .leaders {
-  background-color: #a5004d;
-  background-image: url("https://www.transparenttextures.com/patterns/inspiration-geometry.png");
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding-top: 2em;
   display: grid;
   grid-template-rows: 20% 1fr;
   justify-items: center;
+}
+
+.Snake-leaders {
+  background-color: lightgreen;
+}
+
+.PingPong-leaders {
+  background-color: orange;
 }
 
 .leaders h2 {
@@ -34,6 +43,7 @@
   align-items: flex-end;
   grid-gap: 10px;
   list-style: none;
+  padding: 0;
 }
 
 .lead-players {
@@ -57,14 +67,14 @@
   position: relative;
 }
 .podium h4 {
-  font-family: "Amatic SC", sans-serif;
   font-size: 1.8rem;
-  color: #a5004d;
+  color: rgb(92, 58, 58);
+  margin: 20px 0;
 }
 .podium p {
   color: rgb(73, 73, 73);
   margin: 5px 0;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 .pod-1 {
   height: 100px;
@@ -113,13 +123,11 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background-color: #a5004d;
+  background-color: lightblue;
   position: relative;
 }
 .player-item__info h4 {
-  font-family: "Amatic SC", serif;
   font-size: 1.7rem;
-  color: #a5004d;
   margin-left: 20px;
 }
 .player-item__points {
@@ -156,7 +164,6 @@
   z-index: 20;
   width: 34px;
   height: 34px;
-  background-color: #1cfa8b;
   border-radius: 50%;
   display: grid;
   place-items: center;

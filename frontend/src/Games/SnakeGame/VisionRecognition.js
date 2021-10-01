@@ -183,6 +183,7 @@ class VisionRecognition extends React.Component {
           playsInline
           width="227px"
           height="227px"
+          className="snake-video"
           ref={this.videoTag}
         />
         <div>
