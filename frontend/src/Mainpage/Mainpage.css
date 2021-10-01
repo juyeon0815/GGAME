@@ -1,5 +1,5 @@
 /* Flip Card */
-.container {
+.main-container {
   display: flex;
   padding-top: 10vh;
   justify-content: space-evenly;
