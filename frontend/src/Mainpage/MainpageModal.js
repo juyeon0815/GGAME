@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./Mainpage.css";
-import NestedModal from "./MainPageNestedModal";
+import NestedModal from "./MainpageNestedModal";
 import Modal from "../Common/Modal";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
