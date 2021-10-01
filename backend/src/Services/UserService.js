@@ -1,6 +1,11 @@
 const axios = require('axios')
 const qs=  require('qs');
 
+const ggame = require('../Database/ggame')
+const conn = ggame.init();
+
+ggame.connect(conn);
+
 const clientID = "fbb0739223a635262d2dcd957dd4c17c"
 const clientSecret = "QlQkdjrX7emZCrJsTqqcVdPyxKO7iEPv"
 const redirectUri = "http://localhost:3000/oauth/callback/kakao"
@@ -25,8 +30,6 @@ exports.getToken = async(code)=>{
     }catch(error){
         return error;
     }
-    //토근은 client에
-    // console.log('token :', token.data.access_token);
      
     let user;
     try{
@@ -40,8 +43,20 @@ exports.getToken = async(code)=>{
     }catch(error){
         return error
     }
-    console.log(user.data)
+
+    const name =user.data.kakao_account.profile.nickname
+    const email =  user.data.kakao_account.email
+    const userId = user.data.id
+
+
+    let sql = "select * from user where email=?"
+    let params = [email];
+    conn.query(sql,params,function(error,result){
+        if(result.length===0){
+            sql = "INSERT INTO user(name, email, user_id) VALUES(?,?,?)";
+            params = [name,email,userId];
+        }
+    })
     return token.data.access_token;
-    //유저 정보는 db에
-    // return user.data
+    
 }
