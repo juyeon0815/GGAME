@@ -55,7 +55,11 @@ exports.getToken = async(code)=>{
         if(result.length===0){
             sql = "INSERT INTO user(name, email, user_id) VALUES(?,?,?)";
             params = [name,email,userId];
-        }
+            conn.query(sql,params,function(error,result){
+                if(error) console.log(error)
+                else console.log(result)
+            })
+        }else console.log("이미회원가입되어있어서 로그인만~")
     })
     return token.data.access_token;
     
