@@ -1,13 +1,13 @@
-import React from 'react'
+import Kakao from '../assets/images/kakao_login.png'
+import { kakao_auth_url } from './OAuth';
 
-class Login extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Login</h1>
-      </div>
-    )
-  }
+const Login = () =>{
+
+  return(
+    <a href={kakao_auth_url}>
+      <img src={Kakao} alt="login"></img>
+    </a>
+  )
 }
 
 export default Login

@@ -30,11 +30,11 @@ const app = express();
 const cors = require('cors')
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "build")));
+// app.use(express.static(path.join(__dirname, "build")));
  
-app.use("/", function (req, res, next) {
-  res.sendFile(path.join(__dirname + "/build", "index.html"));
-});
+// app.use("/", function (req, res, next) {
+//   res.sendFile(path.join(__dirname + "/build", "index.html"));
+// });
 
 app.listen(port, function () {
   console.log("server works on port :" + port);
@@ -49,16 +49,26 @@ const io = require("socket.io")(httpServer, {
     methods: ["GET", "POST"],
   },
 });
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json())
 
 const pongModule = require('./public/Pong/Pong');
 // const charModule = require("./public/javascripts/Charade/Charade.js");
 const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
 const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
+const user = require('./src/Routes/user')
+app.use('/user',user)
+
 pongModule.pong(io,pongStateModule);
 // charModule.initChar(io,pongStateModule);
 
 requestPongModule.request_pong(app,pongStateModule);
+
+
 
 httpServer.listen(80);
 
