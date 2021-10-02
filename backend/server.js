@@ -22,7 +22,7 @@
 // server.listen(port, ()=>console.log(`Listening on port ${port}`));
 
 const express = require('express');
-const path = require("path"); // react build 파일에 접근하기 위해 필요함
+// const path = require("path"); // react build 파일에 접근하기 위해 필요함
 const port = process.env.PORT || 5000;
 
 const app = express();
@@ -60,8 +60,10 @@ const pongModule = require('./public/Pong/Pong');
 const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
 const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
-const user = require('./src/Routes/user')
+const user = require('./src/Routes/User')
+const game = require('./src/Routes/Game')
 app.use('/user',user)
+app.use('/game',game)
 
 pongModule.pong(io,pongStateModule);
 // charModule.initChar(io,pongStateModule);

@@ -7,6 +7,6 @@ exports.getToken = async(req,res) =>{
         console.log("result :" ,result)
         return res.send(result);
     }catch(error){
-        return error;
+        throw error;
     }
 }
