@@ -5,35 +5,32 @@ import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
 
 let socket;
-const PongWaitingHost = (props) => {
+
+const AirDrawingHost = (props) => {
   let history = useHistory();
   const roomNumber = props.history.location.newRoom;
   const nickName = props.history.location.newNickName;
 
   const [currentUser, setCurrentUser] = useState();
-  const [direction, setdirection] = useState();
+
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [pos, setPos] = useState([0, 0]);
 
   const enterCode = useRef();
 
   useEffect(() => {
-    socket = io.connect("http://localhost:80/pong");
+    socket = io.connect("http://localhost:80/air-drawing");
     socket.emit("join room", roomNumber, nickName);
 
     socket.on("userList", (data) => {
-      console.log(data);
-      console.log(data.length);
       setCurrentUser(data.length);
     });
   }, []);
 
-  useEffect(() => {
-    // console.log(direction);
-  }, [direction]);
-
   const gameStart = () => {
     socket.emit("game start", roomNumber);
     history.push({
-      pathname: "/pong",
+      pathname: "/air-drawing",
       socket: socket,
     });
   };
@@ -71,8 +68,8 @@ const PongWaitingHost = (props) => {
           </div>
 
           <div>
-            <GameCanvas />
-            <GestureRecognition direction={setdirection} />
+            <GameCanvas isDrawing={isDrawing} pos={pos} />
+            <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
           </div>
 
           <div>
@@ -85,4 +82,4 @@ const PongWaitingHost = (props) => {
   );
 };
 
-export default PongWaitingHost;
+export default AirDrawingHost;

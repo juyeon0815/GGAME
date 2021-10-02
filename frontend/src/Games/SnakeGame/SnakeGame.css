@@ -52,7 +52,7 @@
   height: 600px;
 }
 
-video {
+/* video {
   position: absolute;
   top: 350px;
   right: 350px;
@@ -64,7 +64,7 @@ video {
 
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
-}
+} */
 
 .snake-capture {
   transform: rotate(0deg);

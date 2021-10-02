@@ -3,8 +3,6 @@ import * as handpose from "@tensorflow-models/handpose"; //입력에서 한 손 
 import Webcam from "react-webcam";
 import { drawHand } from "./Utilities";
 
-import * as fp from "fingerpose"; //손가락 분류
-
 function GestureRecognition(props) {
   //useRef는 .current 프로퍼티로 전달된 인자를 초기화된 변경 가능한 ref객체 반환
   //useRef로 관리하는 변수는 값이 바뀐다고해서 컴포넌트 리렌더링 x
@@ -49,28 +47,10 @@ function GestureRecognition(props) {
       ///////// NEW STUFF ADDED GESTURE HANDLING
 
       if (hand.length > 0) {
-        const GE = new fp.GestureEstimator([
-          fp.Gestures.VictoryGesture,
-          fp.Gestures.ThumbsUpGesture,
-        ]);
-        const gesture = await GE.estimate(hand[0].landmarks, 7); //4?는 뭘까?
-        // console.log("gesture", gesture);
-
-        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-          // console.log(gesture.gestures);
-
-          const confidence = gesture.gestures.map((prediction) => prediction.confidence);
-          const maxConfidence = confidence.indexOf(Math.max.apply(null, confidence));
-          let ges = gesture.gestures[maxConfidence].name;
-          console.log(ges);
-          if (ges === "victory") {
-            props.direction(0);
-          } else if (ges === "thumbs_up") {
-            props.direction(1);
-          }
-        }
-      } else {
-        props.direction(2);
+        let x = hand[0].landmarks[0][0];
+        let y = hand[0].landmarks[0][1];
+        // console.log(x, y);
+        props.setPos([x, y]);
       }
 
       ///////// NEW STUFF ADDED GESTURE HANDLING
@@ -82,7 +62,6 @@ function GestureRecognition(props) {
   };
 
   useEffect(() => {
-    props.direction(1);
     runHandpose();
   }, []);
 
