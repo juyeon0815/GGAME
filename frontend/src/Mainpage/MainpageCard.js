@@ -23,12 +23,6 @@ class GameCard extends React.Component {
             </div>
             {/* back */}
             <div className="flip-card-back-pong">
-              {/* <div className="btn-makeroom">
-                <div className="btn-text-align" onClick={() => this.setState({showMR: true})}>방 만들기</div>
-              </div>
-              <div className="btn-enterroom">
-                <div className="btn-text-align" onClick={() => this.setState({showEnterGuest: true})}>참가하기</div>
-              </div> */}
               <div className="btn-play">
                 <Link to="/pong" className="link-text btn-text-align">
                   <div>게임하기</div>
@@ -36,14 +30,6 @@ class GameCard extends React.Component {
               </div>
             </div>
           </FlipCard>
-          <MakeRoomModal
-            isOpen={this.state.showMR}
-            close={() => this.setState({ showMR: false })}
-          />
-          <EnterRoomModal
-            isOpen={this.state.showEnterGuest}
-            close={() => this.setState({ showEnterGuest: false })}
-          />
         </div>
       );
     } else if (this.props.game === "snake") {
@@ -72,7 +58,7 @@ class GameCard extends React.Component {
             <div className="flip-card-front">
               <img className="img-container" src={this.props.image} alt="game card"></img>
             </div>
-            <div className="flip-card-back-pong">
+            <div className="flip-card-back-drawing">
               <div className="btn-makeroom">
                 <div className="btn-text-align" onClick={() => this.setState({ showMR: true })}>
                   방 만들기
