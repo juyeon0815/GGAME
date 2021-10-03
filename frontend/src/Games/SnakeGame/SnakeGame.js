@@ -37,6 +37,7 @@ class SnakeGame extends Component {
       gameActive: false,
       direction: -1,
       isNew: true,
+      email: null,
     }
     this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
@@ -45,6 +46,15 @@ class SnakeGame extends Component {
     const cvs = document.getElementById('canvas');
     const ctx = cvs.getContext('2d');
     this.setState({ ctx: ctx });
+    // 회원 정보 얻어오기
+    axios.get('http://localhost:5000/user/me')
+      .then((Response) => {
+        console.log(Response)
+        // this.setState({ email : Response.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
 
     this.clearCanvas(ctx);
     this.drawStartButton(ctx);
@@ -87,6 +97,16 @@ class SnakeGame extends Component {
     this.setState({ gameActive: false }, () => clearInterval(gameInterval));
     this.clearCanvas(ctx);
     this.setState({snakeBody: null, food: null, isNew: false});
+    // 게임 결과 보내기
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/game/snake/rank',
+      data: { email: this.state.email, score: score },
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then( response => { console.log(response) } )
+      .catch( response => { console.log(response) } );
+    
     this.drawRanking(ctx, score);
   };
 
@@ -103,26 +123,16 @@ class SnakeGame extends Component {
       100
     );
 
-    // mock server
-    axios.get('https://bf644dcb-5b6d-4aef-bed5-a659391a90f8.mock.pstmn.io/ranking')
+    axios.get('http://localhost:5000/game/snake/rank')
       .then((Response) => {
         const res = Response.data
-        let temp = 0 
         for (let i = 0; i < res.length; i++) {
-          // 내 점수와 비교
-          if (my_score >= res[i]['score']) {
-            ctx.fillText(
-              `Your Score : ${my_score}`,
-              CANVAS_WIDTH / 3,
-              100 + 50*(i+1)
-            );
-            temp += 1
-          }
-
+          // 나일 경우 다르게 표시하기
+          // if문 추가 필요
           ctx.fillText(
             `${res[i]['name']} : ${res[i]['score']}`,
             CANVAS_WIDTH / 3,
-            100 + 50*(i+temp+1)
+            100 + 50*(i+1)
           );
         }
       })

@@ -160,7 +160,6 @@ class VisionRecognition extends React.Component {
 
   stopVideo() {
     if(this.videoStream) {
-      console.log(this.videoStream)
       this.videoStream.getVideoTracks().forEach((track) => {
         track.stop();
       });

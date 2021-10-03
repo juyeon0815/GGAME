@@ -16,6 +16,12 @@ class Ranking extends React.Component {
 
   componentDidMount() {
     // axios
+    axios.get('http://localhost:5000/game/snake/rank')
+    .then((Response)=>{
+        console.log(Response.data);
+    }).catch((Error)=>{
+        console.log(Error);
+    })
     this.setState({ snake_ranks: [{'name': 'player1', 'score': '30'}, {'name': 'player2', 'score': '20'}, {'name': 'player3', 'score': '10'}, {'name': 'player4', 'score': '5'}]})
     this.setState({ pong_ranks: [{'name': 'player5', 'score': '30'}, {'name': 'player6', 'score': '20'}, {'name': 'player7', 'score': '10'}, {'name': 'player8', 'score': '5'}]})
   }
