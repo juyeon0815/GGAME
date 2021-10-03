@@ -108,7 +108,7 @@ exports.newAchievement = async(email) =>{
                                     }
                                 }
                                 insert_achievement(num, user_id)
-                                return resolve(num)
+                                return resolve(achivement)
                             }
                         })
                     }      
