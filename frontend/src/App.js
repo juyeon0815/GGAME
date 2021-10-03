@@ -5,7 +5,7 @@ import Login from "./Mainpage/Login";
 import Mypage from "./Mypage/Mypage";
 import SnakeGame from "./Games/SnakeGame/SnakeGame";
 import Pong from "./Games/Pong/Pong";
-import Ranking from "./Ranking";
+import Ranking from "./Ranking/Ranking";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
 
@@ -27,8 +27,8 @@ function App() {
           마이페이지
         </Link>{" "}
         |<Link to="/snake"> 뱀 게임</Link> |<Link to="/pong"> 탁구 게임</Link> |
-        <Link to="/ranking"> 랭킹</Link> |<Link to="/pongwaiting/host"> 호스트 대기실</Link> |
-        <Link to="/pongwaiting/guest"> 게스트 대기실</Link> |
+        <Link to="/ranking"> 랭킹</Link> |<Link to="/air-drawing/host"> 호스트 대기실</Link> |
+        <Link to="/air-drawing/guest"> 게스트 대기실</Link> |
       </nav>
       {/* Router setting */}
       <Switch>
