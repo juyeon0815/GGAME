@@ -105,6 +105,7 @@ exports.newAchievement = async(email) =>{
                                     if(number!==-1){
                                        achivement.push(name)
                                        num.push(number)
+
                                     }
                                 }
                                 insert_achievement(num, user_id)

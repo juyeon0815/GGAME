@@ -18,7 +18,9 @@ import GestureRecognition from "./GestureRecognition";
 
 let gameWidth = 600,
   gameHeight = 400;
-let rounds = [5, 3, 1];
+ 
+let step =1;
+let rounds = [2, 5];
 let colors = ["#202020", "#2ecc71", "#3498db"];
 
 let beep = new Audio(
@@ -49,7 +51,6 @@ class PongGameView extends Component {
     //컴포넌트 마운트된 직후 호출
     const context = this.refs.canvas.getContext("2d"); //드로잉 컨텍스트에 액세스
     this.setState({ context: context });
-    this.setVisionRecognition();
     this.initialize();
     requestAnimationFrame(() => {
       this.update();
@@ -109,25 +110,9 @@ class PongGameView extends Component {
       this.movePlayer();
     }
 
-    //if the player won the round
-    if (this.players[0].score == rounds[this.state.round]) {
-      //if it's the last round, stop the game
-      if (!rounds[this.state.round + 1]) {
-        setTimeout(() => {
-          this.drawText("Congrats! You won the game!");
-        }, 1000);
-        this.setState({
-          gameActive: false,
-        });
-        cvs.addEventListener("click", () => {
-          this.initialize();
-        });
-      } else {
-        //if there are rounds left, reset score and increase difficulty (speed)
-        //setTimeout(() => { this.drawText("You won this round! On to the next one!"); }, 1000);
-
-        this.players.forEach((player) => (player.score = 0));
-
+    if(step<3){ //1,2라운드일 경우 => 
+      if(this.players[0].score ===rounds[this.state.round]){ //내가 이기는 방법
+        step ++;
         this.ball.vel.x *= 1.3;
         this.ball.vel.y *= 1.3;
 
@@ -136,18 +121,28 @@ class PongGameView extends Component {
           round: nextRound,
           boardColor: colors[nextRound],
         });
+      }else if(this.players[1].score === rounds[this.state.round]){ //컴퓨터가 이길때
+        this.setState({ gameActive: false });
+        this.drawRanking()
+          this.drawText("Game over!");
+          step =1;
+          console.log("내 점수는 : ",this.players[0].score)
+        
+        cvs.addEventListener("click", () => {
+          this.initialize();
+        });
       }
-    }
-
-    //if the AI won the game
-    else if (this.players[1].score == rounds[this.state.round]) {
-      this.setState({ gameActive: false });
-      setTimeout(() => {
+    }else{ //3라운드일경우 => 무한대
+      if(this.players[1].score ===7){ //컴퓨터가 이겨서 끝나는 조건만 체크
+        this.setState({ gameActive: false });
+        this.drawRanking()
         this.drawText("Game over!");
-      }, 500);
-      cvs.addEventListener("click", () => {
-        this.initialize();
-      });
+        step =1;
+        console.log("내 점수는 : ",this.players[0].score)
+        cvs.addEventListener("click", () => {
+          this.initialize();
+        });
+      }
     }
 
     // Next frame
@@ -156,13 +151,16 @@ class PongGameView extends Component {
     });
   }
 
-  setVisionRecognition() {
-    //Display webcam + training model for recognition
-    // let vision = GestureRecognition;
-    // this.setState({
-    //   vision: vision
-    // });
-    // // console.log("vision ", vision)
+  drawRanking(){
+    let canvas = this.state.canvas;
+    let ctx = this.state.context;
+
+    ctx.fillStyle = this.state.boardColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    canvas.addEventListener("click", () => {
+      this.initialize();
+    });
   }
 
   initialize() {
@@ -221,7 +219,8 @@ class PongGameView extends Component {
   }
 
   listen(canvas) {
-    canvas.addEventListener("click", () => this.play()); // canvas 클릭 시 게임 시작
+    canvas.addEventListener("click", () => {this.play();
+      }); // canvas 클릭 시 게임 시작
 
     canvas.addEventListener("mousemove", (event) => {
       // paddle mouse로 조작가능
@@ -268,10 +267,10 @@ class PongGameView extends Component {
     if (!(this.ball.vel.x < 50 && this.ball.vel.x > -50)) {
       this.helpPlayer();
     }
-    if (this.state.direction == 0) {
+    if (this.state.direction === 0) {
       //위로
       this.players[0].pos.y -= 10;
-    } else if (this.state.direction == 1) {
+    } else if (this.state.direction === 1) {
       //아래로
       this.players[0].pos.y += 10;
     }
