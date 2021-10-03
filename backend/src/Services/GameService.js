@@ -1,4 +1,5 @@
 const ggame = require('../Database/ggame');
+const { use } = require('../Routes/Game');
 const conn = ggame.init();
 
 ggame.connect(conn);
@@ -55,7 +56,77 @@ exports.newRank =async(email, score) =>{
         }
         })
     })
-
-
 }
+
+exports.newAchievement = async(email) =>{
+    return new Promise((resolve, reject)=>{
+        let achivement = [];
+        let check = [1,2,3,4,5,6]
+        let sql = "select id from user where email=?"
+        let params = [email]
+        conn.query(sql, params, function(error, result){ //email에 해당하는 rank_snake 정보 확인
+            if(error) return reject(error);
+            else{
+                let user_id = result[0].id
+                sql = "select standard_id from achievement where user_id=?"
+                params = [user_id];
+                conn.query(sql,params, function(error, res){
+                    if(error) return reject(error);
+                    else{
+                        for(let i=0; i<res.length;i++){
+                            let remove = check.indexOf(res[i].standard_id)
+                            check.splice(remove,1);
+                        }
+                        let score, eating;
+                        sql = "select * from rank_snake where user_id=?"
+                        params = [user_id]
+                        conn.query(sql,params,function(error, result){
+                            if(error) return reject(error);
+                            else{
+                                let num =[]
+                                score = result[0].score;
+                                eating = result[0].eating;
+                                for(let i=0; i<check.length;i++){
+                                    let number = -1;
+                                    let name;
+                                    if(check[i]===1){ //첫게임
+                                        number=1; name ="snake_first"
+                                    }else if(check[i]===2 && score>=5){ //사과 먹은 개수 socre=5
+                                        number=2; name="light_eating"
+                                    }else if(check[i]===3 && score>=10){ //사과 먹은 개수 socre=10
+                                        number=3; name="over_eating"
+                                    }else if(check[i]===4 && score>=20){ //사과 먹은 개수 socre=20
+                                        number=4; name="great_eater"
+                                    }else if(check[i]===5 && eating>=50){ //누적 사과 수 eating=50
+                                        number=5; name="apple_like"
+                                    }else if(check[i]===6 && eating>=100){ //누적 사과 수 eating=100
+                                        number=6; name="apple_love"
+                                    }
+
+                                    if(number!==-1){
+                                       achivement.push(name)
+                                       num.push(number)
+                                    }
+                                }
+                                insert_achievement(num, user_id)
+                                return resolve(num)
+                            }
+                        })
+                    }      
+                })       
+            }
+        })
+    })
+}
+
+function insert_achievement(num, user_id){
+    for(let i=0; i<num.length;i++){
+        let sql = "insert into achievement(user_id, standard_id) values(?,?)"
+        let params = [user_id, num[i]]
+        conn.query(sql,params, function(error, result){
+            if(error) console.log(error)
+        })
+    }
+}
+
 
