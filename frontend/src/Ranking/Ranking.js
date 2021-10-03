@@ -8,7 +8,7 @@ class Ranking extends React.Component {
     super(props)
     this.state = {
       snake_ranks: [],
-      snake_top3: [{'name': 'player2', 'score': '20'}, {'name': 'player1', 'score': '30'}, {'name': 'player3', 'score': '10'}],
+      snake_top3: [],
       pong_ranks: [],
       pong_top3: [{'name': 'player6', 'score': '20'}, {'name': 'player5', 'score': '30'}, {'name': 'player7', 'score': '10'}],
     }
@@ -18,11 +18,15 @@ class Ranking extends React.Component {
     // axios
     axios.get('http://localhost:5000/game/snake/rank')
     .then((Response)=>{
-        console.log(Response.data);
+      this.setState({ snake_ranks: Response.data.data})
+      let top3 = []
+      for (let i = 0; i < (this.state.snake_ranks.length < 3 ? this.state.snake_ranks.length : 3); i++) {
+        top3.push(this.state.snake_ranks[i])
+      }
+      this.setState({ snake_top3: top3})
     }).catch((Error)=>{
         console.log(Error);
     })
-    this.setState({ snake_ranks: [{'name': 'player1', 'score': '30'}, {'name': 'player2', 'score': '20'}, {'name': 'player3', 'score': '10'}, {'name': 'player4', 'score': '5'}]})
     this.setState({ pong_ranks: [{'name': 'player5', 'score': '30'}, {'name': 'player6', 'score': '20'}, {'name': 'player7', 'score': '10'}, {'name': 'player8', 'score': '5'}]})
   }
 

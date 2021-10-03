@@ -47,14 +47,14 @@ class SnakeGame extends Component {
     const ctx = cvs.getContext('2d');
     this.setState({ ctx: ctx });
     // 회원 정보 얻어오기
-    axios.get('http://localhost:5000/user/me')
-      .then((Response) => {
-        console.log(Response)
-        // this.setState({ email : Response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    let token = sessionStorage.getItem('token')
+    axios.get("http://localhost:5000/user/me",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result)=>{
+      this.setState({ email: result.data.data[0].email})
+    })
 
     this.clearCanvas(ctx);
     this.drawStartButton(ctx);
@@ -104,9 +104,8 @@ class SnakeGame extends Component {
       data: { email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
-      .then( response => { console.log(response) } )
-      .catch( response => { console.log(response) } );
-    
+      // .then( response => { console.log(response) } )
+      // .catch( response => { console.log(response) } );
     this.drawRanking(ctx, score);
   };
 
@@ -125,12 +124,12 @@ class SnakeGame extends Component {
 
     axios.get('http://localhost:5000/game/snake/rank')
       .then((Response) => {
-        const res = Response.data
+        const res = Response.data.data
         for (let i = 0; i < res.length; i++) {
           // 나일 경우 다르게 표시하기
           // if문 추가 필요
           ctx.fillText(
-            `${res[i]['name']} : ${res[i]['score']}`,
+            `${i+1}위 : ${res[i]['name']} - ${res[i]['score']}점`,
             CANVAS_WIDTH / 3,
             100 + 50*(i+1)
           );
