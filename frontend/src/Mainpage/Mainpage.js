@@ -8,6 +8,7 @@ import { faArrow, faMypage, faRanking } from "../assets/icons/menu_icon";
 import AirDrawing from "../assets/images/air_drawing.png";
 
 const Mainpage = () => {
+  // 메뉴 버튼
   const user = "user";
   const [isMenu, setIsMenu] = useState(false);
   const visiblityChange = () => {
