@@ -1,5 +1,4 @@
 const ggame = require('../Database/ggame');
-const { use } = require('../Routes/Game');
 const conn = ggame.init();
 
 ggame.connect(conn);

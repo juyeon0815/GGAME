@@ -7,7 +7,7 @@ exports.getRank =async(req,res)=>{
             res.status(200).json({data: result})
         })
     }catch(error){
-        res.status(400).json({data:false})
+        res.status(400).json({data:error})
     }
 }
 
@@ -16,10 +16,10 @@ exports.newRank = async(req,res)=>{
     try{
         await GameService.newRank(req.body.email, req.body.score).then((result)=>{
             console.log("result : ", result)
-            res.status(200).json({data: true})
+            res.status(200).json({data: result})
         })
     }catch(error){
-        res.status(400).json({data:false})
+        res.status(400).json({data:error})
     }
 }
 
@@ -31,6 +31,6 @@ exports.newAchievement = async(req,res)=>{
             res.status(200).json({data:result})
         })
     }catch(error){
-        res.status(400).json({completed:false})
+        res.status(400).json({data:error})
     }
 }

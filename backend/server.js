@@ -62,8 +62,10 @@ const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉
 
 const user = require('./src/Routes/User')
 const game = require('./src/Routes/Game')
+const achievement = require('./src/Routes/Achievement')
 app.use('/user',user)
 app.use('/game',game)
+app.use('/achievement',achievement)
 
 pongModule.pong(io,pongStateModule);
 // charModule.initChar(io,pongStateModule);
