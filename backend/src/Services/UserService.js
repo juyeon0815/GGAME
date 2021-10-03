@@ -60,7 +60,31 @@ exports.getToken = async(code)=>{
                 else console.log(result)
             })
         }else console.log("이미회원가입되어있어서 로그인만~")
+        conn.end()
     })
     return token.data.access_token;
     
+}
+
+exports.getSnakeAchievement=(email)=>{
+    return new Promise((resolve, reject)=>{
+        let achievement = []
+        let sql ="select id from user where email=?"
+        let params =[email]
+        conn.query(sql,params,function(error, result){
+            if(error) return reject(error);
+            else{
+                let user_id = result[0].id;
+                sql = "select standard_id from achievement where user_id=?"
+                params = [user_id];
+                conn.query(sql,params,function(error, res){
+                    if(error) return reject(error);
+                    else {
+                        for(let i=0; i<res.length;i++) achievement.push(res[i].standard_id)
+                        return resolve(achievement);
+                    }
+                })
+            }
+        })
+    })
 }
