@@ -88,3 +88,28 @@ exports.getSnakeAchievement=(email)=>{
         })
     })
 }
+
+exports.userMe = async(token) =>{
+    let user;
+    try{
+        user = await axios({
+            method:'get',
+            url:'https://kapi.kakao.com/v2/user/me',
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }catch(error){
+        return error
+    }
+
+    const user_id = user.data.id;
+    return new Promise((resolve, reject)=>{
+        let sql = "select * from user where user_id=?"
+        let params = [user_id]
+        conn.query(sql,params,function(error, result){
+            if(error) return reject(error)
+            else return resolve(result)
+        })
+    })
+}
