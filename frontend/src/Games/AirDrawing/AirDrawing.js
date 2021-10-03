@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import MultiGameCanvas from "./MultiGameCanvas";
 import GestureRecognition from "./GestureRecognition";
 import { div } from "@tensorflow/tfjs-core";
+import VideoConference from "./VideoConference/VideoConference";
 
 const AirDrawingHost = (props) => {
   const nickName = props.location.nickName;
@@ -62,6 +63,7 @@ const AirDrawingHost = (props) => {
   return (
     <div>
       <h1>PongWaitingHost</h1>
+      <VideoConference roomId={props.location.roomId} username={nickName} />
 
       {gamePlaying ? (
         <div>

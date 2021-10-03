@@ -35,6 +35,7 @@ const AirDrawingHost = (props) => {
         pathname: "/air-drawing",
         socket: socket,
         nickName: nickName,
+        roomId: roomNumber,
       });
     }
   };
