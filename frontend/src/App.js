@@ -4,7 +4,7 @@ import Mainpage from "./Mainpage/Mainpage";
 import Login from "./Mainpage/Login";
 import Mypage from "./Mypage/Mypage";
 import SnakeGame from "./Games/SnakeGame/SnakeGame";
-import Pong from "./Games/Pong/Pong";
+import AirDrawing from "./Games/AirDrawing/AirDrawing";
 import Ranking from "./Ranking";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
@@ -34,10 +34,10 @@ function App() {
         <Route path="/login" component={Login}></Route>
         <Route path="/mypage/:user" component={Mypage}></Route>
         <Route path="/snake" component={SnakeGame}></Route>
-        <Route path="/pong" component={Pong}></Route>
         <Route path="/ranking" component={Ranking}></Route>
         <Route path="/air-drawing/host" component={AirDrawingHost}></Route>
         <Route path="/air-drawing/guest" component={AirDrawingGuest}></Route>
+        <Route path="/air-drawing" component={AirDrawing}></Route>
       </Switch>
     </div>
   );

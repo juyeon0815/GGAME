@@ -47,9 +47,8 @@ function GestureRecognition(props) {
       ///////// NEW STUFF ADDED GESTURE HANDLING
 
       if (hand.length > 0) {
-        let x = hand[0].landmarks[0][0];
-        let y = hand[0].landmarks[0][1];
-        // console.log(x, y);
+        let x = hand[0].landmarks[9][0];
+        let y = hand[0].landmarks[9][1];
         props.setPos([x, y]);
       }
 

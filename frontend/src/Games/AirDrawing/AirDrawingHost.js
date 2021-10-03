@@ -12,7 +12,6 @@ const AirDrawingHost = (props) => {
   const nickName = props.history.location.newNickName;
 
   const [currentUser, setCurrentUser] = useState();
-
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
 
@@ -28,11 +27,16 @@ const AirDrawingHost = (props) => {
   }, []);
 
   const gameStart = () => {
-    socket.emit("game start", roomNumber);
-    history.push({
-      pathname: "/air-drawing",
-      socket: socket,
-    });
+    if (currentUser < 2) {
+      alert("최소 2명의 플레이어가 필요합니다.");
+    } else {
+      socket.emit("game start", roomNumber);
+      history.push({
+        pathname: "/air-drawing",
+        socket: socket,
+        nickName: nickName,
+      });
+    }
   };
 
   const style = {
