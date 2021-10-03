@@ -55,6 +55,7 @@ class VisionRecognition extends React.Component {
       })
   }
 
+  //capture
   getImage(i) {
     navigator.mediaDevices.getUserMedia({ video: true, audio: false })
       .then((stream) => {       
@@ -72,7 +73,7 @@ class VisionRecognition extends React.Component {
 
     this.start();
   }
-
+  
   mouseDownControl(i) {
     this.setState({ training: i})
     this.getImage(i)

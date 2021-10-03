@@ -64,15 +64,15 @@
   box-shadow: 1px 3px 8px 2px #0000008f;
 
   transform: rotateY(180deg);
-  -webkit-transform:rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .snake-capture {
-  transform:rotate(0deg);
-  -moz-transform: scaleX(-1); 
-  -o-transform: scaleX(-1); 
-  -webkit-transform: scaleX(-1); 
-  transform: scaleX(-1);   
+  transform: rotate(0deg);
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: "FlipH";
 }

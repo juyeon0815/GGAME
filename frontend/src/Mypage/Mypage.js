@@ -1,14 +1,18 @@
 import React from 'react'
+import './Mypage.css'
+import SingleReport from './SingleReport'
 
-
-class Mypage extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>{this.props.location.state.user}의 Mypage</h1>
+const Mypage = () => {
+  return (
+    <div className="my-container">
+      <div className="btn-region">
+        <button className="mypage-btn">사과와 뱀</button>
+        <button className="mypage-btn">탁구</button>
+        <button className="mypage-btn">캐치마인드(?)</button>
       </div>
-    )
-  }
+      <SingleReport />
+    </div>
+  )
 }
 
 export default Mypage

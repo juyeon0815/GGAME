@@ -1,0 +1,29 @@
+.my-container {
+  display: block;
+  padding: 10vh 5vw;
+  overflow: auto;
+}
+.report-container {
+  
+}
+.trophy-container {
+
+}
+.btn-region {
+  display: flex;
+  justify-content: start;
+  height: fit-content;
+  align-items: center;
+}
+.mypage-btn {
+  width: 200px;
+  height: fit-content;
+  background-color: #0088ff;
+  margin-right: 40px;
+  text-align: center;
+  font-size: 1.5rem;
+  color: aliceblue;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+}
