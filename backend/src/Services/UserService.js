@@ -75,12 +75,12 @@ exports.getSnakeAchievement=(email)=>{
             if(error) return reject(error);
             else{
                 let user_id = result[0].id;
-                sql = "select standard_id from achievement where user_id=?"
+                sql = "select standard.name from standard join achievement on achievement.standard_id = standard.id where achievement.user_id =?"
                 params = [user_id];
                 conn.query(sql,params,function(error, res){
                     if(error) return reject(error);
                     else {
-                        for(let i=0; i<res.length;i++) achievement.push(res[i].standard_id)
+                        for(let i=0; i<res.length;i++) achievement.push(res[i].name)
                         return resolve(achievement);
                     }
                 })
