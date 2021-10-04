@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import MultiGameCanvas from "./MultiGameCanvas";
 import GestureRecognition from "./GestureRecognition";
 import { div } from "@tensorflow/tfjs-core";
+// import VideoConference from "./VideoConference/VideoConf";
 import VideoConference from "./VideoConference/VideoConference";
+import "./AirDrawing.css";
 
 const AirDrawingHost = (props) => {
   const nickName = props.location.nickName;
@@ -61,51 +63,53 @@ const AirDrawingHost = (props) => {
     textAlign: "center",
   };
   return (
-    <div>
-      <h1>PongWaitingHost</h1>
-      <VideoConference roomId={props.location.roomId} username={nickName} />
-
+    <div className="air-drawing">
       {gamePlaying ? (
         <div>
-          <p id="game_menu"></p>
-          <div style={center}>
-            <div>
-              <h3>내 ID : {nickName}</h3>
-              <h1>차례 : {drawer.nickname}</h1>
-              <h2>제시어 : {problem}</h2>
+          <VideoConference roomId={props.location.roomId} username={nickName} />
 
-              {/* 스코어 보드 */}
-              {scoreBoard.map((client) => (
-                <div key={client.socketId}>
-                  id : {client.nickname} score: {client.score}
-                </div>
-              ))}
-
+          <h3>내 ID : {nickName}</h3>
+          <h3>차례 : {drawer.nickname}</h3>
+          {problem ? <h3>제시어 : {problem}</h3> : null}
+          <div class="game-row">
+            <div class="game-left">
               <MultiGameCanvas
                 socket={props.location.socket}
                 isDrawing={isDrawing}
                 pos={pos}
                 drawer={drawer}
               />
-
+            </div>
+            <div class="game-right">
               {/* 그림 그리는 사람만 모션 인식 */}
               {props.location.socket.id === drawer.socketId ? (
                 <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
-              ) : (
-                <div />
-              )}
-
-              {/* 그림안그리는 사람만 정답 제출 가능 */}
-              {props.location.socket.id !== drawer.socketId ? (
-                <div>
-                  <input onChange={onChange} onKeyPress={onCheckEnter} value={answer} />
-                  <button onClick={sendAnswer}>제출</button>
-                </div>
-              ) : (
-                <div />
-              )}
+              ) : null}
             </div>
           </div>
+
+          {/* 그림안그리는 사람만 정답 제출 가능 */}
+          {props.location.socket.id !== drawer.socketId ? (
+            <div className="answer-form">
+              <input
+                className="answer-input"
+                onChange={onChange}
+                onKeyPress={onCheckEnter}
+                placeholder="정답"
+                value={answer}
+              />
+              <button className="btn-ans" onClick={sendAnswer}>
+                제출
+              </button>
+            </div>
+          ) : null}
+
+          {/* 스코어 보드 */}
+          {scoreBoard.map((client) => (
+            <div className="score-board" key={client.socketId}>
+              id : {client.nickname} score: {client.score}
+            </div>
+          ))}
         </div>
       ) : (
         // 게임 종료 화면

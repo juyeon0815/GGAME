@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+import "./AirDrawing.css";
+import "./MultiGameCanvas.css";
 
 function MultiGameCanvas(props) {
   const canvasRef = useRef(null);
   const contextRef = useRef(null);
 
-  const CANVAS_WIDTH = 800,
-    CANVAS_HEIGHT = 600;
+  const CANVAS_WIDTH = 640,
+    CANVAS_HEIGHT = 480;
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState();
@@ -81,17 +83,20 @@ function MultiGameCanvas(props) {
   };
 
   return (
-    <>
+    <div className="form-canvas">
       <canvas
         ref={canvasRef}
+        className="drawing-canvas"
         tabIndex="0"
         onKeyDown={startDrawing}
         onKeyUp={finishDrawing}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
       />
-      <button onClick={sendClear}>초기화</button>
-    </>
+      <button className="btn-reset" onClick={sendClear}>
+        초기화
+      </button>
+    </div>
   );
 }
 

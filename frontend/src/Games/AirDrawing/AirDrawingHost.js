@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
-
+import "./AirDrawingHost.css";
 let socket;
 
 const AirDrawingHost = (props) => {
@@ -58,13 +58,13 @@ const AirDrawingHost = (props) => {
   };
   return (
     <div>
-      <h1>PongWaitingHost</h1>
-
       <div>
-        <div style={center}>NAME : {nickName}</div>
         {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
         <p id="game_menu"></p>
         <div style={center}>
+          <h1>대기실</h1>
+          <div style={center}>NAME : {nickName}</div>
+
           <div>
             <input
               type="text"
@@ -80,15 +80,19 @@ const AirDrawingHost = (props) => {
             </button>
           </div>
 
-          <div>
-            <GameCanvas isDrawing={isDrawing} pos={pos} />
-            <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
+          <div className="game-row">
+            <div className="game-left">
+              <GameCanvas isDrawing={isDrawing} pos={pos} />
+            </div>
+            <div className="game-right">
+              <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
+            </div>
           </div>
 
-          <div>
-            {currentUser}명 대기중..
-            <button onClick={gameStart}>게임시작</button>
-          </div>
+          <button class="btn-start" onClick={gameStart}>
+            <span>Game Start</span>
+          </button>
+          <div>{currentUser}명 대기중..</div>
         </div>
       </div>
     </div>

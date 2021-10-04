@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import * as handpose from "@tensorflow-models/handpose"; //입력에서 한 손 감지
 import Webcam from "react-webcam";
 import { drawHand } from "./Utilities";
+import "./AirDrawing.css";
 
 function GestureRecognition(props) {
   //useRef는 .current 프로퍼티로 전달된 인자를 초기화된 변경 가능한 ref객체 반환
@@ -65,38 +66,37 @@ function GestureRecognition(props) {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            // marginLeft: "auto",
-            // marginRight: "auto",
-            // left: 0,
-            // right: 0,
-            // textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
+    <div className="recognize-cam">
+      <Webcam
+        ref={webcamRef}
+        className="gesture-cam"
+        style={{
+          position: "absolute",
+          // marginLeft: "auto",
+          // marginRight: "auto",
+          // left: 0,
+          // right: 0,
+          // textAlign: "center",
+          zindex: 9,
+          width: 640,
+          height: 480,
+        }}
+      />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "relative",
-            // marginLeft: "auto",
-            // marginRight: "auto",
-            // left: 0,
-            // right: 0,
-            // textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-      </header>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "relative",
+          // marginLeft: "auto",
+          // marginRight: "auto",
+          // left: 0,
+          // right: 0,
+          // textAlign: "center",
+          zindex: 9,
+          width: 640,
+          height: 480,
+        }}
+      />
     </div>
   );
 }
