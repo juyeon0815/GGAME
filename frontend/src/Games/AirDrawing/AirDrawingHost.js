@@ -27,17 +27,25 @@ const AirDrawingHost = (props) => {
   }, []);
 
   const gameStart = () => {
-    if (currentUser < 2) {
-      alert("최소 2명의 플레이어가 필요합니다.");
-    } else {
-      socket.emit("game start", roomNumber);
-      history.push({
-        pathname: "/air-drawing",
-        socket: socket,
-        nickName: nickName,
-        roomId: roomNumber,
-      });
-    }
+    socket.emit("game start", roomNumber);
+    history.push({
+      pathname: "/air-drawing",
+      socket: socket,
+      nickName: nickName,
+      roomId: roomNumber,
+    });
+
+    // if (currentUser < 2) {
+    //   alert("최소 2명의 플레이어가 필요합니다.");
+    // } else {
+    //   socket.emit("game start", roomNumber);
+    //   history.push({
+    //     pathname: "/air-drawing",
+    //     socket: socket,
+    //     nickName: nickName,
+    //     roomId: roomNumber,
+    //   });
+    // }
   };
 
   const style = {
