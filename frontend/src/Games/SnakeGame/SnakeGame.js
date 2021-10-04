@@ -161,7 +161,7 @@ class SnakeGame extends Component {
   displayScore = ctx => {
     const { score } = this.state;
     ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
+    ctx.font = "30px arcade-font";
     ctx.fillText(`Score: ${score}`, CANVAS_WIDTH * 0.5, 30);
   };
 

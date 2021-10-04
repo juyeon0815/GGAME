@@ -4,10 +4,15 @@ import Mainpage from "./Mainpage/Mainpage";
 import Login from "./Mainpage/Login";
 import Mypage from "./Mypage/Mypage";
 import SnakeGame from "./Games/SnakeGame/SnakeGame";
+
+import Pong from "./Games/Pong/Pong";
+import Ranking from "./Ranking/Ranking";
+
 import AirDrawing from "./Games/AirDrawing/AirDrawing";
-import Ranking from "./Ranking";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
+
+import LoginRedirect from "./Mainpage/LoginRedirect"
 
 function App() {
   const user = "user";
@@ -25,8 +30,8 @@ function App() {
           마이페이지
         </Link>{" "}
         |<Link to="/snake"> 뱀 게임</Link> |<Link to="/pong"> 탁구 게임</Link> |
-        <Link to="/ranking"> 랭킹</Link> |<Link to="/pongwaiting/host"> 호스트 대기실</Link> |
-        <Link to="/pongwaiting/guest"> 게스트 대기실</Link> |
+        <Link to="/ranking"> 랭킹</Link> |<Link to="/air-drawing/host"> 호스트 대기실</Link> |
+        <Link to="/air-drawing/guest"> 게스트 대기실</Link> |
       </nav>
       {/* Router setting */}
       <Switch>
@@ -35,9 +40,12 @@ function App() {
         <Route path="/mypage/:user" component={Mypage}></Route>
         <Route path="/snake" component={SnakeGame}></Route>
         <Route path="/ranking" component={Ranking}></Route>
+        <Route path="/pong" component={Pong}></Route>
         <Route path="/air-drawing/host" component={AirDrawingHost}></Route>
         <Route path="/air-drawing/guest" component={AirDrawingGuest}></Route>
         <Route path="/air-drawing" component={AirDrawing}></Route>
+        <Route path="/callback/kakao" component={LoginRedirect}></Route>
+
       </Switch>
     </div>
   );

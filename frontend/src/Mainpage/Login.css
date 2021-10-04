@@ -1,0 +1,23 @@
+.login-container {
+  display: flex;
+  padding-top: 10vh;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow: auto;
+}
+.login-container::before, .login-container::after {
+  content: '';
+}
+.logo-style {
+  display: block;
+  width: 250px;
+  height: 250px;
+  margin: 10px 10px 10px 50px;
+}
+.kakao-style {
+  display: block;
+  text-align: center;
+  margin-top: 15vh;
+  width: 400px;
+}

@@ -25,6 +25,7 @@
   padding: 10px;
   font-size: 17px;
   transition: 0.25s;
+  font-family: 'MaplestoryOTFBold';
 }
 
 .btn-snake:hover {
@@ -52,7 +53,7 @@
   height: 600px;
 }
 
-video {
+.snake-video {
   position: absolute;
   top: 350px;
   right: 350px;
