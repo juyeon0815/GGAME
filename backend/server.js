@@ -54,7 +54,6 @@ const user = require('./src/Routes/user')
 const game = require('./src/Routes/Game')
 const achievement = require('./src/Routes/Achievement')
 
-app.use(express.static(path.join("./user",user)));
 app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
@@ -67,6 +66,6 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 
 
 httpServer.listen(80);
-https.createServer(options,app).listen(443);
+https.createServer(options,app).listen(443,5000);
 
 module.exports = app;
