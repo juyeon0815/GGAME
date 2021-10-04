@@ -40,7 +40,8 @@ class SnakeGame extends Component {
       isNew: true,
       email: null,
       myName: null,
-      showSA: true,
+      showSA: false,
+      achievement: []
     }
     this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
@@ -62,8 +63,8 @@ class SnakeGame extends Component {
     .catch((error) => {
       // 로그인 안되어 있을 시 로그인창으로 되돌리기
       console.log(error)
-      // alert('로그인이 필요한 페이지입니다.')
-      // document.location.href="/login"
+      alert('로그인이 필요한 페이지입니다.')
+      document.location.href="/login"
     })
 
     this.clearCanvas(ctx);
@@ -150,6 +151,7 @@ class SnakeGame extends Component {
             );
           }
         }
+        this.checkNewAchievement()
       })
       .catch((Error)=>{console.log(Error)})
 
@@ -164,9 +166,21 @@ class SnakeGame extends Component {
     ctx.font = "20px arcade-font";
     ctx.fillStyle = "black";
     ctx.fillText("다시하기", (2*CANVAS_WIDTH) / 5, (4 * CANVAS_HEIGHT) / 5 + 25);
-    
-    this.setState({ showSA: true})
   }
+
+  checkNewAchievement() {
+    // 업적달성 확인
+    axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
+    .then((res)=>{
+      if (res.data.data.length >= 1) {
+        this.setState({ showSA: true, achievement: res.data.data})
+      }
+      console.log(res)
+    }).catch((error)=>{
+        console.log("error :", error);
+    })
+  }
+  
 
   drawGame = ctx => {
     let currentFrame = 0;
@@ -417,6 +431,7 @@ class SnakeGame extends Component {
         <SnakeAchievement
           isOpen={this.state.showSA}
           close={() => this.setState({showSA: false})}
+          achievement={this.state.achievement}
         />
       </div>
     );
