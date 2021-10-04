@@ -8,7 +8,7 @@ const LoginRedirect = () => {
     useEffect(()=>{
         let code = new URL(window.location.href).searchParams.get("code");
         console.log("code :", code);
-        axios.get("https://j5a104.p.ssafy.io:3000/user/auth/requestKakaoToken", {params:{code : code}})
+        axios.get("https://j5a104.p.ssafy.io/user/auth/requestKakaoToken", {params:{code : code}})
         .then((res)=>{
             console.log("msg", res.data);
             sessionStorage.setItem("token", res.data);
