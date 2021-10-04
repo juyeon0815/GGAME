@@ -1,6 +1,6 @@
 import React from 'react'
 import SnakeTrain from './SnakeTrain';
-import { SnakeRule } from './SnakeRule';
+import SnakeRule from './SnakeRule';
 import * as mobilenetModule from '@tensorflow-models/mobilenet';
 import * as tf from '@tensorflow/tfjs';
 import * as knnClassifier from '@tensorflow-models/knn-classifier';
@@ -160,7 +160,6 @@ class VisionRecognition extends React.Component {
 
   stopVideo() {
     if(this.videoStream) {
-      console.log(this.videoStream)
       this.videoStream.getVideoTracks().forEach((track) => {
         track.stop();
       });
