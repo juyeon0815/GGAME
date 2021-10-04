@@ -33,12 +33,22 @@ app.get("/", (req, res) => {
 // })
  
 
-const io = require("socket.io")(https, {
-  cors: {
-    origin: "https://j5a104.p.ssafy.io",
-    methods: ["GET", "POST"],
-  },
+//Socket.io
+const ioServer= require( "socket.io" );
+const io     = new ioServer();
+io.attach( httpServer  );
+io.attach( https,options );
+io.on( "connection", function( socket ) {
+    console.log( "user connected" );
+    //... your code
 });
+
+// const io = require("socket.io")(https, {
+//   cors: {
+//     origin: "https://j5a104.p.ssafy.io",
+//     methods: ["GET", "POST"],
+//   },
+// });
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
