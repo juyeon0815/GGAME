@@ -1,7 +1,5 @@
 const express = require('express');
-// const path = require("path"); // react build 파일에 접근하기 위해 필요함
-const port = process.env.PORT || 5000;
-
+const path = require("path");
 const app = express();
 
 const cors = require("cors");
@@ -10,10 +8,29 @@ app.use(cors());
 
 // back/app.js
 const httpServer = require("http").createServer();
+const https = require("https");
+//HTTPS 활성화 부분 
+const fs =require('fs');
 
-const io = require("socket.io")(httpServer, {
+const options ={
+  ca: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
+};
+
+// /client/build 폴더를 static 파일로 사용할 수 있도록 함
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// / 요청
+app.get("/", (req, res) => {
+  console.log(__dirname);
+  // index.html 파일 응답
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
+
+const io = require("socket.io")(https, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://j5a104.p.ssafy.io",
     methods: ["GET", "POST"],
   },
 });
@@ -44,5 +61,6 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 
 
 httpServer.listen(80);
+https.createServer(options,app).listen(443);
 
 module.exports = app;

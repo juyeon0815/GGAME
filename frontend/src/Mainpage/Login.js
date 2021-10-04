@@ -8,7 +8,7 @@ const Login = () => {
   const userMe = () => {
     let token = sessionStorage.getItem('token')
     alert("클릭")
-    axios.get("http://localhost:5000/user/me",{
+    axios.get("https://j5a104.p.ssafy.io/user/me",{
       headers: {
         Authorization: `Bearer ${token}`
       }
