@@ -286,11 +286,11 @@ class PongGameView extends Component {
 
     ctx.fillStyle = this.state.boardColor;
     ctx.fillRect(0, 0, cvs.width, cvs.height);
-    let img = new Image();
-    img.src = "./img/texture-background-wallpaper-black-wood1-1920x1080.jpg";
-    img.onload = function () {
-      ctx.drawImage(img, 0, 0);
-    };
+    // let img = new Image();
+    // img.src = "./img/texture-background-wallpaper-black-wood1-1920x1080.jpg";
+    // img.onload = function () {
+    //   ctx.drawImage(img, 0, 0);
+    // };
 
     ctx.shadowBlur = 5; //Add some shadows to every element
     ctx.shadowColor = "#ddd"; //Silver
