@@ -65,7 +65,7 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 
 
 app.listen(443, function(){
-  console.log("server port :"+port)
+  console.log("server port :"+"443")
 })
 
 httpServer.listen(80);
