@@ -4,9 +4,18 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-const cors = require("cors");
+const cors = require('cors')
 app.use(cors());
 
+// app.use(express.static(path.join(__dirname, "build")));
+ 
+// app.use("/", function (req, res, next) {
+//   res.sendFile(path.join(__dirname + "/build", "index.html"));
+// });
+
+app.listen(port, function () {
+  console.log("server works on port :" + port);
+});
 
 // back/app.js
 const httpServer = require("http").createServer();
@@ -23,10 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json())
 
-const pongModule = require("./public/AirDrawing/AirDrawing");
+// const pongModule = require('./public/Pong/Pong');
 // const charModule = require("./public/javascripts/Charade/Charade.js");
-const pongStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+// const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
+// const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
 const user = require('./src/Routes/User')
 const game = require('./src/Routes/Game')
@@ -35,10 +44,10 @@ app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
 
-pongModule.airDrawing(io,pongStateModule);
+// pongModule.pong(io,pongStateModule);
 // charModule.initChar(io,pongStateModule);
 
-requestPongModule.airDrawingRequest(app, pongStateModule);
+// requestPongModule.request_pong(app,pongStateModule);
 
 
 
