@@ -3,7 +3,7 @@ const conn = {
     host: '3.38.102.40',
     port: '3306',
     user: 'ggame',
-    password: 'ggame',
+    password: 'Xptmxm1212!@',
     database: 'ggame'
 
 }
