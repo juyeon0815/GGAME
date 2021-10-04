@@ -8,7 +8,7 @@ ggame.connect(conn);
 
 const clientID = "fbb0739223a635262d2dcd957dd4c17c"
 const clientSecret = "QlQkdjrX7emZCrJsTqqcVdPyxKO7iEPv"
-const redirectUri = "http://j5a104.p.ssafy.io/oauth/callback/kakao"
+const redirectUri = "https://j5a104.p.ssafy.io/oauth/callback/kakao"
 
 exports.getToken = async(code)=>{
     let token;
