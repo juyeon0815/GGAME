@@ -28,11 +28,11 @@ const pongModule = require("./public/AirDrawing/AirDrawing");
 const pongStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
 const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
-const user = require('./src/Routes/User')
+// const user = require('./src/Routes/User')
 const game = require('./src/Routes/Game')
 const achievement = require('./src/Routes/Achievement')
 
-app.use('/user',user)
+// app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
 
