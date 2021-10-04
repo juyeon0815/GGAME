@@ -29,8 +29,10 @@ app.get("/", (req, res) => {
 });
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
- })
+  res.sendFile(path.resolve(__dirname, "./src/Routes/user"));
+})
+ 
+
 const io = require("socket.io")(https, {
   cors: {
     origin: "https://j5a104.p.ssafy.io",
