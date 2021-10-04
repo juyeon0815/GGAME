@@ -22,7 +22,7 @@ const options ={
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // / 요청
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
@@ -54,6 +54,7 @@ const user = require('./src/Routes/user')
 const game = require('./src/Routes/Game')
 const achievement = require('./src/Routes/Achievement')
 
+app.use(express.static(path.join("./user",user)));
 app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
