@@ -14,6 +14,8 @@ import Player from "./Player";
 import "./Pong.css";
 
 import GestureRecognition from "./GestureRecognition";
+import {PongRule} from "./PongRule"
+import { Link } from 'react-router-dom'
 
 let gameWidth = 600,
   gameHeight = 400;
@@ -31,6 +33,7 @@ class PongGameView extends Component {
   ) {
     super(props);
     this.state = {
+      showPR : false,
       canvas: null,
       context: null,
       vision: null,
@@ -346,6 +349,21 @@ class PongGameView extends Component {
     });
   };
 
+  stopVideo() {
+    if(this.videoStream) {
+      console.log(this.videoStream)
+      this.videoStream.getVideoTracks().forEach((track) => {
+        track.stop();
+      });
+      this.videoStream.getAudioTracks().forEach((track) => {
+        track.stop();
+      });
+      
+      this.videoStream = null;
+      this.videoTag.current.srcObject = null;
+    }
+  }
+
   render() {
     return (
       <div id="game">
@@ -353,6 +371,16 @@ class PongGameView extends Component {
           <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
           <GestureRecognition direction={this.direction} />
         </div>
+        <div>
+          <button className="btn-pong btn-pong-rule" onClick={()=> this.setState({showPR : true})}>게임방법</button>
+          <Link to="/">
+          <button className="btn-pong btn-pong-out" onClick={() => this.stopVideo()}>게임나가기</button>
+          </Link>
+        </div>
+        <PongRule
+          isOpen = {this.state.showPR}
+          close={()=> this.setState({showPR:false})}
+        />
       </div>
     );
   }
