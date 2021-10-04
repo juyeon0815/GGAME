@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.resolve(__dirname, "./src/Routes/user"));
+  res.sendFile(path.resolve(__dirname, "./src/Routes/user.js"));
 })
  
 
