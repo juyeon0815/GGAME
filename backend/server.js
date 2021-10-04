@@ -66,6 +66,6 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 
 
 httpServer.listen(80);
-https.createServer(options,app).listen(443,5000);
+https.createServer(options,app).listen(443);
 
 module.exports = app;
