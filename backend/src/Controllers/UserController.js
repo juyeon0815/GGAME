@@ -11,10 +11,10 @@ exports.getToken = async(req,res) =>{
     }
 }
 
-exports.getSnakeAchievement = async(req,res)=>{
+exports.getAchievement = async(req,res)=>{
     console.log(req.query.email)
     try{
-        await UserService.getSnakeAchievement(req.query.email).then((result)=>{
+        await UserService.getAchievement(req.query.email).then((result)=>{
             console.log(result)
             res.status(200).json({data:result})
         })
@@ -25,6 +25,7 @@ exports.getSnakeAchievement = async(req,res)=>{
 
 exports.userMe = async(req, res) =>{
     let token = req.headers.authorization.replace("Bearer ", "");
+    console.log(token)
     try{
         await UserService.userMe(token).then((result)=>{
             res.status(200).json({data:result})
