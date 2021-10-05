@@ -17,15 +17,16 @@ exports.newRank = async (req, res) => {
   console.log("req:", req);
   console.log("req.body:", req.body);
   console.log("랭킹 등록 ======: ");
-  try {
-    await GameService.newRank(req.body.type, req.body.email, req.body.score).then((result) => {
-      console.log("result : ", result);
-      res.status(200).json({ data: result });
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ data: error });
-  }
+  res.send("hello").
+  // try {
+  //   await GameService.newRank(req.body.type, req.body.email, req.body.score).then((result) => {
+  //     console.log("result : ", result);
+  //     res.status(200).json({ data: result });
+  //   });
+  // } catch (error) {
+  //   console.log(error);
+  //   res.status(400).json({ data: error });
+  // }
 };
 
 exports.newSnakeAchievement = async (req, res) => {
