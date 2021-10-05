@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import "./AirDrawing.css";
 
 function GameCanvas(props) {
   const canvasRef = useRef(null);
@@ -10,8 +11,8 @@ function GameCanvas(props) {
   useEffect(() => {
     console.log(props.socket);
     const canvas = canvasRef.current;
-    canvas.width = 800;
-    canvas.height = 600;
+    canvas.width = 640;
+    canvas.height = 480;
 
     const context = canvas.getContext("2d");
     context.strokeStyle = "black";
@@ -36,12 +37,12 @@ function GameCanvas(props) {
     }
 
     return () => {};
-  }, [props.pos, isDrawing, ctx]);
+  }, [props.pos, isDrawing]);
 
   const clearCanvas = () => {
     // 픽셀 정리
     if (ctx) {
-      ctx.clearRect(0, 0, 800, 600);
+      ctx.clearRect(0, 0, 640, 480);
       // 컨텍스트 리셋
       ctx.beginPath();
     }
@@ -60,8 +61,9 @@ function GameCanvas(props) {
   };
 
   return (
-    <>
+    <div>
       <canvas
+        className="wait-canvas"
         ref={canvasRef}
         tabIndex="0"
         onKeyDown={startDrawing}
@@ -69,8 +71,12 @@ function GameCanvas(props) {
         width="700"
         height="700"
       />
-      <button onClick={clearCanvas}>초기화</button>
-    </>
+      <br />
+
+      <button className="btn-reset" onClick={clearCanvas}>
+        초기화
+      </button>
+    </div>
   );
 }
 

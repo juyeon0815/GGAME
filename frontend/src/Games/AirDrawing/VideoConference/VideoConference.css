@@ -1,3 +1,8 @@
 .stream-container {
-	padding: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.video-container {
+  width: 100%;
 }
