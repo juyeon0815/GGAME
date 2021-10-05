@@ -191,9 +191,6 @@ class PongGameView extends Component {
       p.pos.y = cvs.height / 2;
     });
 
-    // document.getElementById("game_menu").innerHTML = "Train the images for UP, DOWN, and IDLE" +
-    //                        "<br />"+ "<span>Then click the game to begin!</span>";
-
     this.reset(cvs);
     this.listen(cvs);
   }
@@ -233,7 +230,6 @@ class PongGameView extends Component {
   }
 
   play() {
-    document.getElementById("game_menu").innerHTML = "";
     const b = this.ball;
     if (b.vel.x === 0 && b.vel.y === 0) {
       b.vel.x = 200 * (Math.random() > 0.5 ? 1 : -1);
