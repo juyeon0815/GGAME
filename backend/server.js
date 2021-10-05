@@ -14,10 +14,10 @@ const options ={
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
 
-app.use("/", function(req, res, next){
-  console.log("start")
-  next();
-})
+// app.use("/", function(req, res, next){
+//   console.log("start")
+//   next();
+// })
 // app.use("/game", function (req, res) {
 //   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 
