@@ -44,7 +44,7 @@ app.post("/", (req, res) => {
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
-app.post("/game/*", (req, res) => {
+app.post("/*", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
@@ -54,7 +54,7 @@ app.get('/callback/kakao', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
-app.get('/game/*', function (req, res) {
+app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
