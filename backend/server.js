@@ -45,10 +45,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json())
 
-// const pongModule = require('./public/Pong/Pong');
+const pongModule = require('./public/Pong/Pong');
 // const charModule = require("./public/javascripts/Charade/Charade.js");
-// const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
-// const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
+const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
 const user = require('./src/Routes/user')
 const game = require('./src/Routes/Game')
@@ -58,9 +58,9 @@ app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
 
-// pongModule.airDrawing(io,pongStateModule, options);
+pongModule.airDrawing(io,pongStateModule, options);
 // charModule.initChar(io,pongStateModule);
-// requestPongModule.airDrawingRequest(app, pongStateModule, options);
+requestPongModule.airDrawingRequest(app, pongStateModule, options);
 
 httpServer.listen(80);
 https.listen(443);
