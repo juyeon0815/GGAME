@@ -14,7 +14,8 @@ exports.getRank = async (req, res) => {
 };
 
 exports.newRank = async (req, res) => {
-  console.log(req.body);
+  console.log("req:", req);
+  console.log("req.body:", req.body);
   console.log("랭킹 등록 ======: ");
   try {
     await GameService.newRank(req.body.type, req.body.email, req.body.score).then((result) => {
@@ -22,6 +23,7 @@ exports.newRank = async (req, res) => {
       res.status(200).json({ data: result });
     });
   } catch (error) {
+    console.log(error);
     res.status(400).json({ data: error });
   }
 };
