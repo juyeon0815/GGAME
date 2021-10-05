@@ -14,6 +14,11 @@ const options ={
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
 
+app.use("/", function(req, res, next){
+  console.log("start")
+  next();
+})
+
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
 app.use("/user", user);
@@ -37,19 +42,7 @@ app.get('/callback/kakao', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
-app.get('/user/', function (req, res) {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-  console.log("=========/callback");
-});
-app.get('/game/pong/rank', function (req, res) {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-  console.log("=========/callback");
-});
-app.get('/game/snake/rank', function (req, res) {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-  console.log("=========/callback");
-});
- 
+
 
 
 const io = require("socket.io")(https, {
