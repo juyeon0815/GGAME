@@ -5,6 +5,7 @@ import { div } from "@tensorflow/tfjs-core";
 // import VideoConference from "./VideoConference/VideoConf";
 import VideoConference from "./VideoConference/VideoConference";
 import "./AirDrawing.css";
+import Leaderboard from "./Leaderboard";
 
 const AirDrawingHost = (props) => {
   const nickName = props.location.nickName;
@@ -119,6 +120,7 @@ const AirDrawingHost = (props) => {
               id : {client.nickname} score: {client.score}
             </div>
           ))}
+          <Leaderboard score={scoreBoard} />
         </div>
       )}
     </div>
