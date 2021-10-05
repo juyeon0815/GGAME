@@ -145,7 +145,7 @@ class SnakeGame extends Component {
     );
 
     console.log('랭킹 받아오기 get')
-    axios.get('http://localhost:5000/game/rank', {params:{type: 'snake'}})
+    axios.get('https://j5a104.p.ssafy.io/game/rank', {params:{type: 'snake'}})
       .then((Response) => {
         const res = Response.data.data
         let meCheck = false
