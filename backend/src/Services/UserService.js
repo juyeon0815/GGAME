@@ -65,7 +65,7 @@ exports.getToken = async(code)=>{
     
 }
 
-exports.getSnakeAchievement=(email)=>{
+exports.getAchievement=(email)=>{
     return new Promise((resolve, reject)=>{
         let achievement = []
         let sql ="select id from user where email=?"
