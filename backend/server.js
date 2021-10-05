@@ -43,12 +43,12 @@ app.get("/", (req, res) => {
 //     //... your code
 // });
 
-const io = require("socket.io")(https, {
-  cors: {
-    origin: "https://j5a104.p.ssafy.io",
-    methods: ["GET", "POST"],
-  },
-});
+// const io = require("socket.io")(https, {
+//   cors: {
+//     origin: "https://j5a104.p.ssafy.io",
+//     methods: ["GET", "POST"],
+//   },
+// });
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -77,9 +77,13 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 app.listen(5000, function(){
   console.log("server port :"+"443")
 })
+var io = require('socket.io')(server);
+var server = https.createServer(options, app).listen(443);
+server.listen(443);
+
 
 // io.listen(app, options);
 httpServer.listen(80);
-https.createServer(options,app).listen(443);
+// https.createServer(options,app).listen(443);
 
 module.exports = app;
