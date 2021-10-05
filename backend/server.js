@@ -41,7 +41,11 @@ app.get('/user/', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
-app.get('/game/', function (req, res) {
+app.get('/game/pong/rank', function (req, res) {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+  console.log("=========/callback");
+});
+app.get('/game/snake/rank', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
