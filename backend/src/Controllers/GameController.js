@@ -22,7 +22,6 @@ exports.newRank = async (req, res) => {
       res.status(200).json({ data: result });
     });
   } catch (error) {
-    console.log("ERROR", error);
     res.status(400).json({ data: error });
   }
 };
