@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom'
 let gameWidth = 600,
   gameHeight = 400;
 
-let rounds = [3, 7, "computer 7 points game over"];
+let rounds = [3, 7, "computer 10 points game over"];
 let colors = ["#202020", "#4C4C4C", "#747474"];
 
 let beep = new Audio(
@@ -132,7 +132,7 @@ class PongGameView extends Component {
           });
         }
       }else{ //3라운드일경우 => 무한대
-        if(this.players[1].score ===7){ //컴퓨터가 이겨서 끝나는 조건만 체크
+        if(this.players[1].score ===10){ //컴퓨터가 이겨서 끝나는 조건만 체크
           this.setState({ gameActive: false });
           this.drawRanking()
           this.drawText("Game over! 내 점수는 : "+this.players[0].score);
