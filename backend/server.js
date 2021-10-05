@@ -19,6 +19,7 @@ const options ={
 //   next();
 // })
 
+var bodyParser = require('body-parser');
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
@@ -51,7 +52,7 @@ const io = require("socket.io")(https, {
     methods: ["GET", "POST"],
   },
 });
-var bodyParser = require('body-parser');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
