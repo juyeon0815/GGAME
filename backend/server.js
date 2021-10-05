@@ -14,10 +14,10 @@ const options ={
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
 
-app.use("/", function(req, res, next){
-  console.log("start")
-  next();
-})
+// app.use("/", function(req, res, next){
+//   console.log("start")
+//   next();
+// })
 
 
 const user = require("./src/Routes/User");
@@ -45,7 +45,7 @@ app.post("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 app.post("/*", (req, res) => {
-  console.log(__dirname);
+  console.log("postAll=======");
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
@@ -56,7 +56,7 @@ app.get('/callback/kakao', function (req, res) {
 });
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-  console.log("=========/callback");
+  console.log("getAll=====");
 });
 
 
