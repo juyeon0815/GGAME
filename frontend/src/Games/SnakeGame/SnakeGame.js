@@ -110,7 +110,6 @@ class SnakeGame extends Component {
     this.setState({snakeBody: null, food: null, isNew: false});
     // 게임 결과 보내기
     console.log('게임 결과 보내기 post')
-    console.log('type',type,' email: ', this.state.email, 'score: ', score);
     axios({
       method: 'post',
       url: 'https://j5a104.p.ssafy.io/game/rank',
@@ -118,7 +117,10 @@ class SnakeGame extends Component {
       headers: { 'Content-Type': 'application/json' },
     })
       .then( response => { this.drawRanking(ctx, score) } )
-      .catch( response => { console.log(response) } );
+      .catch(response => {
+        console.log(response)
+        console.log('type', type, ' email: ', this.state.email, 'score: ', score);
+      });
   };
 
   drawRanking = (ctx, my_score) => {
