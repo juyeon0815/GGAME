@@ -14,6 +14,11 @@ const options ={
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
 
+const user = require("./src/Routes/User");
+const game = require("./src/Routes/Game");
+app.use("/user", user);
+app.use("/game", game);
+
 // back/app.js
 const httpServer = require("http").createServer();
 const https = require("https").createServer(options,app);
@@ -28,13 +33,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-
-
 app.get('/callback/kakao', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
  
+
 
 const io = require("socket.io")(https, {
   cors: {
@@ -52,10 +56,7 @@ const airDrawingModule = require("./public/AirDrawing/AirDrawing");
 const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
 const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
-const user = require("./src/Routes/User");
-const game = require("./src/Routes/Game");
-app.use("/user", user);
-app.use("/game", game);
+
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);
