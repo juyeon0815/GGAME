@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import "./Leaderboard.css";
 
+let idx = 1;
+
 function Leaderboard(props) {
   useEffect(() => {
+    idx = 1;
     console.log(props.score);
     return () => {};
   }, []);
@@ -14,10 +17,15 @@ function Leaderboard(props) {
 
           <h2>우승자는 ?!?!</h2>
         </header>
-
-        {props.score.map((client) => (
-          <li key={client.socketId}>
-            id : {client.nickname} score: {client.score}
+        {props.score.slice(0, 10).map((client) => (
+          <li className="item" key={client.socketId}>
+            <span className="order">{idx++} </span>
+            {props.nickname === client.nickname ? (
+              <span className="nickname">{client.nickname} (나)</span>
+            ) : (
+              <span className="nickname">{client.nickname} </span>
+            )}
+            <span className="score"> {client.score} 점 </span>
           </li>
         ))}
       </aside>

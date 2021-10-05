@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import MultiGameCanvas from "./MultiGameCanvas";
 import GestureRecognition from "./GestureRecognition";
 import { div } from "@tensorflow/tfjs-core";
@@ -6,8 +7,10 @@ import { div } from "@tensorflow/tfjs-core";
 import VideoConference from "./VideoConference/VideoConference";
 import "./AirDrawing.css";
 import Leaderboard from "./Leaderboard";
+import UserVideoComponent from "./VideoConference/UserVideoComponent";
 
 const AirDrawingHost = (props) => {
+  let history = useHistory();
   const nickName = props.location.nickName;
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
@@ -35,8 +38,13 @@ const AirDrawingHost = (props) => {
     }
   };
 
+  const exitGame = () => {
+    history.push({
+      pathname: "/",
+    });
+  };
+
   useEffect(() => {
-    console.log(nickName);
     props.location.socket.on("receive problem", (p) => {
       setProblem(p);
     });
@@ -47,7 +55,6 @@ const AirDrawingHost = (props) => {
     });
 
     props.location.socket.on("score board", (data) => {
-      console.log(data);
       const newScoreBoard = data;
       setScoreBoard(newScoreBoard);
     });
@@ -68,7 +75,6 @@ const AirDrawingHost = (props) => {
 
           <h3>내 ID : {nickName}</h3>
           <h3>차례 : {drawer.nickname}</h3>
-          {problem ? <h3>제시어 : {problem}</h3> : null}
           <div class="game-row">
             <div class="game-left">
               <MultiGameCanvas
@@ -100,7 +106,9 @@ const AirDrawingHost = (props) => {
                 제출
               </button>
             </div>
-          ) : null}
+          ) : (
+            <h3>제시어 : {problem}</h3>
+          )}
 
           {/* 스코어 보드 */}
           {scoreBoard.map((client) => (
@@ -112,15 +120,10 @@ const AirDrawingHost = (props) => {
       ) : (
         // 게임 종료 화면
         <div>
-          <h1>게임이 끝났습니다!</h1>
-
-          {/* 스코어 보드 */}
-          {scoreBoard.map((client) => (
-            <div key={client.socketId}>
-              id : {client.nickname} score: {client.score}
-            </div>
-          ))}
-          <Leaderboard score={scoreBoard} />
+          <Leaderboard score={scoreBoard} nickname={nickName} />
+          <button className="btn-home" onClick={exitGame}>
+            메인으로
+          </button>
         </div>
       )}
     </div>

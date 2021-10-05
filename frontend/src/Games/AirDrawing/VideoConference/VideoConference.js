@@ -44,6 +44,7 @@ class VideoConference extends Component {
       this.setState({
         mainStreamManager: stream,
       });
+      // this.props.setMainStreamManager(stream);
     }
   }
 
@@ -52,6 +53,7 @@ class VideoConference extends Component {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
+      const newSubs = subscribers;
       this.setState({
         subscribers: subscribers,
       });
@@ -77,10 +79,11 @@ class VideoConference extends Component {
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
-          console.log(subscriber);
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
+          const newSubs = subscribers;
+          console.log("@@@@@@@@@@@@@@@@@@@@@@@@@", subscribers);
           this.setState({
             subscribers: subscribers,
           });
@@ -131,6 +134,7 @@ class VideoConference extends Component {
                 mainStreamManager: publisher,
                 publisher: publisher,
               });
+              // this.props.setMainStreamManager(publisher);
             })
             .catch((error) => {
               console.log(
