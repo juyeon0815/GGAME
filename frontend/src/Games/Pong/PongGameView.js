@@ -358,6 +358,8 @@ class PongGameView extends Component {
       this.videoStream = null;
       this.videoTag.current.srcObject = null;
     }
+
+    this.initialize();
   }
 
   render() {
