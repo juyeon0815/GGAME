@@ -109,9 +109,11 @@ class SnakeGame extends Component {
     this.clearCanvas(ctx);
     this.setState({snakeBody: null, food: null, isNew: false});
     // 게임 결과 보내기
+    console.log('게임 결과 보내기 post')
     axios({
       method: 'post',
-      url: 'http://localhost:5000/game/snake/rank',
+      url: 'http://localhost:5000/game/rank',
+      params:{type: 'snake'},
       data: { email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
@@ -138,7 +140,8 @@ class SnakeGame extends Component {
       150
     );
 
-    axios.get('http://localhost:5000/game/snake/rank')
+    console.log('랭킹 받아오기 get')
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'snake'}})
       .then((Response) => {
         const res = Response.data.data
         let meCheck = false
@@ -187,6 +190,7 @@ class SnakeGame extends Component {
 
   checkNewAchievement() {
     // 업적달성 확인
+    console.log('업적확인 get')
     axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
     .then((res)=>{
       if (res.data.data.length >= 1) {

@@ -87,7 +87,7 @@ exports.newSnakeAchievement = async(email) =>{
             if(error) return reject(error);
             else{
                 let user_id = result[0].id
-                sql = "select standard_id from achievement where user_id=?"
+                sql = "select standard_id from achievement where user_id=? and standard_id between 1 and 6"
                 params = [user_id];
                 conn.query(sql,params, function(error, res){
                     if(error) return reject(error);
@@ -97,7 +97,7 @@ exports.newSnakeAchievement = async(email) =>{
                             check.splice(remove,1);
                         }
                         let score, eating;
-                        sql = "select * from rank_snake where user_id=? and standard_id between 1 and 6"
+                        sql = "select * from rank_snake where user_id=?"
                         params = [user_id]
                         conn.query(sql,params,function(error, result){
                             if(error) return reject(error);
