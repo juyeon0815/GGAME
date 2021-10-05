@@ -3,7 +3,7 @@ import Modal from "../../Common/Modal";
 import v from "../../assets/images/v.png";
 import up from "../../assets/images/up.png";
 
-class PongRule extends React.Component {
+class AirDrawingRule extends React.Component {
   render() {
     const { isOpen, close } = this.props;
     return (
@@ -24,4 +24,4 @@ class PongRule extends React.Component {
     );
   }
 }
-export { PongRule };
+export { AirDrawingRule as PongRule };
