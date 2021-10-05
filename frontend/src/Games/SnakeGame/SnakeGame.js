@@ -194,12 +194,8 @@ class SnakeGame extends Component {
 
   checkNewAchievement() {
     // 업적달성 확인
-<<<<<<< HEAD
-    axios.get("https://j5a104.p.ssafy.io/game/snake/new-achievement", {params:{email : this.state.email}})
-=======
     console.log('업적확인 get')
-    axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
->>>>>>> 24c98408db591cadb74a631a6176492b402a13fb
+    axios.get("https://j5a104.p.ssafy.io/game/snake/new-achievement", {params:{email : this.state.email}})
     .then((res)=>{
       if (res.data.data.length >= 1) {
         this.setState({ showSA: true, achievement: res.data.data})
