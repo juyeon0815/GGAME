@@ -50,10 +50,10 @@ const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // ê
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
-const achievement = require("./src/Routes/Achievement");
+// const achievement = require("./src/Routes/Achievement");
 app.use("/user", user);
 app.use("/game", game);
-app.use("/achievement", achievement);
+// app.use("/achievement", achievement);
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);
