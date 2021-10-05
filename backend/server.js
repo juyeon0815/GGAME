@@ -78,7 +78,7 @@ app.listen(5000, function(){
   console.log("server port :"+"443")
 })
 
-io.listen(app, options);
+// io.listen(app, options);
 httpServer.listen(80);
 https.createServer(options,app).listen(443);
 
