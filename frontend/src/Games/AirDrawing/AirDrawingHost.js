@@ -18,7 +18,10 @@ const AirDrawingHost = (props) => {
   const enterCode = useRef();
 
   useEffect(() => {
-    socket = io.connect("https://j5a104.p.ssafy.io/air-drawing");
+    
+    const io = require('socket.io-client');
+    const socket = io.connect("https://j5a104.p.ssafy.io/air-drawing", { secure: true, reconnect: true });
+    
     socket.emit("join room", roomNumber, nickName);
 
     socket.on("userList", (data) => {

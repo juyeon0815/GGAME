@@ -33,16 +33,6 @@ app.get("/", (req, res) => {
 // })
  
 
-//Socket.io
-// const ioServer= require( "socket.io" );
-// const io     = new ioServer();
-// io.attach( httpServer  );
-// io.attach( https,options );
-// io.on( "connection", function( socket ) {
-//     console.log( "user connected" );
-//     //... your code
-// });
-
 const io = require("socket.io")(https, {
   cors: {
     origin: "https://j5a104.p.ssafy.io",
@@ -68,10 +58,10 @@ app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
 
-pongModule.airDrawing(io,pongStateModule);
+pongModule.airDrawing(io,pongStateModule, options);
 // charModule.initChar(io,pongStateModule);
 
-requestPongModule.airDrawingRequest(app, pongStateModule);
+requestPongModule.airDrawingRequest(app, pongStateModule, options);
 
 
 // app.listen(5000, function(){
@@ -84,6 +74,6 @@ requestPongModule.airDrawingRequest(app, pongStateModule);
 
 // io.listen(app, options);
 httpServer.listen(80);
-// https.createServer(options,app).listen(443);
+https.createServer(options,app).listen(443);
 
 module.exports = app;
