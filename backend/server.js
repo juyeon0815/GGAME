@@ -27,7 +27,7 @@ const https = require("https").createServer(options,app);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 //요청
-app.get("/*", (req, res) => {
+app.get("/", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
