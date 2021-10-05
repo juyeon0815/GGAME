@@ -52,7 +52,7 @@ class SnakeGame extends Component {
     this.setState({ ctx: ctx });
     // 회원 정보 얻어오기
     let token = sessionStorage.getItem('token')
-    axios.get("http://localhost:5000/user/me",{
+    axios.get("https://j5a104.p.ssafy.io/user/me",{
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -111,7 +111,7 @@ class SnakeGame extends Component {
     // 게임 결과 보내기
     axios({
       method: 'post',
-      url: 'http://localhost:5000/game/snake/rank',
+      url: 'https://j5a104.p.ssafy.io/game/snake/rank',
       data: { email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
@@ -132,7 +132,7 @@ class SnakeGame extends Component {
       100
     );
 
-    axios.get('http://localhost:5000/game/snake/rank')
+    axios.get('https://j5a104.p.ssafy.io/game/snake/rank')
       .then((Response) => {
         const res = Response.data.data
         for (let i = 0; i < res.length; i++) {
@@ -170,7 +170,7 @@ class SnakeGame extends Component {
 
   checkNewAchievement() {
     // 업적달성 확인
-    axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
+    axios.get("https://j5a104.p.ssafy.io/game/snake/new-achievement", {params:{email : this.state.email}})
     .then((res)=>{
       if (res.data.data.length >= 1) {
         this.setState({ showSA: true, achievement: res.data.data})
