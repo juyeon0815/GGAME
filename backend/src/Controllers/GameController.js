@@ -46,3 +46,27 @@ exports.newPongAchievement = async(req,res)=>{
         res.status(400).json({data:error})
     }
 }
+
+exports.airDrawGameResult = async(req,res)=>{
+    console.log(req.body)
+    try{
+        await GameService.airDrawGameResult(req.body.email,req.body.rank,req.body.score).then((result)=>{
+            console.log("result :", result)
+            res.status(200).json({data:result})
+        })
+    }catch(error){
+        res.status(400).json({data:error})
+    }
+}
+
+exports.newAirDrawAchievement = async(req,res)=>{
+    console.log(req.query.email, req.query.rank)
+    try{
+        await GameService.newAirDrawAchievement(req.query.email,req.query.rank).then((result)=>{
+            console.log("result :", result)
+            res.status(200).json({data: result})
+        })
+    }catch(error){
+        res.status(400).json({data: error})
+    }
+}
