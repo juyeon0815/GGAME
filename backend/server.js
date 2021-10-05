@@ -18,12 +18,10 @@ const options ={
 const httpServer = require("http").createServer();
 const https = require("https").createServer(options,app);
  
-
-
 // /client/build 폴더를 static 파일로 사용할 수 있도록 함
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// / 요청
+//요청
 app.get("/", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
@@ -64,10 +62,6 @@ pongModule.airDrawing(io,pongStateModule, options);
 // charModule.initChar(io,pongStateModule);
 requestPongModule.airDrawingRequest(app, pongStateModule, options);
 
-
-
-
-// io.listen(app, options);
 httpServer.listen(80);
 https.listen(443);
 
