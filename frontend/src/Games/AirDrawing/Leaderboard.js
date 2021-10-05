@@ -17,9 +17,9 @@ function Leaderboard(props) {
 
           <h2>우승자는 ?!?!</h2>
         </header>
-        {props.score.slice(0, 10).map((client) => (
+        {props.score.slice(0, 10).map((client, index) => (
           <li className="item" key={client.socketId}>
-            <span className="order">{idx++} </span>
+            <span className="order">{index + 1} </span>
             {props.nickname === client.nickname ? (
               <span className="nickname">{client.nickname} (나)</span>
             ) : (
