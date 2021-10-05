@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom'
 let gameWidth = 600,
   gameHeight = 400;
 
-let rounds = [3, 7, "computer 7 points game over"];
+let rounds = [3, 7, "computer 10 points game over"];
 let colors = ["#202020", "#4C4C4C", "#747474"];
 
 let beep = new Audio(
@@ -132,7 +132,7 @@ class PongGameView extends Component {
           });
         }
       }else{ //3라운드일경우 => 무한대
-        if(this.players[1].score ===7){ //컴퓨터가 이겨서 끝나는 조건만 체크
+        if(this.players[1].score ===10){ //컴퓨터가 이겨서 끝나는 조건만 체크
           this.setState({ gameActive: false });
           this.drawRanking()
           this.drawText("Game over! 내 점수는 : "+this.players[0].score);
@@ -191,9 +191,6 @@ class PongGameView extends Component {
       p.pos.y = cvs.height / 2;
     });
 
-    // document.getElementById("game_menu").innerHTML = "Train the images for UP, DOWN, and IDLE" +
-    //                        "<br />"+ "<span>Then click the game to begin!</span>";
-
     this.reset(cvs);
     this.listen(cvs);
   }
@@ -233,7 +230,6 @@ class PongGameView extends Component {
   }
 
   play() {
-    document.getElementById("game_menu").innerHTML = "";
     const b = this.ball;
     if (b.vel.x === 0 && b.vel.y === 0) {
       b.vel.x = 200 * (Math.random() > 0.5 ? 1 : -1);
@@ -362,6 +358,8 @@ class PongGameView extends Component {
       this.videoStream = null;
       this.videoTag.current.srcObject = null;
     }
+
+    this.initialize();
   }
 
   render() {

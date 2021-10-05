@@ -46,7 +46,6 @@ function App() {
         <Route path="/air-drawing/guest" component={AirDrawingGuest}></Route>
         <Route path="/air-drawing" component={AirDrawing}></Route>
         <Route path="/callback/kakao" component={LoginRedirect}></Route>
-
       </Switch>
     </div>
   );

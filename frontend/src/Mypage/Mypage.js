@@ -39,13 +39,12 @@ const Mypage = () => {
     // res.data.data
     getAchievement().then((res) => {
       console.log(res)
-      let tmp = ['medal', 'pong_first', 'snake_first', 'mind_reader', 'very_stupid']
+      // let tmp = ['medal', 'pong_first', 'snake_first', 'mind_reader', 'very_stupid']
       // setAchievement(tmp)
       setAchievement(res.data.data)
     })
   }, [])
   for (let item of achievement) {
-    console.log('hello1')
     for (let name in trophySnake) {
       if (name === item) trophySnake[name][0] = true
     }
