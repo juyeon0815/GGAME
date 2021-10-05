@@ -59,9 +59,6 @@ const AirDrawingHost = (props) => {
     });
   }, []);
 
-  const center = {
-    textAlign: "center",
-  };
   return (
     <div className="air-drawing">
       {gamePlaying ? (

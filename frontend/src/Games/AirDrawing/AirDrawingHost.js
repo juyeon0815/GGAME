@@ -57,43 +57,41 @@ const AirDrawingHost = (props) => {
     textAlign: "center",
   };
   return (
-    <div>
-      <div>
-        {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
-        <p id="game_menu"></p>
-        <div style={center}>
-          <h1>대기실</h1>
-          <div style={center}>NAME : {nickName}</div>
+    <div className="air-drawing">
+      {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
+      <p id="game_menu"></p>
+      <div style={center}>
+        <h1>대기실</h1>
+        <div style={center}>NAME : {nickName}</div>
 
-          <div>
-            <input
-              type="text"
-              id="enter_room_host"
-              className="modal-input"
-              value={roomNumber}
-              ref={enterCode}
-              style={style}
-              disabled
-            />
-            <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>
-              복사
-            </button>
-          </div>
-
-          <div className="game-row">
-            <div className="game-left">
-              <GameCanvas isDrawing={isDrawing} pos={pos} />
-            </div>
-            <div className="game-right">
-              <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
-            </div>
-          </div>
-
-          <button class="btn-start" onClick={gameStart}>
-            <span>Game Start</span>
+        <div>
+          <input
+            type="text"
+            id="enter_room_host"
+            className="modal-input"
+            value={roomNumber}
+            ref={enterCode}
+            style={style}
+            disabled
+          />
+          <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>
+            복사
           </button>
-          <div>{currentUser}명 대기중..</div>
         </div>
+
+        <div className="game-row">
+          <div className="game-left">
+            <GameCanvas isDrawing={isDrawing} pos={pos} />
+          </div>
+          <div className="game-right">
+            <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
+          </div>
+        </div>
+
+        <button class="btn-start" onClick={gameStart}>
+          <span>Game Start</span>
+        </button>
+        <div>{currentUser}명 대기중..</div>
       </div>
     </div>
   );

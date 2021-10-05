@@ -1,6 +1,7 @@
 .air-drawing {
   width: 100%;
   height: 100%;
+  margin: 0 auto;
 }
 
 .answer-input {
@@ -86,6 +87,7 @@
 
 div.game-row {
   width: 100%;
+  height: 70%;
   display: flex;
 }
 
