@@ -113,8 +113,7 @@ class SnakeGame extends Component {
     axios({
       method: 'post',
       url: 'http://localhost:5000/game/rank',
-      params:{type: 'snake'},
-      data: { email: this.state.email, score: score },
+      data: {type: 'snake', email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
       .then( response => { this.drawRanking(ctx, score) } )
