@@ -39,10 +39,9 @@ app.use(bodyParser.json())
 
 const user = require('./src/Routes/User')
 const game = require('./src/Routes/Game')
-const achievement = require('./src/Routes/Achievement')
+
 app.use('/user',user)
 app.use('/game',game)
-app.use('/achievement',achievement)
 
 // pongModule.pong(io,pongStateModule);
 // charModule.initChar(io,pongStateModule);
