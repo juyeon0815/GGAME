@@ -97,7 +97,7 @@ exports.newSnakeAchievement = async(email) =>{
                             check.splice(remove,1);
                         }
                         let score, eating;
-                        sql = "select * from rank_snake where user_id=?"
+                        sql = "select * from rank_snake where user_id=? and standard_id between 1 and 6"
                         params = [user_id]
                         conn.query(sql,params,function(error, result){
                             if(error) return reject(error);
@@ -125,9 +125,70 @@ exports.newSnakeAchievement = async(email) =>{
                                     if(number!==-1){
                                        achivement.push(name)
                                        num.push(number)
-
                                     }
                                 }
+                                insert_achievement(num, user_id)
+                                return resolve(achivement)
+                            }
+                        })
+                    }      
+                })       
+            }
+        })
+    })
+}
+
+exports.newPongAchievement = async(email) =>{
+    console.log("핑퐁게임 새로운ㅇ ㅓㅂ적 달성했나?")
+    return new Promise((resolve, reject)=>{
+        let achivement = [];
+        let check = [7,8,9,10,11,12]
+        let sql = "select id from user where email=?"
+        let params = [email]
+        conn.query(sql, params, function(error, result){ //email에 해당하는 rank_pong 정보 확인
+            if(error) return reject(error);
+            else{
+                let user_id = result[0].id
+                sql = "select standard_id from achievement where user_id=? and standard_id between 7 and 12"
+                params = [user_id];
+                conn.query(sql,params, function(error, res){
+                    if(error) return reject(error);
+                    else{
+                        for(let i=0; i<res.length;i++){
+                            let remove = check.indexOf(res[i].standard_id)
+                            check.splice(remove,1);
+                        }
+                        let score, eating;
+                        sql = "select * from rank_pong where user_id=?"
+                        params = [user_id]
+                        conn.query(sql,params,function(error, result){
+                            if(error) return reject(error);
+                            else{
+                                let num =[]
+                                score = result[0].score;
+                                for(let i=0; i<check.length;i++){
+                                    let number = -1;
+                                    let name;
+                                    if(check[i]===7){ //첫게임
+                                        number=7; name ="pong_first"
+                                    }else if(check[i]===8 && score>=3){ //2라운드 진입
+                                        number=8; name="scd_round"
+                                    }else if(check[i]===9 && score>=7){ //3라운드 진입
+                                        number=9; name="trd_round"
+                                    }else if(check[i]===10 && score>=15){ 
+                                        number=10; name="pong_master"
+                                    }else if(check[i]===11 && eating>=20){ 
+                                        number=11; name="pong_champ"
+                                    }else if(check[i]===12 && eating>=30){ 
+                                        number=12; name="win_ai"
+                                    }
+
+                                    if(number!==-1){
+                                       achivement.push(name)
+                                       num.push(number)
+                                    }
+                                }
+                                console.log(num)
                                 insert_achievement(num, user_id)
                                 return resolve(achivement)
                             }
