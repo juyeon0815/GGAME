@@ -4,7 +4,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 app.use(cors());
 
 // back/app.js
@@ -27,8 +27,10 @@ const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // ê
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
+// const achievement = require("./src/Routes/Achievement");
 app.use("/user", user);
 app.use("/game", game);
+// app.use("/achievement", achievement);
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);
