@@ -16,6 +16,7 @@ exports.getRank =async(req,res)=>{
 exports.newRank = async(req,res)=>{
     console.log(req.body)
     console.log("랭킹 등록 ======: ");
+    console.log(req);
     try{
         await GameService.newRank(req.body.type,req.body.email, req.body.score).then((result)=>{
             console.log("result : ", result)
