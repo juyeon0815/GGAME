@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-app.get('/callback', function(req, res) {
+app.get('/callback/kakao', function(req, res) {
   console.log("=========/callback");
 })
  
