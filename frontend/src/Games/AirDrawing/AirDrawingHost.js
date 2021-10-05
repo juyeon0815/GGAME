@@ -30,7 +30,7 @@ const AirDrawingHost = (props) => {
   }, []);
 
   const gameStart = () => {
-    socket.emit("game start", roomNumber);
+    socket.broadcast.emit("game start", roomNumber);
     history.push({
       pathname: "/air-drawing",
       socket: socket,
