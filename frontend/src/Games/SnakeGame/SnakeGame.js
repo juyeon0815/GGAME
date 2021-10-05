@@ -46,16 +46,6 @@ class SnakeGame extends Component {
   }
 
   componentDidMount() {
-    console.log("마운트");
-    axios
-      .get("https://j5a104.p.ssafy.io/game/rank", { params: { type: "snake" } })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
     const cvs = document.getElementById("canvas");
     const ctx = cvs.getContext("2d");
     this.setState({ ctx: ctx });
