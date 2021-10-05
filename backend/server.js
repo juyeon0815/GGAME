@@ -6,7 +6,7 @@ const cors = require('cors')
 app.use(cors());
 
 //HTTPS 활성화 부분
-const fs =require('fs');
+const fs =require('fs');//
 
 const options ={
   ca: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem'),
@@ -39,29 +39,24 @@ const io = require("socket.io")(https, {
     methods: ["GET", "POST"],
   },
 });
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use(bodyParser.json())
+const airDrawingModule = require("./public/AirDrawing/AirDrawing");
+const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
-// const pongModule = require('./public/Pong/Pong');
-// const charModule = require("./public/javascripts/Charade/Charade.js");
-// const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
-// const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
+const user = require("./src/Routes/User");
+const game = require("./src/Routes/Game");
+const achievement = require("./src/Routes/Achievement");
+app.use("/user", user);
+app.use("/game", game);
+app.use("/achievement", achievement);
 
-const user = require('./src/Routes/user')
-const game = require('./src/Routes/Game')
-const achievement = require('./src/Routes/Achievement')
-
-app.use('/user',user)
-app.use('/game',game)
-app.use('/achievement',achievement)
-
-// pongModule.airDrawing(io,pongStateModule, options);
-// charModule.initChar(io,pongStateModule);
-// requestPongModule.airDrawingRequest(app, pongStateModule, options);
-
+airDrawingModule.airDrawing(io, airDrawingStateModule);
+requestPongModule.airDrawingRequest(app, airDrawingStateModule);
 httpServer.listen(80);
 https.listen(443);
 
