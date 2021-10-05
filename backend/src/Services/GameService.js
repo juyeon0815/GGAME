@@ -20,6 +20,7 @@ exports.getRank =(type)=>{
 
 exports.newRank =async(type,email, score) =>{
     console.log(type, email, score)
+    console.log("newRank: : : ", score);
     return new Promise((resolve, reject)=>{
          //일단 rank 정보가 있는지 확인
         let sql;
