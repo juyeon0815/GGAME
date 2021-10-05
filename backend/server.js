@@ -18,13 +18,10 @@ app.use("/", function(req, res, next){
   console.log("start")
   next();
 })
-app.use("/game", function (req, res) {
-  console.log("===========================");
-  console.log("===========================");
+// app.use("/game", function (req, res) {
+//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 
-  console.log("===========================");
-
-})
+// })
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
