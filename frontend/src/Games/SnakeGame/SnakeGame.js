@@ -112,12 +112,8 @@ class SnakeGame extends Component {
     console.log('게임 결과 보내기 post')
     axios({
       method: 'post',
-<<<<<<< HEAD
-      url: 'https://j5a104.p.ssafy.io/game/snake/rank',
-=======
-      url: 'http://localhost:5000/game/rank',
+      url: 'https://j5a104.p.ssafy.io/game/rank',
       params:{type: 'snake'},
->>>>>>> 24c98408db591cadb74a631a6176492b402a13fb
       data: { email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
