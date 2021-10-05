@@ -200,6 +200,118 @@ exports.newPongAchievement = async(email) =>{
     })
 }
 
+exports.airDrawGameResult = async(email, rank, score)=>{
+    console.log("에어드로우 게임 결과", email, rank, score);
+    return new Promise((resolve, reject)=>{
+        let sql = "select * from user where email=?"
+        let params = [email]
+
+        conn.query(sql,params,function(error, result){
+            if(error) return reject(error)
+            else{
+                let user_id = result[0].id;
+                sql = "select * from rank_draw where user_id=?"
+                params = [user_id];
+
+                conn.query(sql,params,function(error, res){
+                    if(error) return reject(error)
+                    else{
+                        if(res.length===0){
+                            sql = "insert into rank_draw(user_id, win, zero_score) values(?,?,?)";
+                            if(score===0) params =[user_id,0,1];
+                            else if(rank===1) params = [user_id,1,0];
+                            else params = [user_id,0,0]
+                            conn.query(sql,params,function(error, re){
+                                if(error) return reject(error)
+                                else return resolve(true)
+                            })
+                        }else{
+                            let win = res[0].win
+                            let zero_score = res[0].zero_score
+                            if(score===0) {
+                                sql = "update rank_draw set zero_score=? where user_id=?"
+                                params = [zero_score+1,user_id]
+                            }else if(rank===1){
+                                sql = "update rank_draw set win=? where user_id=?"
+                                params = [win+1, user_id]
+                            }
+                            conn.query(sql,params,function(error, re){
+                                if(error) return reject(error)
+                                else return resolve(true)
+                            })
+                        }
+                    }
+                })
+            }
+        })
+
+    })
+}
+
+exports.newAirDrawAchievement =async(email,rank) =>{
+    console.log("에어드로우 새로운ㅇ ㅓㅂ적 달성했나?")
+    return new Promise((resolve, reject)=>{
+        let achivement = [];
+        let check = [13,14,15,16,17,18]
+        let sql = "select id from user where email=?"
+        let params = [email]
+        conn.query(sql, params, function(error, result){ //email에 해당하는 rank_draw 정보 확인
+            if(error) return reject(error);
+            else{
+                let user_id = result[0].id
+                sql = "select standard_id from achievement where user_id=? and standard_id between 13 and 18"
+                params = [user_id];
+                conn.query(sql,params, function(error, res){
+                    if(error) return reject(error);
+                    else{
+                        for(let i=0; i<res.length;i++){
+                            let remove = check.indexOf(res[i].standard_id)
+                            check.splice(remove,1);
+                        }
+                        console.log(check)
+                        let win, zero_score;
+                        sql = "select * from rank_draw where user_id=?"
+                        params = [user_id]
+                        conn.query(sql,params,function(error, result){
+                            if(error) return reject(error);
+                            else{
+                                let num =[]
+                                win = result[0].win;
+                                zero_score = result[0].zero_score;
+                                for(let i=0; i<check.length;i++){
+                                    let number = -1;
+                                    let name;
+                                    if(check[i]===13 && win===1){ //첫우승
+                                        number=13; name ="first_victory"
+                                    }if(check[i]===14 && rank<=3){ //시상식
+                                        number=14; name="medal"
+                                    }else if(check[i]===15 && win>=5){ //누적 우승5
+                                        number=15; name="telepathy"
+                                    }else if(check[i]===16 && win>=10){ //누적 우승10
+                                        number=16; name="mind_reader"
+                                    }else if(check[i]===17 && zero_score>=1){ //0점 = 1
+                                        number=17; name="stupid"
+                                    }else if(check[i]===18 && zero_score>=5){ //0점 =5
+                                        number=18; name="very_stupid"
+                                    }
+
+                                    if(number!==-1){
+                                       achivement.push(name)
+                                       num.push(number)
+                                    }
+                                }
+                                console.log(num)
+                                insert_achievement(num, user_id)
+                                return resolve(achivement)
+                            }
+                        })
+                    }      
+                })       
+            }
+        })
+    })
+}
+
 function insert_achievement(num, user_id){
     for(let i=0; i<num.length;i++){
         let sql = "insert into achievement(user_id, standard_id) values(?,?)"
