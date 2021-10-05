@@ -5,6 +5,9 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 //HTTPS 활성화 부분
 const fs = require("fs");
 
@@ -49,9 +52,6 @@ const io = require("socket.io")(https, {
     methods: ["GET", "POST"],
   },
 });
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 const airDrawingModule = require("./public/AirDrawing/AirDrawing");
 const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
