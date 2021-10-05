@@ -58,9 +58,9 @@ app.use('/user',user)
 app.use('/game',game)
 app.use('/achievement',achievement)
 
-pongModule.airDrawing(io,pongStateModule, options);
+// pongModule.airDrawing(io,pongStateModule, options);
 // charModule.initChar(io,pongStateModule);
-requestPongModule.airDrawingRequest(app, pongStateModule, options);
+// requestPongModule.airDrawingRequest(app, pongStateModule, options);
 
 httpServer.listen(80);
 https.listen(443);
