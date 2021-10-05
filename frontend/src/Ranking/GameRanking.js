@@ -33,7 +33,7 @@ class GameRanking extends React.Component {
         <div className="board">
           <h2>Leaderboard</h2>
           <ul>
-            {this.props.ranks.map((info, index) => (
+            {this.props.ranks&&this.props.ranks.map((info, index) => (
               <li key={index}>
                 <div className="player-item">
                   <div className="player-item__photo">
