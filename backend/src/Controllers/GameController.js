@@ -14,8 +14,7 @@ exports.getRank = async (req, res) => {
 };
 
 exports.newRank = async (req, res) => {
-  console.log("req:", req);
-  console.log("req.body:", req.body);
+  console.log("r1eq.body:", req.body);
   console.log("랭킹 등록 ======: ");
   res.send("hello");
   // try {
