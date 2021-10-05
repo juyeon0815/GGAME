@@ -1,24 +1,23 @@
-const express = require('express');
+const express = require("express");
 const path = require("path");
 const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 app.use(cors());
 
 //HTTPS 활성화 부분
-const fs =require('fs');
+const fs = require("fs");
 
-const options ={
-  ca: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
+const options = {
+  ca: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem"),
+  key: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem"),
 };
 
 // app.use("/", function(req, res, next){
 //   console.log("start")
 //   next();
 // })
-
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
@@ -27,8 +26,8 @@ app.use("/game", game);
 
 // back/app.js
 const httpServer = require("http").createServer();
-const https = require("https").createServer(options,app);
- 
+const https = require("https").createServer(options, app);
+
 // /client/build 폴더를 static 파일로 사용할 수 있도록 함
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
@@ -39,11 +38,10 @@ app.post("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-app.get('/callback/kakao', function (req, res) {
+app.get("/callback/kakao", function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
 });
-
 
 const io = require("socket.io")(https, {
   cors: {
@@ -51,11 +49,11 @@ const io = require("socket.io")(https, {
     methods: ["GET", "POST"],
   },
 });
-var bodyParser = require('body-parser');
+var bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 const airDrawingModule = require("./public/AirDrawing/AirDrawing");
 const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
