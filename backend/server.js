@@ -27,7 +27,7 @@ const https = require("https").createServer(options,app);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 //요청
-app.get("/", (req, res) => {
+app.get("/*", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
@@ -52,14 +52,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json())
 
-// const airDrawingModule = require("./public/AirDrawing/AirDrawing");
-// const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-// const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+const airDrawingModule = require("./public/AirDrawing/AirDrawing");
+const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
 
 
-// airDrawingModule.airDrawing(io, airDrawingStateModule);
-// requestPongModule.airDrawingRequest(app, airDrawingStateModule);
+airDrawingModule.airDrawing(io, airDrawingStateModule);
+requestPongModule.airDrawingRequest(app, airDrawingStateModule);
 
 httpServer.listen(80);
 https.listen(443);
