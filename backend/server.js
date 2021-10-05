@@ -50,14 +50,10 @@ const airDrawingModule = require("./public/AirDrawing/AirDrawing");
 const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
 const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
-
-const user = require('./src/Routes/user')
-const game = require('./src/Routes/Game')
-// const achievement = require('./src/Routes/Achievement')
-
-app.use('/user',user)
-app.use('/game',game)
-// app.use('/achievement',achievement)
+const user = require("./src/Routes/User");
+const game = require("./src/Routes/Game");
+app.use("/user", user);
+app.use("/game", game);
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);

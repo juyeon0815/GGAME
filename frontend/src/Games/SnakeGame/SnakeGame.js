@@ -17,7 +17,7 @@ START_BUTTON.y = (4 * CANVAS_HEIGHT) / 5 - START_BUTTON.height / 2;
 
 const RESTART_BUTTON = { width: 200, height: 50 };
 RESTART_BUTTON.x = CANVAS_WIDTH / 3;
-RESTART_BUTTON.y = (4 * CANVAS_HEIGHT) / 5 - START_BUTTON.height / 2;
+RESTART_BUTTON.y = (4 * CANVAS_HEIGHT) / 5;
 
 class SnakeGame extends Component {
   initialSnakeBody = [
@@ -109,9 +109,15 @@ class SnakeGame extends Component {
     this.clearCanvas(ctx);
     this.setState({snakeBody: null, food: null, isNew: false});
     // 게임 결과 보내기
+    console.log('게임 결과 보내기 post')
     axios({
       method: 'post',
+<<<<<<< HEAD
       url: 'https://j5a104.p.ssafy.io/game/snake/rank',
+=======
+      url: 'http://localhost:5000/game/rank',
+      params:{type: 'snake'},
+>>>>>>> 24c98408db591cadb74a631a6176492b402a13fb
       data: { email: this.state.email, score: score },
       headers: { 'Content-Type': 'application/json' },
     })
@@ -125,31 +131,49 @@ class SnakeGame extends Component {
     ctx.fillRect(50, 50, CANVAS_WIDTH-100, CANVAS_HEIGHT-100);
 
     ctx.fillStyle = "black";
-    ctx.font = "50px arcade-font";
+    ctx.font = "50px MaplestoryOTFBold";
     ctx.fillText(
       `RANKING`,
       CANVAS_WIDTH / 3,
       100
     );
+    ctx.font = "30px MaplestoryOTFBold";
+    ctx.fillText(
+      `RANK  :     SCORE  :     NAME`,
+      CANVAS_WIDTH / 6,
+      150
+    );
 
-    axios.get('https://j5a104.p.ssafy.io/game/snake/rank')
+    console.log('랭킹 받아오기 get')
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'snake'}})
       .then((Response) => {
         const res = Response.data.data
+        let meCheck = false
         for (let i = 0; i < res.length; i++) {
           // 나일 경우 다르게 표시하기
           if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
+            ctx.fillStyle = "red";
             ctx.fillText(
-              `NEW! ${i+1}위 : ${res[i]['name']}     ${res[i]['score']}점`,
-              CANVAS_WIDTH / 3,
-              100 + 50*(i+1)
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}       NEW!`,
+              CANVAS_WIDTH / 5,
+              150 + 50*(i+1)
             );
+            meCheck = true;
           } else {
             ctx.fillText(
-              `${i+1}위 : ${res[i]['name']}     ${res[i]['score']}점`,
-              CANVAS_WIDTH / 3,
-              100 + 50*(i+1)
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}`,
+              CANVAS_WIDTH / 5,
+              150 + 50*(i+1)
             );
           }
+        }
+        if (!meCheck) {
+          ctx.fillStyle = "red";
+          ctx.fillText(
+            `NEW!                ${my_score}점                ${this.state.myName}`,
+            CANVAS_WIDTH / 5,
+            150 + 50*(res.length+1)
+          );
         }
         this.checkNewAchievement()
       })
@@ -163,19 +187,23 @@ class SnakeGame extends Component {
       START_BUTTON.width,
       START_BUTTON.height
     );
-    ctx.font = "20px arcade-font";
+    ctx.font = "25px MaplestoryOTFBold";
     ctx.fillStyle = "black";
     ctx.fillText("다시하기", (2*CANVAS_WIDTH) / 5, (4 * CANVAS_HEIGHT) / 5 + 25);
   }
 
   checkNewAchievement() {
     // 업적달성 확인
+<<<<<<< HEAD
     axios.get("https://j5a104.p.ssafy.io/game/snake/new-achievement", {params:{email : this.state.email}})
+=======
+    console.log('업적확인 get')
+    axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
+>>>>>>> 24c98408db591cadb74a631a6176492b402a13fb
     .then((res)=>{
       if (res.data.data.length >= 1) {
         this.setState({ showSA: true, achievement: res.data.data})
       }
-      console.log(res)
     }).catch((error)=>{
         console.log("error :", error);
     })
@@ -202,7 +230,7 @@ class SnakeGame extends Component {
   displayScore = ctx => {
     const { score } = this.state;
     ctx.fillStyle = "black";
-    ctx.font = "30px arcade-font";
+    ctx.font = "30px MaplestoryOTFBold";
     ctx.fillText(`Score: ${score}`, CANVAS_WIDTH * 0.5, 30);
   };
 
@@ -358,7 +386,7 @@ class SnakeGame extends Component {
       START_BUTTON.width,
       START_BUTTON.height
     );
-    ctx.font = "20px arcade-font";
+    ctx.font = "20px MaplestoryOTFBold";
     ctx.fillStyle = "black";
     ctx.fillText("Click to Start", START_BUTTON.x + 30, START_BUTTON.y + 30);
 
