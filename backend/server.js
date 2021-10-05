@@ -28,9 +28,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
-// })
+app.get('/callback', function(req, res) {
+  console.log("=========/callback");
+})
  
 
 const io = require("socket.io")(https, {
