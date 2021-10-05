@@ -3,6 +3,7 @@ import axios from 'axios'
 import VisionRecognition from './VisionRecognition';
 import SnakeTitle from '../../assets/images/snake_title.GIF'
 import SnakeImg from '../../assets/images/snake_main.png'
+import SnakeAchievement from './SnakeAchievement'
 import './SnakeGame.css';
 
 // game constants
@@ -37,6 +38,10 @@ class SnakeGame extends Component {
       gameActive: false,
       direction: -1,
       isNew: true,
+      email: null,
+      myName: null,
+      showSA: false,
+      achievement: []
     }
     this.handleDirectionChange = this.handleDirectionChange.bind(this)
   }
@@ -45,6 +50,22 @@ class SnakeGame extends Component {
     const cvs = document.getElementById('canvas');
     const ctx = cvs.getContext('2d');
     this.setState({ ctx: ctx });
+    // 회원 정보 얻어오기
+    let token = sessionStorage.getItem('token')
+    axios.get("http://localhost:5000/user/me",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result)=>{
+      this.setState({ email: result.data.data[0].email})
+      this.setState({ myName: result.data.data[0].name})
+    })
+    .catch((error) => {
+      // 로그인 안되어 있을 시 로그인창으로 되돌리기
+      console.log(error)
+      alert('로그인이 필요한 페이지입니다.')
+      document.location.href="/login"
+    })
 
     this.clearCanvas(ctx);
     this.drawStartButton(ctx);
@@ -87,7 +108,15 @@ class SnakeGame extends Component {
     this.setState({ gameActive: false }, () => clearInterval(gameInterval));
     this.clearCanvas(ctx);
     this.setState({snakeBody: null, food: null, isNew: false});
-    this.drawRanking(ctx, score);
+    // 게임 결과 보내기
+    axios({
+      method: 'post',
+      url: 'http://localhost:5000/game/snake/rank',
+      data: { email: this.state.email, score: score },
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then( response => { this.drawRanking(ctx, score) } )
+      .catch( response => { console.log(response) } );
   };
 
   drawRanking = (ctx, my_score) => {
@@ -103,28 +132,26 @@ class SnakeGame extends Component {
       100
     );
 
-    // mock server
-    axios.get('https://bf644dcb-5b6d-4aef-bed5-a659391a90f8.mock.pstmn.io/ranking')
+    axios.get('http://localhost:5000/game/snake/rank')
       .then((Response) => {
-        const res = Response.data
-        let temp = 0 
+        const res = Response.data.data
         for (let i = 0; i < res.length; i++) {
-          // 내 점수와 비교
-          if (my_score >= res[i]['score']) {
+          // 나일 경우 다르게 표시하기
+          if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
             ctx.fillText(
-              `Your Score : ${my_score}`,
+              `NEW! ${i+1}위 : ${res[i]['name']}     ${res[i]['score']}점`,
               CANVAS_WIDTH / 3,
               100 + 50*(i+1)
             );
-            temp += 1
+          } else {
+            ctx.fillText(
+              `${i+1}위 : ${res[i]['name']}     ${res[i]['score']}점`,
+              CANVAS_WIDTH / 3,
+              100 + 50*(i+1)
+            );
           }
-
-          ctx.fillText(
-            `${res[i]['name']} : ${res[i]['score']}`,
-            CANVAS_WIDTH / 3,
-            100 + 50*(i+temp+1)
-          );
         }
+        this.checkNewAchievement()
       })
       .catch((Error)=>{console.log(Error)})
 
@@ -140,6 +167,20 @@ class SnakeGame extends Component {
     ctx.fillStyle = "black";
     ctx.fillText("다시하기", (2*CANVAS_WIDTH) / 5, (4 * CANVAS_HEIGHT) / 5 + 25);
   }
+
+  checkNewAchievement() {
+    // 업적달성 확인
+    axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
+    .then((res)=>{
+      if (res.data.data.length >= 1) {
+        this.setState({ showSA: true, achievement: res.data.data})
+      }
+      console.log(res)
+    }).catch((error)=>{
+        console.log("error :", error);
+    })
+  }
+  
 
   drawGame = ctx => {
     let currentFrame = 0;
@@ -161,7 +202,7 @@ class SnakeGame extends Component {
   displayScore = ctx => {
     const { score } = this.state;
     ctx.fillStyle = "black";
-    ctx.font = "30px Arial";
+    ctx.font = "30px arcade-font";
     ctx.fillText(`Score: ${score}`, CANVAS_WIDTH * 0.5, 30);
   };
 
@@ -386,6 +427,11 @@ class SnakeGame extends Component {
           onClick={this.handleClick}/> 
         <VisionRecognition 
           onDirectionChange={this.handleDirectionChange}
+        />
+        <SnakeAchievement
+          isOpen={this.state.showSA}
+          close={() => this.setState({showSA: false})}
+          achievement={this.state.achievement}
         />
       </div>
     );

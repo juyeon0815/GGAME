@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import PongGameView from './PongGameView';
 
 const Pong = () => {
@@ -6,7 +6,6 @@ const Pong = () => {
     <div>
       <h1>PingPong</h1>
         <div>
-        <p id="game_menu"></p>
         <PongGameView />
         </div>
     </div>
