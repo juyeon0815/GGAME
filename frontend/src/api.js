@@ -18,16 +18,12 @@ const UserMeApi = () => {
   })
 }
 
-const getAchievement = () => {
+const getAchievement = async () => {
   let email = localStorage.getItem('email')
-  axios.get("http://localhost:5000/user/achievement", {
+  return await axios.get("http://localhost:5000/user/achievement", {
     params: {
       email: email
     }
-  }).then(res => {
-    return res.data.data
-  }).catch(err => {
-    console.log(err)
   })
 }
   
