@@ -14,16 +14,22 @@ const options ={
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
 
-app.use("/game", function(req, res, next){
-  res.sendFile(path.join(__dirname + '/src/Routes', 'Game'));
+app.use("/", function(req, res, next){
   console.log("start")
-  // next();
+  next();
+})
+app.use("/game", function (req, res) {
+  console.log("===========================");
+  console.log("===========================");
+
+  console.log("===========================");
+
 })
 
-// const user = require("./src/Routes/User");
-// const game = require("./src/Routes/Game");
-// app.use("/user", user);
-// app.use("/game", game);
+const user = require("./src/Routes/User");
+const game = require("./src/Routes/Game");
+app.use("/user", user);
+app.use("/game", game);
 
 // back/app.js
 const httpServer = require("http").createServer();
