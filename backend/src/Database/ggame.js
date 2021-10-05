@@ -1,11 +1,14 @@
 const mysql = require("mysql");
 const conn = {
-  host: "localhost",
-  port: "3306",
-  user: "GGAME",
-  password: "GGAME",
-  database: "ggame",
-};
+    host: '3.38.102.40',
+    port: '3306',
+    user: 'ggame',
+    password: 'Xptmxm1212!@',
+    database: 'ggame'
+
+}
+
+
 
 module.exports = {
   init: function () {

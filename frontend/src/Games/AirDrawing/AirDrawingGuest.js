@@ -13,7 +13,7 @@ const AirDrawingGuest = (props) => {
   const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
-    const socket = io.connect("http://localhost:80/air-drawing");
+    const socket = io.connect("https://j5a104.p.ssafy.io/air-drawing");
     socket.emit("join room", roomNumber, nickName);
 
     socket.on("start game", () => {

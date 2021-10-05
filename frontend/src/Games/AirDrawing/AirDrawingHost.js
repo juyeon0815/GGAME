@@ -18,7 +18,7 @@ const AirDrawingHost = (props) => {
   const enterCode = useRef();
 
   useEffect(() => {
-    socket = io.connect("http://localhost:80/air-drawing");
+    socket = io.connect("https://j5a104.p.ssafy.io/air-drawing");
     socket.emit("join room", roomNumber, nickName);
 
     socket.on("userList", (data) => {

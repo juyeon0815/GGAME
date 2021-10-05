@@ -1,54 +1,68 @@
-const express = require("express");
-// const path = require("path"); // react build 파일에 접근하기 위해 필요함
-const port = process.env.PORT || 5000;
-
+const express = require('express');
+const path = require("path");
 const app = express();
 
 const cors = require('cors')
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "../fronted/build")));
+//HTTPS 활성화 부분
+const fs =require('fs');
+
+const options ={
+  ca: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
+};
+
+// back/app.js
+const httpServer = require("http").createServer();
+const https = require("https").createServer(options,app);
  
-// app.use("/", function (req, res, next) {
-//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-// });
+// /client/build 폴더를 static 파일로 사용할 수 있도록 함
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+//요청
 app.get("/", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-app.listen(port, function () {
-  console.log("server works on port :" + port);
-});
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
+// })
+ 
 
-// back/app.js
-const httpServer = require("http").createServer();
-
-const io = require("socket.io")(httpServer, {
+const io = require("socket.io")(https, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://j5a104.p.ssafy.io",
     methods: ["GET", "POST"],
   },
 });
-var bodyParser = require("body-parser");
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-const airDrawingModule = require("./public/AirDrawing/AirDrawing");
-const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+app.use(bodyParser.json())
 
-const user = require("./src/Routes/User");
-const game = require("./src/Routes/Game");
-const achievement = require("./src/Routes/Achievement");
-app.use("/user", user);
-app.use("/game", game);
-app.use("/achievement", achievement);
+// const pongModule = require('./public/Pong/Pong');
+// const charModule = require("./public/javascripts/Charade/Charade.js");
+// const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
+// const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
-airDrawingModule.airDrawing(io, airDrawingStateModule);
-requestPongModule.airDrawingRequest(app, airDrawingStateModule);
+const user = require('./src/Routes/user')
+const game = require('./src/Routes/Game')
+// const achievement = require('./src/Routes/Achievement')
+
+app.use('/user',user)
+app.use('/game',game)
+// app.use('/achievement',achievement)
+
+// pongModule.airDrawing(io,pongStateModule, options);
+// charModule.initChar(io,pongStateModule);
+// requestPongModule.airDrawingRequest(app, pongStateModule, options);
+
 httpServer.listen(80);
+https.listen(443);
 
 module.exports = app;

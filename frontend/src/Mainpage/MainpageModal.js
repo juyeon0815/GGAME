@@ -115,7 +115,7 @@ const EnterRoomModal = (props) => {
     const enterRoom = document.querySelector("#enter_room_guest").value;
 
     axios
-      .get("http://localhost:5000/air-drawing/room-exist", {
+      .get("https://j5a104.p.ssafy.io/air-drawing/room-exist", {
         params: {
           roomId: parseInt(enterRoom),
         },
