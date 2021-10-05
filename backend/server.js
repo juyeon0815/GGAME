@@ -15,7 +15,7 @@ const options ={
 };
 
 app.use("/game", function(req, res, next){
-  res.sendFile(path.join(__dirname+'/src/Routes/Game'))
+  res.sendFile(path.join(__dirname + '/src/Routes', 'Game'));
   console.log("start")
   // next();
 })
