@@ -5,11 +5,7 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
-
-// back/app.js
-const httpServer = require("http").createServer();
-const https = require("https");
-//HTTPS 활성화 부분 
+//HTTPS 활성화 부분
 const fs =require('fs');
 
 const options ={
@@ -17,6 +13,12 @@ const options ={
   key: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem')
 };
+
+// back/app.js
+const httpServer = require("http").createServer();
+const https = require("https").createServer(options,app);
+ 
+
 
 // /client/build 폴더를 static 파일로 사용할 수 있도록 함
 app.use(express.static(path.join(__dirname, "../frontend/build")));
@@ -64,16 +66,10 @@ pongModule.airDrawing(io,pongStateModule, options);
 requestPongModule.airDrawingRequest(app, pongStateModule, options);
 
 
-// app.listen(5000, function(){
-//   console.log("server port :"+"443")
-// })
-// var io = require('socket.io')(server);
-// var server = https.createServer(options, app).listen(443);
-// server.listen(443);
 
 
 // io.listen(app, options);
 httpServer.listen(80);
-https.createServer(options,app).listen(443);
+https.listen(443);
 
 module.exports = app;
