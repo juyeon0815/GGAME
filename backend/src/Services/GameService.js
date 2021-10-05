@@ -3,7 +3,8 @@ const conn = ggame.init();
 
 ggame.connect(conn);
 
-exports.getRank =(type)=>{
+exports.getRank = (type) => {
+    console.log("getRank, type : ",type );
     return new Promise((resolve, reject)=>{
         console.log("type :", type)
         let sql;

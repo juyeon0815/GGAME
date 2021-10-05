@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const GameController = require('../Controllers/GameController')
 
-console.log("game===============");
+// console.log("game===============");
 
 router.get('/rank', GameController.getRank)
 router.post('/rank',GameController.newRank)
