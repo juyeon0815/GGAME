@@ -93,6 +93,8 @@ function MultiGameCanvas(props) {
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
       />
+      <br />
+
       <button className="btn-reset" onClick={sendClear}>
         초기화
       </button>

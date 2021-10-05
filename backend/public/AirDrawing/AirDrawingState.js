@@ -1,5 +1,16 @@
 let clientList = {}; // numClients[roomId] = {a,b,c} 유저이름 목록
-let problemList = ["문제1", "문제2", "문제3", "문제4", "문제5", "문제6", "문제7", "문제8"];
+let problemList = [
+  "집",
+  "자동차",
+  "태양",
+  "꽃",
+  "하트",
+  "구름",
+  "강아지",
+  "기타",
+  "사다리",
+  "바나나",
+];
 
 function isExistRoom(roomId) {
   return roomId in clientList;
