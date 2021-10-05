@@ -1,0 +1,48 @@
+.btn-start {
+  border-radius: 4px;
+  background-color: #421ef4;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font-size: 26px;
+  font-family: "MaplestoryOTFBold";
+
+  padding: 20px;
+  width: 230px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+@font-face {
+  font-family: "MaplestoryOTFBold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.btn-start span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.btn-start span:after {
+  content: "\00bb";
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.btn-start:hover span {
+  padding-right: 25px;
+}
+
+.btn-start:hover span:after {
+  opacity: 1;
+  right: 0;
+}

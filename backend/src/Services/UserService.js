@@ -60,7 +60,6 @@ exports.getToken = async(code)=>{
                 else console.log(result)
             })
         }else console.log("이미회원가입되어있어서 로그인만~")
-        conn.end()
     })
     return token.data.access_token;
     
@@ -108,7 +107,11 @@ exports.userMe = async(token) =>{
         let sql = "select * from user where user_id=?"
         let params = [user_id]
         conn.query(sql,params,function(error, result){
-            if(error) return reject(error)
+            if(error) {
+                console.log(error);
+                return reject(error)
+
+            }
             else return resolve(result)
         })
     })

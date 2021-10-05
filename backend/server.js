@@ -2,7 +2,7 @@ const express = require('express');
 const path = require("path");
 const app = express();
 
-const cors = require("cors");
+const cors = require('cors')
 app.use(cors());
 
 //HTTPS 활성화 부분
@@ -45,10 +45,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json())
 
-const pongModule = require("./public/AirDrawing/AirDrawing");
+// const pongModule = require('./public/Pong/Pong');
 // const charModule = require("./public/javascripts/Charade/Charade.js");
-const pongStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+// const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
+// const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
 
 const user = require('./src/Routes/user')
 const game = require('./src/Routes/Game')

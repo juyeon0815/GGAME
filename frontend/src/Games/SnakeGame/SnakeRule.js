@@ -2,10 +2,11 @@ import React from "react"
 import Modal from '../../Common/Modal'
 
 class SnakeRule extends React.Component {
+
   render() {
     const {isOpen, close} = this.props
     return (
-      <Modal isOpen={isOpen} close={close} footerBtn="submit">
+      <Modal isOpen={isOpen} close={close} footerBtn={close} footerBtnName="close">
         <h1>게임 방법</h1>
         <p>GGAME의 Snake Game에서는 상하좌우 버튼을 나만의 모션으로 등록하여 사용해요!</p>
         <p>위, 아래, 왼쪽, 오른쪽 버튼을 클릭하여 해당 모션을 등록하세요.</p>
@@ -18,6 +19,5 @@ class SnakeRule extends React.Component {
     )
   }
 }
-export {
-  SnakeRule,
-}
+
+export default SnakeRule

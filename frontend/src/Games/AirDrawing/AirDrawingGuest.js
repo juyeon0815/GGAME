@@ -10,6 +10,7 @@ const AirDrawingGuest = (props) => {
   const roomNumber = props.history.location.roomId;
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
+  const [currentUser, setCurrentUser] = useState();
 
   useEffect(() => {
     const io = require('socket.io-client');
@@ -24,15 +25,32 @@ const AirDrawingGuest = (props) => {
         roomId: roomNumber,
       });
     });
+    socket.on("userList", (data) => {
+      setCurrentUser(data.length);
+    });
   }, []);
+
+  const center = {
+    textAlign: "center",
+  };
 
   return (
     <div>
-      <div>Airdrawing Waiting Room</div>
-      <GameCanvas isDrawing={isDrawing} pos={pos} />
-      <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
-      <div>
-        <div>NAME : {nickName}</div>
+      <div style={center}>
+        <h1>대기실 </h1>
+        <div>
+          <h1>NAME : {nickName}</h1>
+        </div>
+        <div className="game-row">
+          <div className="game-left">
+            <GameCanvas isDrawing={isDrawing} pos={pos} />
+          </div>
+          <div className="game-right">
+            <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
+          </div>
+        </div>
+        <h1>{currentUser}명 대기중..</h1>
+        <h2>잠시만 기다려 주세요!</h2>
       </div>
     </div>
   );

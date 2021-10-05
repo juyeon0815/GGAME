@@ -25,6 +25,7 @@ exports.getSnakeAchievement = async(req,res)=>{
 
 exports.userMe = async(req, res) =>{
     let token = req.headers.authorization.replace("Bearer ", "");
+    console.log(token)
     try{
         await UserService.userMe(token).then((result)=>{
             res.status(200).json({data:result})
