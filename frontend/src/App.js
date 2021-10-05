@@ -12,7 +12,7 @@ import AirDrawing from "./Games/AirDrawing/AirDrawing";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
 
-import LoginRedirect from "./Mainpage/LoginRedirect"
+import LoginRedirect from "./Mainpage/LoginRedirect";
 
 function App() {
   const user = "user";
@@ -45,7 +45,6 @@ function App() {
         <Route path="/air-drawing/guest" component={AirDrawingGuest}></Route>
         <Route path="/air-drawing" component={AirDrawing}></Route>
         <Route path="/callback/kakao" component={LoginRedirect}></Route>
-
       </Switch>
     </div>
   );

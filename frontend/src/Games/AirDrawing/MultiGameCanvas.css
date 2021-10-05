@@ -1,0 +1,9 @@
+.drawing-canvas {
+  background: #fff;
+  border: 10px solid rgba(42, 61, 208, 0.311);
+  border-radius: 30px;
+  overflow: hidden;
+
+  /* this fixes the overflow:hidden in Chrome/Opera */
+  -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}

@@ -27,17 +27,7 @@ class VideoConference extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.username, this.props.roomId);
-    // this.setState(
-    //   {
-    //     mySession: this.props.roomId,
-    //     myUserName: this.props.username,
-    //   },
-    //   function () {
-    //   }
-    // );
     this.joinSession();
-
     window.addEventListener("beforeunload", this.onbeforeunload);
   }
 
@@ -70,11 +60,8 @@ class VideoConference extends Component {
 
   joinSession() {
     // --- 1) Get an OpenVidu object ---
-
     this.OV = new OpenVidu();
-
     // --- 2) Init a session ---
-
     this.setState(
       {
         session: this.OV.initSession(),
@@ -90,6 +77,7 @@ class VideoConference extends Component {
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
+          console.log(subscriber);
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
@@ -182,33 +170,31 @@ class VideoConference extends Component {
     const myUserName = this.state.myUserName;
 
     return (
-      <div className="container">
+      <div className="video-container">
         {this.state.session !== undefined ? (
           <div id="session">
-            <div id="session-header">
-              <h1 id="session-title">{mySessionId}</h1>
-              <input
-                className="btn btn-large btn-danger"
-                type="button"
-                id="buttonLeaveSession"
-                onClick={this.leaveSession}
-                value="Leave session"
-              />
-            </div>
-
-            {this.state.mainStreamManager !== undefined ? (
+            {/* {this.state.mainStreamManager !== undefined ? (
+              // 그림 그리는 사람 카메라
               <div id="main-video" className="col-md-6">
                 <UserVideoComponent streamManager={this.state.mainStreamManager} />
               </div>
-            ) : null}
+            ) : null} */}
+
             <div id="video-container" className="col-md-6">
               {this.state.publisher !== undefined ? (
-                <div className="stream-container col-md-6 col-xs-6">
+                <div
+                  className="stream-container col-md-6 col-xs-6"
+                  onClick={() => this.handleMainVideoStream(this.state.publisher)}
+                >
                   <UserVideoComponent streamManager={this.state.publisher} />
                 </div>
               ) : null}
               {this.state.subscribers.map((sub, i) => (
-                <div key={i} className="stream-container col-md-6 col-xs-6">
+                <div
+                  key={i}
+                  className="stream-container col-md-6 col-xs-6"
+                  onClick={() => this.handleMainVideoStream(sub)}
+                >
                   <UserVideoComponent streamManager={sub} />
                 </div>
               ))}
