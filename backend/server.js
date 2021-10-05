@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 app.get('/callback/kakao', function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
   console.log("=========/callback");
-})
+});
  
 
 const io = require("socket.io")(https, {
