@@ -6,8 +6,9 @@
   flex-wrap: wrap;
   overflow: auto;
 }
-.login-container::before, .login-container::after {
-  content: '';
+.login-container::before,
+.login-container::after {
+  content: "";
 }
 .logo-style {
   display: block;
@@ -23,4 +24,27 @@
 }
 .text-align {
   text-align: center;
+}
+
+@font-face {
+  font-family: "CookieRun-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.ggame-logo {
+  text-align: center;
+  font-size: 200pt;
+  font-family: "CookieRun-Regular";
+  text-transform: uppercase;
+  background: linear-gradient(to right, #30cfd0 0%, #330867 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ggame-logo-sub {
+  text-align: center;
+  color: gray;
 }

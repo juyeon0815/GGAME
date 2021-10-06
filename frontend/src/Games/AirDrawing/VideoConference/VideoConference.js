@@ -32,6 +32,7 @@ class VideoConference extends Component {
   }
 
   componentWillUnmount() {
+    this.leaveSession();
     window.removeEventListener("beforeunload", this.onbeforeunload);
   }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import MultiGameCanvas from "./MultiGameCanvas";
 import GestureRecognition from "./GestureRecognition";
@@ -49,8 +50,50 @@ const AirDrawingHost = (props) => {
     });
 
     // 게임이 종료되었는가?
-    props.location.socket.on("game end", (state) => {
+    props.location.socket.on("game end", (data) => {
       setGamePlaying(false);
+
+      let myRank, myScore;
+
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        console.log("오잉ㅇ");
+        if (data[i].nickname === nickName) {
+          console.log("오잉");
+          myRank = i + 1;
+          myScore = data[i].score;
+        }
+      }
+
+      let token = sessionStorage.getItem("token");
+      axios
+        .get("http://localhost:5000/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          axios({
+            method: "post",
+            url: "http://localhost:5000/game/air-draw",
+            data: { email: res.data.data[0].email, rank: myRank, score: myScore },
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => {
+              axios
+                .get("http://localhost:5000/game/air-draw/new-achievement", {
+                  params: { email: res.data.data[0].email },
+                })
+                .then((res) => {})
+                .catch((error) => {});
+            })
+            .catch((response) => {
+              console.log(response);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
 
     props.location.socket.on("score board", (data) => {
