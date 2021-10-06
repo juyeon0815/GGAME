@@ -104,10 +104,11 @@ function MultiGameCanvas(props) {
         height={CANVAS_HEIGHT}
       />
       <br />
-
-      <button className="btn-reset" onClick={sendClear}>
-        초기화
-      </button>
+      {props.drawer.nickname === props.nickname ? (
+        <button className="btn-reset" onClick={sendClear}>
+          초기화
+        </button>
+      ) : null}
     </div>
   );
 }
