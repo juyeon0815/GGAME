@@ -44,7 +44,7 @@ exports.airDrawing = function (io, state) {
         } else {
           console.log(idx + 1, "번째 그리는 사람 : ", nxtDrawer);
           console.log(idx + 1, "번째 문제 : ", nxtProblem);
-          namespace.to(socket.roomId).emit("receive drawer", nxtDrawer); // 다음 제출자 알림
+          namespace.to(socket.roomId).emit("receive drawer", nxtDrawer, socket.nickname, answer); // 다음 제출자 알림
           namespace.to(nxtDrawer.socketId).emit("receive problem", nxtProblem); // 다음 순서에게 제시어 전송
 
           namespace.to(socket.roomId).emit("next order"); // 다음 차례
@@ -64,6 +64,7 @@ exports.airDrawing = function (io, state) {
     socket.on("join room", (roomId, name) => {
       //disconnect할때 쉽게 방찾기 위해서 설정
       socket.roomId = roomId;
+      socket.nickname = name;
       socket.join(roomId);
 
       //방이 존재하면 입장, 없으면 생성하고 입장
