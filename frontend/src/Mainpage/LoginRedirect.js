@@ -16,7 +16,7 @@ const LoginRedirect = () => {
         }).catch((error)=>{
             console.log("error :", error);
         })
-      })
+      },[])
 
       return(
           <div></div>
