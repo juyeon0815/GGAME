@@ -54,12 +54,12 @@ const AirDrawingGuest = (props) => {
         <h1>{currentUser}명 대기중..</h1>
         <h2>잠시만 기다려 주세요!</h2>
 
-        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+        <button className="btn-airdraw btn-airdraw-rule" onClick={() => setShowPR(true)}>
           게임방법
         </button>
         <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
         <Link to="/">
-          <button className="btn-snake btn-snake-out">게임 나가기</button>
+          <button className="btn-airdraw btn-airdraw-out">게임 나가기</button>
         </Link>
         {/*  */}
       </div>
