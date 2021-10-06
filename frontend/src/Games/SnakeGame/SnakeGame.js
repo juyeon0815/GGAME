@@ -143,7 +143,7 @@ class SnakeGame extends Component {
       .get("https://j5a104.p.ssafy.io/game/rank", { params: { type: "snake" } })
       .then((Response) => {
         const res = Response.data.data;
-        const resLength = (res.length <5 ? 5 : res.length)
+        const resLength = (res.length <5 ? res.length : 5)
         let meCheck = false;
         for (let i = 0; i < resLength; i++) {
           // 나일 경우 다르게 표시하기
