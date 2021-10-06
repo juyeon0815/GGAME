@@ -57,9 +57,7 @@ const AirDrawingHost = (props) => {
 
       console.log(data);
       for (let i = 0; i < data.length; i++) {
-        console.log("오잉ㅇ");
         if (data[i].nickname === nickName) {
-          console.log("오잉");
           myRank = i + 1;
           myScore = data[i].score;
         }
@@ -107,6 +105,9 @@ const AirDrawingHost = (props) => {
       }
       setDrawer(d);
     });
+    return () => {
+      props.location.socket.close();
+    };
   }, []);
 
   return (

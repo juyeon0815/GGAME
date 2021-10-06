@@ -45,6 +45,15 @@ function MultiGameCanvas(props) {
   }, [ctx]);
 
   useEffect(() => {
+    if (isDrawing) {
+      document.querySelector("#multi-canvas").style.border = "5px solid red";
+    } else {
+      document.querySelector("#multi-canvas").style.border = "5px solid blue";
+    }
+    return () => {};
+  }, [isDrawing]);
+
+  useEffect(() => {
     let x = props.pos[0];
     let y = props.pos[1];
 
@@ -87,6 +96,7 @@ function MultiGameCanvas(props) {
       <canvas
         ref={canvasRef}
         className="drawing-canvas"
+        id="multi-canvas"
         tabIndex="0"
         onKeyDown={startDrawing}
         onKeyUp={finishDrawing}
