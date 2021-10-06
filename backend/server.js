@@ -36,13 +36,13 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 //요청
 app.get("/", (req, res) => {
   // index.html 파일 응답
-  res.sendFile(path.join(__dirname, "../frontend/build"));
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
 app.get("/*", (req, res) => {
   console.log(__dirname);
   // index.html 파일 응답
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/build"));
 });
 
 app.get("/callback/kakao", function (req, res) {
