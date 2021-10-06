@@ -40,6 +40,9 @@
   text-align: center;
   justify-content: center;
   margin-left: 10px;
+  margin-bottom: 100px;
+  margin-top: 20px;
+  /* overflow-x: auto; */
 }
 
 .score-board > div:nth-child(1) {
@@ -51,7 +54,7 @@
 }
 
 .score-board > div:nth-child(3) {
-  background-color: brown;
+  background-color: #cc6633;
 }
 
 .score-board .score {
@@ -170,12 +173,15 @@ div.game-right {
 }
 
 .game-info {
+  display: block;
+  margin-left: 45%;
 }
 
 .score {
-  background-color: #b3b3b39e;
+  background-color: rgb(93, 163, 255);
   border-radius: 50px;
-  width: 150px;
+  /* width: 150px; */
+  width: fit-content;
   height: 40px;
   line-height: 40px;
 }
