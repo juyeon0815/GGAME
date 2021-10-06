@@ -2,8 +2,8 @@ const mysql = require("mysql");
 const conn = {
   host: "localhost",
   port: "3306",
-  user: "root",
-  password: "ssafy",
+  user: "GGAME",
+  password: "GGAME",
   database: "ggame",
 };
 
