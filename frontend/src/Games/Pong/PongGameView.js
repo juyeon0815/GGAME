@@ -330,11 +330,11 @@ class PongGameView extends Component {
       this.play();
     }); // canvas 클릭 시 게임 시작
 
-    canvas.addEventListener("mousemove", (event) => {
-      // paddle mouse로 조작가능
-      const scale = event.offsetY / event.target.getBoundingClientRect().height;
-      this.players[0].pos.y = canvas.height * scale;
-    });
+    // canvas.addEventListener("mousemove", (event) => {
+    //   // paddle mouse로 조작가능
+    //   const scale = event.offsetY / event.target.getBoundingClientRect().height;
+    //   this.players[0].pos.y = canvas.height * scale;
+    // });
   }
 
   play() {
