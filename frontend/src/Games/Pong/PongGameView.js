@@ -44,7 +44,7 @@ class PongGameView extends Component {
       boardColor: "#202020",
       direction: 2, //0 = UP, 1 = DOWN, 2 = IDDLE //초기 dirction 멈춤
       step : 1,
-      showPA: true,
+      showPA: false,
       achievement: []
     };
     this.initialSpeed = 250;
