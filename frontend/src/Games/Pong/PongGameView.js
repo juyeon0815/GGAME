@@ -11,6 +11,7 @@
 import React, { Component } from "react";
 import Ball from "./Ball";
 import Player from "./Player";
+import PongAchievement from "./PongAchievement";
 import axios from 'axios'
 import "./Pong.css";
 
@@ -42,7 +43,9 @@ class PongGameView extends Component {
       round: 0,
       boardColor: "#202020",
       direction: 2, //0 = UP, 1 = DOWN, 2 = IDDLE //초기 dirction 멈춤
-      step : 1
+      step : 1,
+      showPA: true,
+      achievement: []
     };
     this.initialSpeed = 250;
     this.ball = null;
@@ -250,6 +253,18 @@ class PongGameView extends Component {
     canvas.addEventListener("click", () => {
       this.initialize();
     });
+  }
+
+  checkNewAchievement() {
+    // 업적달성 확인
+    axios.get("http://localhost:5000/game/pong/new-achievement", {params:{email : this.state.email}})
+    .then((res)=>{
+      if (res.data.data.length >= 1) {
+        this.setState({ showPA: true, achievement: res.data.data})
+      }
+    }).catch((error)=>{
+        console.log("error :", error);
+    })
   }
 
   initialize() {
@@ -466,6 +481,11 @@ class PongGameView extends Component {
         <PongRule
           isOpen = {this.state.showPR}
           close={()=> this.setState({showPR:false})}
+        />
+        <PongAchievement
+          isOpen={this.state.showPA}
+          close={() => this.setState({showPA: false})}
+          achievement={this.state.achievement}
         />
       </div>
     );
