@@ -10,11 +10,11 @@ app.use(express.json());
 //HTTPS 활성화 부분
 const fs = require("fs");
 
-// const options = {
-//   ca: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem"),
-//   key: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem"),
-//   cert: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem"),
-// };
+const options = {
+  ca: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/fullchain.pem"),
+  key: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/j5a104.p.ssafy.io/cert.pem"),
+};
 
 // app.use("/", function(req, res, next){
 //   console.log("start")
@@ -28,7 +28,7 @@ app.use("/game", game);
 
 // back/app.js
 const httpServer = require("http").createServer();
-const https = require("https").createServer( app);
+const https = require("https").createServer(options, app);
 
 // /client/build 폴더를 static 파일로 사용할 수 있도록 함
 app.use(express.static(path.join(__dirname, "../frontend/build")));
