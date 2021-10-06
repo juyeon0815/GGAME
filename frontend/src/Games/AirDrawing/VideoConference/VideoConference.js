@@ -54,10 +54,6 @@ class VideoConference extends Component {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
-      const newSubs = subscribers;
-      this.setState({
-        subscribers: subscribers,
-      });
     }
   }
 
@@ -83,11 +79,6 @@ class VideoConference extends Component {
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
-          const newSubs = subscribers;
-          console.log("@@@@@@@@@@@@@@@@@@@@@@@@@", subscribers);
-          this.setState({
-            subscribers: subscribers,
-          });
         });
 
         // On every Stream destroyed...
@@ -239,7 +230,6 @@ class VideoConference extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {
