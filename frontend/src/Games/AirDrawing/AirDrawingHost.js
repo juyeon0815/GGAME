@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
+import { AirDrawingRule } from "./AirDrawingRule";
 import "./AirDrawingHost.css";
 let socket;
 
@@ -14,6 +15,7 @@ const AirDrawingHost = (props) => {
   const [currentUser, setCurrentUser] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
+  const [showPR, setShowPR] = useState();
 
   const enterCode = useRef();
 
@@ -88,9 +90,14 @@ const AirDrawingHost = (props) => {
           </div>
         </div>
 
-        <button class="btn-start" onClick={gameStart}>
+        <button className="btn-start" onClick={gameStart}>
           <span>Game Start</span>
         </button>
+
+        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+          게임방법
+        </button>
+        <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
         <div>{currentUser}명 대기중..</div>
       </div>
     </div>
