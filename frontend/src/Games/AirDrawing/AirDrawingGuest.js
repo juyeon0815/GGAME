@@ -61,6 +61,7 @@ const AirDrawingGuest = (props) => {
         <Link to="/">
           <button className="btn-snake btn-snake-out">게임 나가기</button>
         </Link>
+        {/*  */}
       </div>
     </div>
   );
