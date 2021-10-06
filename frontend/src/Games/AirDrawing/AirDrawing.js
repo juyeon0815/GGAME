@@ -110,7 +110,7 @@ const AirDrawingHost = (props) => {
       props.location.socket.close();
     };
   }, []);
-  //
+  ////
 
   return (
     <div className="air-drawing">
