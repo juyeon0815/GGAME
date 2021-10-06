@@ -20,8 +20,6 @@ const MakeRoomModal = (props) => {
       alert("방 이름과 닉네임은 필수 입력 사항입니다.");
     } else {
       // 서버에 소켓 넘버 요청
-      console.log("방 이름 : ", newRoom);
-      console.log("닉네임 : ", newNickname);
       setRoomNumber(parseInt(Math.floor(Math.random() * (10000 - 1000) + 1000)));
       setNickName(newNickname);
       setShowEnterHost(true);

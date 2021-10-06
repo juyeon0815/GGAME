@@ -114,9 +114,6 @@ class SnakeGame extends Component {
     this.clearCanvas(ctx);
     this.setState({ snakeBody: null, food: null, isNew: false });
     // 게임 결과 보내기
-    console.log("게임 결과 보내기 post");
-    console.log("email: ", this.state.email, "score: ", score);
-
     axios({
       method: "post",
       url: "https://j5a104.p.ssafy.io/game/rank",
@@ -142,7 +139,6 @@ class SnakeGame extends Component {
     ctx.font = "30px MaplestoryOTFBold";
     ctx.fillText(`RANK  :     SCORE  :     NAME`, CANVAS_WIDTH / 6, 150);
 
-    console.log("랭킹 받아오기 get");
     axios
       .get("https://j5a104.p.ssafy.io/game/rank", { params: { type: "snake" } })
       .then((Response) => {
@@ -192,7 +188,6 @@ class SnakeGame extends Component {
 
   checkNewAchievement() {
     // 업적달성 확인
-    console.log("업적확인 get");
     axios
       .get("https://j5a104.p.ssafy.io/game/snake/new-achievement", {
         params: { email: this.state.email },
