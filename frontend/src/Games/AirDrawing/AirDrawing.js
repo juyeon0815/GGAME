@@ -77,19 +77,18 @@ const AirDrawingHost = (props) => {
               Authorization: `Bearer ${token}`,
             },
           })
-            .then((response) => {
-              console.log("res ::", response)
-              axios
-                .get("http://localhost:5000/game/air-draw/new-achievement", {
-                  params: { email: res.data.data[0].email, rank: myRank },
-                })
-                .then((res) => {})
-                .catch((error) => {});
+          .then((res) => {
+            axios({
+              method: "post",
+              url: "http://localhost:5000/game/air-draw",
+              data: { email: res.data.data[0].email, rank: myRank, score: myScore },
+              headers: { "Content-Type": "application/json" },
             })
               .then((response) => {
+                console.log("res ::", response);
                 axios
                   .get("http://localhost:5000/game/air-draw/new-achievement", {
-                    params: { email: res.data.data[0].email },
+                    params: { email: res.data.data[0].email, rank: myRank },
                   })
                   .then((res) => {})
                   .catch((error) => {});
@@ -133,6 +132,7 @@ const AirDrawingHost = (props) => {
       props.location.socket.close();
     };
   }, []);
+  ////
 
   return (
     <div className="air-drawing">
