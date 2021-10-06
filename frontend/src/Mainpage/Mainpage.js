@@ -6,26 +6,26 @@ import Snake from "../assets/images/snake.png";
 import GameCard from "./MainpageCard";
 import { faArrow, faMypage, faRanking, faLogout } from "../assets/icons/menu_icon";
 import AirDrawing from "../assets/images/air_drawing.png";
-import { UserMeApi } from "../api"
+import { UserMeApi } from "../api";
 
 const logout = () => {
-    sessionStorage.removeItem('token')
-    localStorage.removeItem('email')
-}
+  sessionStorage.removeItem("token");
+  localStorage.removeItem("email");
+};
 const isLogin = () => {
-  return (localStorage.getItem('email') && sessionStorage.getItem('token')) ? true : false
-}
+  return localStorage.getItem("email") && sessionStorage.getItem("token") ? true : false;
+};
 
 const Mainpage = () => {
   // 로그인 되어 있지 않으면 로그인 페이지로 이동
-  let history = useHistory()
-  useEffect(() => {
-    UserMeApi()
-    if (!isLogin()) {
-      history.push({ pathname: "/login" })
-      localStorage.removeItem('email')
-    }
-  })
+  let history = useHistory();
+  // useEffect(() => {
+  //   UserMeApi();
+  //   if (!isLogin()) {
+  //     history.push({ pathname: "/login" });
+  //     localStorage.removeItem("email");
+  //   }
+  // }, []);
   const [isMenu, setIsMenu] = useState(false);
 
   const visiblityChange = () => {
@@ -43,7 +43,7 @@ const Mainpage = () => {
         icon.classList.toggle("menu-open");
       });
     }
-  }
+  };
   return (
     <div>
       {/* Menu Btn */}

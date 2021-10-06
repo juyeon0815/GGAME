@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
+import { AirDrawingRule } from "./AirDrawingRule";
 
 const AirDrawingGuest = (props) => {
   let history = useHistory();
@@ -11,6 +12,7 @@ const AirDrawingGuest = (props) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
   const [currentUser, setCurrentUser] = useState();
+  const [showPR, setShowPR] = useState();
 
   useEffect(() => {
     const socket = io.connect("https://j5a104.p.ssafy.io/air-drawing");
@@ -50,6 +52,11 @@ const AirDrawingGuest = (props) => {
         </div>
         <h1>{currentUser}명 대기중..</h1>
         <h2>잠시만 기다려 주세요!</h2>
+
+        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+          게임방법
+        </button>
+        <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
       </div>
     </div>
   );
