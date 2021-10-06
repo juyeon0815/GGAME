@@ -5,13 +5,11 @@ import './Login.css'
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 import React, { useEffect } from "react";
-import { UserMeApi } from "../api"
 
 const Login = () => {
   // 로그인 성공 시 메인 페이지로 이동
   let history = useHistory()
   useEffect(() => {
-    UserMeApi()
     if (sessionStorage.getItem('token')) {
       history.push({pathname: "/"})
     }

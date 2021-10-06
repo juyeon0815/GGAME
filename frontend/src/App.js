@@ -10,16 +10,14 @@ import AirDrawing from "./Games/AirDrawing/AirDrawing";
 import AirDrawingHost from "./Games/AirDrawing/AirDrawingHost";
 import AirDrawingGuest from "./Games/AirDrawing/AirDrawingGuest";
 import LoginRedirect from "./Mainpage/LoginRedirect"
-import { UserMeApi } from "./api"
 
 const isLogin = () => {
-  return (localStorage.getItem('email') && sessionStorage.getItem('token')) ? true : false
+  return (sessionStorage.getItem('token')) ? true : false
 }
 
 function App() {
   let history = useHistory()
   useEffect(() => {
-    UserMeApi()
     if (!isLogin()) {
       history.push({pathname: "/login"})
     }
