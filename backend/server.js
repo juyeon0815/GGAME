@@ -51,16 +51,6 @@ const io = require("socket.io")(https, {
   },
 });
 
-// Configure server
-app.configure( function() {
-
-  //Don't change anything here...
-
-  //Where to serve static content
-  app.use( express.static( application_root ) );
-
-  //Nothing changes here either...
-});
 
 
 
