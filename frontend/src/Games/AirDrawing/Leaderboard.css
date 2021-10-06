@@ -340,12 +340,12 @@ p {
 }
 
 @media screen and (min-aspect-ratio: 4/3) {
-  body {
+  /* body {
     background-size: cover;
   }
   body:before {
     width: 0px;
-  }
+  } */
   @-webkit-keyframes puff {
     0% {
       top: 100%;

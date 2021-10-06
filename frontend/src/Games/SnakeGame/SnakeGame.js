@@ -109,7 +109,6 @@ class SnakeGame extends Component {
     this.clearCanvas(ctx);
     this.setState({snakeBody: null, food: null, isNew: false});
     // 게임 결과 보내기
-    console.log('게임 결과 보내기 post')
     axios({
       method: 'post',
       url: 'http://localhost:5000/game/rank',
@@ -140,7 +139,6 @@ class SnakeGame extends Component {
       150
     );
 
-    console.log('랭킹 받아오기 get')
     axios.get('http://localhost:5000/game/rank', {params:{type: 'snake'}})
       .then((Response) => {
         const res = Response.data.data
@@ -148,7 +146,7 @@ class SnakeGame extends Component {
         for (let i = 0; i < res.length; i++) {
           // 나일 경우 다르게 표시하기
           if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
-            ctx.fillStyle = "red";
+            ctx.fillStyle = "blue";
             ctx.fillText(
               `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}       NEW!`,
               CANVAS_WIDTH / 5,
@@ -156,6 +154,7 @@ class SnakeGame extends Component {
             );
             meCheck = true;
           } else {
+            ctx.fillStyle = "black";
             ctx.fillText(
               `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}`,
               CANVAS_WIDTH / 5,
@@ -164,7 +163,7 @@ class SnakeGame extends Component {
           }
         }
         if (!meCheck) {
-          ctx.fillStyle = "red";
+          ctx.fillStyle = "blue";
           ctx.fillText(
             `NEW!                ${my_score}점                ${this.state.myName}`,
             CANVAS_WIDTH / 5,
@@ -190,7 +189,6 @@ class SnakeGame extends Component {
 
   checkNewAchievement() {
     // 업적달성 확인
-    console.log('업적확인 get')
     axios.get("http://localhost:5000/game/snake/new-achievement", {params:{email : this.state.email}})
     .then((res)=>{
       if (res.data.data.length >= 1) {
