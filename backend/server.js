@@ -39,11 +39,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
-app.get("/*", (req, res) => {
-  console.log(__dirname);
-  // index.html 파일 응답
-  res.sendFile(path.join(__dirname, "../frontend/build"));
-});
+
 
 app.get("/callback/kakao", function (req, res) {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
@@ -65,6 +61,12 @@ const requestPongModule = require("./src/Websocket/AirDrawing/AirDrawingRequest"
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);
+
+app.get("/*", (req, res) => {
+  console.log(__dirname);
+  // index.html 파일 응답
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 httpServer.listen(80);
 https.listen(443);
