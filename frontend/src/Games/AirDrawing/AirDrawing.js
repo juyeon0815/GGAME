@@ -67,7 +67,7 @@ const AirDrawingHost = (props) => {
 
       let token = sessionStorage.getItem("token");
       axios
-        .get("http://localhost:5000/user/me", {
+        .get("https://j5a104.p.ssafy.io/user/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -75,13 +75,13 @@ const AirDrawingHost = (props) => {
         .then((res) => {
           axios({
             method: "post",
-            url: "http://localhost:5000/game/air-draw",
+            url: "https://j5a104.p.ssafy.io/game/air-draw",
             data: { email: res.data.data[0].email, rank: myRank, score: myScore },
             headers: { "Content-Type": "application/json" },
           })
             .then((response) => {
               axios
-                .get("http://localhost:5000/game/air-draw/new-achievement", {
+                .get("https://j5a104.p.ssafy.io/game/air-draw/new-achievement", {
                   params: { email: res.data.data[0].email },
                 })
                 .then((res) => {})

@@ -122,7 +122,7 @@ const EnterRoomModal = (props) => {
       })
       .then((res) => {
         axios
-          .get("http://localhost:5000/air-drawing/nickname-exist", {
+          .get("https://j5a104.p.ssafy.io/air-drawing/nickname-exist", {
             params: {
               nickname: document.querySelector("#new_nickname").value,
               roomId: parseInt(enterRoom),
