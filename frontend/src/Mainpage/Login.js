@@ -34,12 +34,12 @@ const Login = () => {
   return (
     <div className="login-container">
       <div>
-        <img src={Logo} alt="Logo" className="logo-style" />
+        <div className="ggame-logo">깸</div>
+        <div className="ggame-logo-sub">어색한 분위기를 깨자 !</div>
         <a href={kakao_auth_url} className="kakao-style">
           <img src={Kakao} alt="login"></img>
         </a>
         <p className="text-align">전체 동의를 눌러주세요!</p>
-        <button onClick={userMe}>회원정보</button>
       </div>
     </div>
   );

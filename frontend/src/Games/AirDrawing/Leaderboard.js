@@ -21,11 +21,11 @@ function Leaderboard(props) {
           <li className="item" key={client.socketId}>
             <span className="order">{index + 1} </span>
             {props.nickname === client.nickname ? (
-              <span className="nickname">{client.nickname} (나)</span>
+              <span className="nickname-leader">{client.nickname} (나)</span>
             ) : (
-              <span className="nickname">{client.nickname} </span>
+              <span className="nickname-leader">{client.nickname} </span>
             )}
-            <span className="score"> {client.score} 점 </span>
+            <span className="score-leader"> {client.score} 점 </span>
           </li>
         ))}
       </aside>

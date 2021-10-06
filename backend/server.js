@@ -51,9 +51,10 @@ const io = require("socket.io")(https, {
   },
 });
 
-const airDrawingModule = require("./public/AirDrawing/AirDrawing");
-const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+
+const airDrawingModule = require("./src/Websocket/AirDrawing/AirDrawing");
+const airDrawingStateModule = require("./src/Websocket/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require("./src/Websocket/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);
