@@ -51,6 +51,18 @@ const io = require("socket.io")(https, {
   },
 });
 
+// Configure server
+app.configure( function() {
+
+  //Don't change anything here...
+
+  //Where to serve static content
+  app.use( express.static( application_root ) );
+
+  //Nothing changes here either...
+});
+
+
 
 const airDrawingModule = require("./src/Websocket/AirDrawing/AirDrawing");
 const airDrawingStateModule = require("./src/Websocket/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
