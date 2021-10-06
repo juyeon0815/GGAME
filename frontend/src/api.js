@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const UserMeApi = () => {
   let token = sessionStorage.getItem('token')
-  axios.get("http://localhost:5000/user/me", {
+  axios.get("https://j5a104.p.ssafy.io/user/me", {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -20,7 +20,7 @@ const UserMeApi = () => {
 
 const getAchievement = async () => {
   let email = localStorage.getItem('email')
-  return await axios.get("http://localhost:5000/user/achievement", {
+  return await axios.get("https://j5a104.p.ssafy.io/user/achievement", {
     params: {
       email: email
     }
