@@ -127,6 +127,7 @@ class SnakeGame extends Component {
         console.log(response);
       });
   };
+  // 
 
   drawRanking = (ctx, my_score) => {
     ctx.fillStyle = "RGB(179,161,151)";
