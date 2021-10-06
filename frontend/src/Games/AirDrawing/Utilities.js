@@ -63,9 +63,6 @@ export const drawHand = (predictions, ctx) => {
       const x = landmarks[7][0];
       // Get y point
       const y = landmarks[7][1];
-      // Start drawing
-      ctx.beginPath();
-      ctx.arc(x, y, style[0]["size"], 0, 3 * Math.PI);
 
       // Set line color
       ctx.fillStyle = style[0]["color"];
