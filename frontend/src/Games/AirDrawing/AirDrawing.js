@@ -72,10 +72,17 @@ const AirDrawingHost = (props) => {
 
         let token = sessionStorage.getItem("token");
         axios
-          .get("https://j5a104.p.ssafy.io/user/me", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        .get("https://j5a104.p.ssafy.io/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          axios({
+            method: "post",
+            url: "https://j5a104.p.ssafy.io/game/air-draw",
+            data: { email: res.data.data[0].email, rank: myRank, score: myScore },
+            headers: { "Content-Type": "application/json" },
           })
             .then((response) => {
               console.log("res ::", response)
@@ -86,21 +93,15 @@ const AirDrawingHost = (props) => {
                 .then((res) => {})
                 .catch((error) => {});
             })
-              .then((response) => {
-                axios
-                  .get("https://j5a104.p.ssafy.io/game/air-draw/new-achievement", {
-                    params: { email: res.data.data[0].email },
-                  })
-                  .then((res) => {})
-                  .catch((error) => {});
-              })
-              .catch((response) => {
-                console.log(response);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+            .catch((response) => {
+              console.log(response);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+        
       }, 3000);
       setGamePlaying(false);
     });
