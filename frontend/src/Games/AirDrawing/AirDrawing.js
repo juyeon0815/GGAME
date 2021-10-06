@@ -78,9 +78,10 @@ const AirDrawingHost = (props) => {
             headers: { "Content-Type": "application/json" },
           })
             .then((response) => {
+              console.log("res ::", response)
               axios
                 .get("http://localhost:5000/game/air-draw/new-achievement", {
-                  params: { email: res.data.data[0].email },
+                  params: { email: res.data.data[0].email, rank: myRank },
                 })
                 .then((res) => {})
                 .catch((error) => {});
