@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 import MultiGameCanvas from "./MultiGameCanvas";
 import GestureRecognition from "./GestureRecognition";
 import { div } from "@tensorflow/tfjs-core";
@@ -8,6 +10,7 @@ import "./AirDrawing.css";
 import Leaderboard from "./Leaderboard";
 
 const AirDrawingHost = (props) => {
+  let history = useHistory();
   const nickName = props.location.nickName;
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
@@ -35,19 +38,63 @@ const AirDrawingHost = (props) => {
     }
   };
 
+  const exitGame = () => {
+    history.push({
+      pathname: "/",
+    });
+  };
+
   useEffect(() => {
-    console.log(nickName);
     props.location.socket.on("receive problem", (p) => {
       setProblem(p);
     });
 
     // 게임이 종료되었는가?
-    props.location.socket.on("game end", (state) => {
+    props.location.socket.on("game end", (data) => {
       setGamePlaying(false);
+
+      let myRank, myScore;
+
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].nickname === nickName) {
+          myRank = i + 1;
+          myScore = data[i].score;
+        }
+      }
+
+      let token = sessionStorage.getItem("token");
+      axios
+        .get("http://localhost:5000/user/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => {
+          axios({
+            method: "post",
+            url: "http://localhost:5000/game/air-draw",
+            data: { email: res.data.data[0].email, rank: myRank, score: myScore },
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((response) => {
+              axios
+                .get("http://localhost:5000/game/air-draw/new-achievement", {
+                  params: { email: res.data.data[0].email },
+                })
+                .then((res) => {})
+                .catch((error) => {});
+            })
+            .catch((response) => {
+              console.log(response);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
 
     props.location.socket.on("score board", (data) => {
-      console.log(data);
       const newScoreBoard = data;
       setScoreBoard(newScoreBoard);
     });
@@ -58,6 +105,9 @@ const AirDrawingHost = (props) => {
       }
       setDrawer(d);
     });
+    return () => {
+      props.location.socket.close();
+    };
   }, []);
 
   return (
@@ -65,26 +115,37 @@ const AirDrawingHost = (props) => {
       {gamePlaying ? (
         <div>
           <VideoConference roomId={props.location.roomId} username={nickName} />
-
-          <h3>내 ID : {nickName}</h3>
-          <h3>차례 : {drawer.nickname}</h3>
-          {problem ? <h3>제시어 : {problem}</h3> : null}
-          <div class="game-row">
-            <div class="game-left">
-              <MultiGameCanvas
-                socket={props.location.socket}
-                isDrawing={isDrawing}
-                pos={pos}
-                drawer={drawer}
-              />
-            </div>
-            <div class="game-right">
-              {/* 그림 그리는 사람만 모션 인식 */}
-              {props.location.socket.id === drawer.socketId ? (
-                <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
-              ) : null}
-            </div>
+          <div className="game-info">
+            <h3>내 ID : {nickName}</h3>
+            <h3>{drawer.nickname}님이 손을 움직이는 중...</h3>
           </div>
+
+          {props.location.socket.id === drawer.socketId ? (
+            <div className="game-row">
+              <div className="game-left">
+                <MultiGameCanvas
+                  socket={props.location.socket}
+                  isDrawing={isDrawing}
+                  pos={pos}
+                  drawer={drawer}
+                />
+              </div>
+              <div className="game-right">
+                <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
+              </div>
+            </div>
+          ) : (
+            <div className="game-row">
+              <div className="game-center">
+                <MultiGameCanvas
+                  socket={props.location.socket}
+                  isDrawing={isDrawing}
+                  pos={pos}
+                  drawer={drawer}
+                />
+              </div>
+            </div>
+          )}
 
           {/* 그림안그리는 사람만 정답 제출 가능 */}
           {props.location.socket.id !== drawer.socketId ? (
@@ -100,27 +161,28 @@ const AirDrawingHost = (props) => {
                 제출
               </button>
             </div>
-          ) : null}
+          ) : (
+            <div className="answer-form">
+              <h1>제시어 : {problem}</h1>
+            </div>
+          )}
 
           {/* 스코어 보드 */}
-          {scoreBoard.map((client) => (
-            <div className="score-board" key={client.socketId}>
-              id : {client.nickname} score: {client.score}
-            </div>
-          ))}
+          <div className="score-board">
+            {scoreBoard.slice(0, 5).map((client, index) => (
+              <div className="score" key={client.socketId}>
+                {index + 1}등 {client.nickname} {client.score}점
+              </div>
+            ))}
+          </div>
         </div>
       ) : (
         // 게임 종료 화면
         <div>
-          <h1>게임이 끝났습니다!</h1>
-
-          {/* 스코어 보드 */}
-          {scoreBoard.map((client) => (
-            <div key={client.socketId}>
-              id : {client.nickname} score: {client.score}
-            </div>
-          ))}
-          <Leaderboard score={scoreBoard} />
+          <Leaderboard score={scoreBoard} nickname={nickName} />
+          <button className="btn-home" onClick={exitGame}>
+            메인으로
+          </button>
         </div>
       )}
     </div>

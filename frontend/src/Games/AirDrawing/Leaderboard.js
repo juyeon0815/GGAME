@@ -1,23 +1,31 @@
 import React, { useEffect } from "react";
 import "./Leaderboard.css";
 
+let idx = 1;
+
 function Leaderboard(props) {
   useEffect(() => {
+    idx = 1;
     console.log(props.score);
     return () => {};
   }, []);
   return (
     <div>
-      <aside class="profile-card">
+      <aside className="profile-card">
         <header>
           <h1>게임 결과</h1>
 
           <h2>우승자는 ?!?!</h2>
         </header>
-
-        {props.score.map((client) => (
-          <li key={client.socketId}>
-            id : {client.nickname} score: {client.score}
+        {props.score.slice(0, 10).map((client, index) => (
+          <li className="item" key={client.socketId}>
+            <span className="order">{index + 1} </span>
+            {props.nickname === client.nickname ? (
+              <span className="nickname-leader">{client.nickname} (나)</span>
+            ) : (
+              <span className="nickname-leader">{client.nickname} </span>
+            )}
+            <span className="score-leader"> {client.score} 점 </span>
           </li>
         ))}
       </aside>

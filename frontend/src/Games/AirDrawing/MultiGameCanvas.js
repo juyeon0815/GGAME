@@ -45,6 +45,15 @@ function MultiGameCanvas(props) {
   }, [ctx]);
 
   useEffect(() => {
+    if (isDrawing) {
+      document.querySelector("#multi-canvas").style.border = "5px solid red";
+    } else {
+      document.querySelector("#multi-canvas").style.border = "5px solid blue";
+    }
+    return () => {};
+  }, [isDrawing]);
+
+  useEffect(() => {
     let x = props.pos[0];
     let y = props.pos[1];
 
@@ -71,13 +80,13 @@ function MultiGameCanvas(props) {
   };
 
   const startDrawing = (e) => {
-    if (e.keyCode === 32 && !isDrawing) {
+    if (e.keyCode === 68 && !isDrawing) {
       setIsDrawing(true);
     }
   };
 
   const finishDrawing = (e) => {
-    if (e.keyCode === 32) {
+    if (e.keyCode === 68) {
       setIsDrawing(false);
     }
   };
@@ -87,12 +96,15 @@ function MultiGameCanvas(props) {
       <canvas
         ref={canvasRef}
         className="drawing-canvas"
+        id="multi-canvas"
         tabIndex="0"
         onKeyDown={startDrawing}
         onKeyUp={finishDrawing}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
       />
+      <br />
+
       <button className="btn-reset" onClick={sendClear}>
         초기화
       </button>

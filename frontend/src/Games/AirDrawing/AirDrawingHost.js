@@ -3,7 +3,10 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
+import { AirDrawingRule } from "./AirDrawingRule";
 import "./AirDrawingHost.css";
+import { Link } from "react-router-dom";
+
 let socket;
 
 const AirDrawingHost = (props) => {
@@ -14,6 +17,7 @@ const AirDrawingHost = (props) => {
   const [currentUser, setCurrentUser] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
   const [pos, setPos] = useState([0, 0]);
+  const [showPR, setShowPR] = useState();
 
   const enterCode = useRef();
 
@@ -27,25 +31,17 @@ const AirDrawingHost = (props) => {
   }, []);
 
   const gameStart = () => {
-    socket.emit("game start", roomNumber);
-    history.push({
-      pathname: "/air-drawing",
-      socket: socket,
-      nickName: nickName,
-      roomId: roomNumber,
-    });
-
-    // if (currentUser < 2) {
-    //   alert("최소 2명의 플레이어가 필요합니다.");
-    // } else {
-    //   socket.emit("game start", roomNumber);
-    //   history.push({
-    //     pathname: "/air-drawing",
-    //     socket: socket,
-    //     nickName: nickName,
-    //     roomId: roomNumber,
-    //   });
-    // }
+    if (currentUser < 2) {
+      alert("최소 2명의 플레이어가 필요합니다.");
+    } else {
+      socket.emit("game start", roomNumber);
+      history.push({
+        pathname: "/air-drawing",
+        socket: socket,
+        nickName: nickName,
+        roomId: roomNumber,
+      });
+    }
   };
 
   const style = {
@@ -62,7 +58,6 @@ const AirDrawingHost = (props) => {
       <p id="game_menu"></p>
       <div style={center}>
         <h1>대기실</h1>
-        <div style={center}>NAME : {nickName}</div>
 
         <div>
           <input
@@ -78,6 +73,7 @@ const AirDrawingHost = (props) => {
             복사
           </button>
         </div>
+        <div style={center}>NAME : {nickName}</div>
 
         <div className="game-row">
           <div className="game-left">
@@ -88,9 +84,17 @@ const AirDrawingHost = (props) => {
           </div>
         </div>
 
-        <button class="btn-start" onClick={gameStart}>
+        <button className="btn-start" onClick={gameStart}>
           <span>Game Start</span>
         </button>
+
+        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+          게임방법
+        </button>
+        <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
+        <Link to="/">
+          <button className="btn-snake btn-snake-out">게임 나가기</button>
+        </Link>
         <div>{currentUser}명 대기중..</div>
       </div>
     </div>

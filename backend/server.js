@@ -4,7 +4,7 @@ const port = process.env.PORT || 5000;
 
 const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 app.use(cors());
 
 // back/app.js
@@ -16,19 +16,20 @@ const io = require("socket.io")(httpServer, {
     methods: ["GET", "POST"],
   },
 });
-var bodyParser = require("body-parser");
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-const airDrawingModule = require("./public/AirDrawing/AirDrawing");
-const airDrawingStateModule = require("./public/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require("./public/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
+const airDrawingModule = require("./src/Websocket/AirDrawing/AirDrawing");
+const airDrawingStateModule = require("./src/Websocket/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require("./src/Websocket/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
 const user = require("./src/Routes/User");
 const game = require("./src/Routes/Game");
+// const achievement = require("./src/Routes/Achievement");
 app.use("/user", user);
 app.use("/game", game);
+// app.use("/achievement", achievement);
 
 airDrawingModule.airDrawing(io, airDrawingStateModule);
 requestPongModule.airDrawingRequest(app, airDrawingStateModule);

@@ -1,6 +1,5 @@
 .user-video {
-  width: 20%;
-  height: auto;
+  width: 200px;
   float: left;
   cursor: pointer;
 }

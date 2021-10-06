@@ -16,8 +16,8 @@ import axios from 'axios'
 import "./Pong.css";
 
 import GestureRecognition from "./GestureRecognition";
-import {PongRule} from "./PongRule"
-import { Link } from 'react-router-dom'
+import { PongRule } from "./PongRule";
+import { Link } from "react-router-dom";
 
 let gameWidth = 600,
   gameHeight = 400;
@@ -35,7 +35,7 @@ class PongGameView extends Component {
   ) {
     super(props);
     this.state = {
-      showPR : false,
+      showPR: false,
       canvas: null,
       context: null,
       vision: null,
@@ -134,18 +134,21 @@ class PongGameView extends Component {
       // console.log("방향~",this.state.direction);
       this.movePlayer();
 
-      if(this.state.step<3){ //1,2라운드일 경우 => 
-        if(this.players[0].score ===rounds[this.state.round]){ //내가 이기는 방법
+      if (this.state.step < 3) {
+        //1,2라운드일 경우 =>
+        if (this.players[0].score === rounds[this.state.round]) {
+          //내가 이기는 방법
           this.ball.vel.x *= 1.3;
           this.ball.vel.y *= 1.3;
-  
+
           let nextRound = this.state.round + 1;
           this.setState({
-            step : this.state.step+1,
+            step: this.state.step + 1,
             round: nextRound,
             boardColor: colors[nextRound],
           });
-        }else if(this.players[1].score === rounds[this.state.round]){ //컴퓨터가 이길때
+        } else if (this.players[1].score === rounds[this.state.round]) {
+          //컴퓨터가 이길때
           this.setState({ gameActive: false });
           // 게임 결과 보내기
           console.log('게임결과보내기1')
@@ -162,8 +165,10 @@ class PongGameView extends Component {
             this.initialize();
           });
         }
-      }else{ //3라운드일경우 => 무한대
-        if(this.players[1].score ===10){ //컴퓨터가 이겨서 끝나는 조건만 체크
+      } else {
+        //3라운드일경우 => 무한대
+        if (this.players[1].score === 10) {
+          //컴퓨터가 이겨서 끝나는 조건만 체크
           this.setState({ gameActive: false });
           this.drawRanking(this.players[0].score)
           // this.drawText("Game over! 내 점수는 : "+this.players[0].score);
@@ -182,14 +187,13 @@ class PongGameView extends Component {
           });
         }
       }
-  
-    }else{
+    } else {
       cvs.addEventListener("click", () => {
         this.initialize();
       });
     }
-     // Next frame
-     requestAnimationFrame(() => {
+    // Next frame
+    requestAnimationFrame(() => {
       this.update();
     });
   }
@@ -277,7 +281,7 @@ class PongGameView extends Component {
       context: context,
       gameActive: true,
       round: 0,
-      step : 1,
+      step: 1,
       boardColor: "#202020",
       direction: 2, //초기 상태는 멈춤
     });
@@ -321,8 +325,9 @@ class PongGameView extends Component {
   }
 
   listen(canvas) {
-    canvas.addEventListener("click", () => {this.play();
-      }); // canvas 클릭 시 게임 시작
+    canvas.addEventListener("click", () => {
+      this.play();
+    }); // canvas 클릭 시 게임 시작
 
     canvas.addEventListener("mousemove", (event) => {
       // paddle mouse로 조작가능
@@ -411,8 +416,8 @@ class PongGameView extends Component {
     let ctx = this.state.context;
     //round info
     let roundText = "Round " + (this.state.round + 1);
-    let roundPts = rounds[this.state.round]
-    if(this.state.step<3) roundPts+=" pts";
+    let roundPts = rounds[this.state.round];
+    if (this.state.step < 3) roundPts += " pts";
     ctx.fillStyle = "#fff";
     ctx.shadowBlur = 0;
     ctx.font = 15 + "px oswald";
@@ -448,15 +453,15 @@ class PongGameView extends Component {
   };
 
   stopVideo() {
-    if(this.videoStream) {
-      console.log(this.videoStream)
+    if (this.videoStream) {
+      console.log(this.videoStream);
       this.videoStream.getVideoTracks().forEach((track) => {
         track.stop();
       });
       this.videoStream.getAudioTracks().forEach((track) => {
         track.stop();
       });
-      
+
       this.videoStream = null;
       this.videoTag.current.srcObject = null;
     }
@@ -473,9 +478,16 @@ class PongGameView extends Component {
           <GestureRecognition direction={this.direction} />
         </div>
         <div>
-          <button className="btn-pong btn-pong-rule" onClick={()=> this.setState({showPR : true})}>게임방법</button>
+          <button
+            className="btn-pong btn-pong-rule"
+            onClick={() => this.setState({ showPR: true })}
+          >
+            게임방법
+          </button>
           <Link to="/">
-          <button className="btn-pong btn-pong-out" onClick={() => this.stopVideo()}>게임나가기</button>
+            <button className="btn-pong btn-pong-out" onClick={() => this.stopVideo()}>
+              게임나가기
+            </button>
           </Link>
         </div>
         <PongRule

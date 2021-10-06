@@ -32,6 +32,7 @@ class VideoConference extends Component {
   }
 
   componentWillUnmount() {
+    this.leaveSession();
     window.removeEventListener("beforeunload", this.onbeforeunload);
   }
 
@@ -44,6 +45,7 @@ class VideoConference extends Component {
       this.setState({
         mainStreamManager: stream,
       });
+      // this.props.setMainStreamManager(stream);
     }
   }
 
@@ -52,9 +54,6 @@ class VideoConference extends Component {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
-      this.setState({
-        subscribers: subscribers,
-      });
     }
   }
 
@@ -77,13 +76,9 @@ class VideoConference extends Component {
           // so OpenVidu doesn't create an HTML video by its own
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
-          console.log(subscriber);
           subscribers.push(subscriber);
 
           // Update the state with the new subscribers
-          this.setState({
-            subscribers: subscribers,
-          });
         });
 
         // On every Stream destroyed...
@@ -131,6 +126,7 @@ class VideoConference extends Component {
                 mainStreamManager: publisher,
                 publisher: publisher,
               });
+              // this.props.setMainStreamManager(publisher);
             })
             .catch((error) => {
               console.log(
@@ -180,7 +176,7 @@ class VideoConference extends Component {
               </div>
             ) : null} */}
 
-            <div id="video-container" className="col-md-6">
+            <div id="video-container">
               {this.state.publisher !== undefined ? (
                 <div
                   className="stream-container col-md-6 col-xs-6"
@@ -192,7 +188,7 @@ class VideoConference extends Component {
               {this.state.subscribers.map((sub, i) => (
                 <div
                   key={i}
-                  className="stream-container col-md-6 col-xs-6"
+                  className="stream-container"
                   onClick={() => this.handleMainVideoStream(sub)}
                 >
                   <UserVideoComponent streamManager={sub} />
@@ -234,7 +230,6 @@ class VideoConference extends Component {
           },
         })
         .then((response) => {
-          console.log("CREATE SESION", response);
           resolve(response.data.id);
         })
         .catch((response) => {

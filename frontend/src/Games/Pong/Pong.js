@@ -1,12 +1,12 @@
 import React from "react";
-import PongGameView from './PongGameView';
+import PongGameView from "./PongGameView";
 
 const Pong = () => {
-  return(
+  return (
     <div>
       <PongGameView />
     </div>
-  )
+  );
 };
 
 export default Pong;

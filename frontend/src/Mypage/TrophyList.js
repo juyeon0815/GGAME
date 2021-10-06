@@ -4,7 +4,6 @@ import TrophyItem from './TrophyItem'
 
 const TrophyParsing = (props) => {
   const trophyItems = Object.entries(props.trophyList)
-  console.log(trophyItems)
   const style = {
       marginTop: "30px",
   }
@@ -13,7 +12,7 @@ const TrophyParsing = (props) => {
     for (let i = 0; i < trophyItems.length; i += 2) {
       if (i + 1 < trophyItems.length) {
         result.push(
-          <div className="trophy-list">
+          <div key={i} className="trophy-list">
             <TrophyItem trophy={trophyItems[i]} />
             <TrophyItem trophy={trophyItems[i+1]} />
           </div>
