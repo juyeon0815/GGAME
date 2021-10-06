@@ -11,7 +11,7 @@ function Leaderboard(props) {
   }, []);
   return (
     <div>
-      <aside class="profile-card">
+      <aside className="profile-card">
         <header>
           <h1>게임 결과</h1>
 
