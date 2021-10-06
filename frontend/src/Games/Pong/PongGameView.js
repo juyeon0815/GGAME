@@ -220,8 +220,9 @@ class PongGameView extends Component {
     console.log('랭킹 받아오기')
     axios.get('http://localhost:5000/game/rank', {params:{type: 'pong'}})
       .then((Response) => {
+
         const res = Response.data.data
-        const resLength = (res.length <5 ? 5 : res.length)
+        const resLength = (res.length <5 ? res.length : 5)
         let meCheck = false
         for (let i = 0; i < resLength; i++) {
           // 나일 경우 다르게 표시하기
