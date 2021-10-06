@@ -16,7 +16,7 @@ class Ranking extends React.Component {
 
   componentDidMount() {
     // snake
-    axios.get('http://localhost:5000/game/snake/rank')
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'snake'}})
     .then((Response)=>{
       this.setState({ snake_ranks: Response.data.data})
       let top3 = []
@@ -39,7 +39,7 @@ class Ranking extends React.Component {
     })
 
     // pong
-    axios.get('http://localhost:5000/game/pong/rank')
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'pong'}})
     .then((Response)=>{
       this.setState({ pong_ranks: Response.data.data})
       let top3 = []

@@ -11,6 +11,8 @@
 import React, { Component } from "react";
 import Ball from "./Ball";
 import Player from "./Player";
+import PongAchievement from "./PongAchievement";
+import axios from 'axios'
 import "./Pong.css";
 
 import GestureRecognition from "./GestureRecognition";
@@ -41,7 +43,9 @@ class PongGameView extends Component {
       round: 0,
       boardColor: "#202020",
       direction: 2, //0 = UP, 1 = DOWN, 2 = IDDLE //초기 dirction 멈춤
-      step: 1,
+      step : 1,
+      showPA: true,
+      achievement: []
     };
     this.initialSpeed = 250;
     this.ball = null;
@@ -52,7 +56,26 @@ class PongGameView extends Component {
   componentDidMount() {
     //컴포넌트 마운트된 직후 호출
     const context = this.refs.canvas.getContext("2d"); //드로잉 컨텍스트에 액세스
+    // this.drawText("Game over!");
     this.setState({ context: context });
+
+    // 회원 정보 얻어오기
+    let token = sessionStorage.getItem('token')
+    axios.get("http://localhost:5000/user/me",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result)=>{
+      this.setState({ email: result.data.data[0].email})
+      this.setState({ myName: result.data.data[0].name})
+    })
+    .catch((error) => {
+      // 로그인 안되어 있을 시 로그인창으로 되돌리기
+      console.log(error)
+      alert('로그인이 필요한 페이지입니다.')
+      document.location.href="/login"
+    })
+
     this.initialize();
     requestAnimationFrame(() => {
       this.update();
@@ -127,9 +150,17 @@ class PongGameView extends Component {
         } else if (this.players[1].score === rounds[this.state.round]) {
           //컴퓨터가 이길때
           this.setState({ gameActive: false });
-          this.drawRanking();
-          this.drawText("Game over! 내 점수는 : " + this.players[0].score);
-
+          // 게임 결과 보내기
+          console.log('게임결과보내기1')
+          axios({
+            method: 'post',
+            url: 'http://localhost:5000/game/rank',
+            data: { type: 'pong', email: this.state.email, score: this.players[0].score },
+            headers: { 'Content-Type': 'application/json' },
+            })
+            .then( response => { this.drawRanking(this.players[0].score) } )
+            .catch( response => { console.log(response) } );
+          
           cvs.addEventListener("click", () => {
             this.initialize();
           });
@@ -139,8 +170,18 @@ class PongGameView extends Component {
         if (this.players[1].score === 10) {
           //컴퓨터가 이겨서 끝나는 조건만 체크
           this.setState({ gameActive: false });
-          this.drawRanking();
-          this.drawText("Game over! 내 점수는 : " + this.players[0].score);
+          this.drawRanking(this.players[0].score)
+          // this.drawText("Game over! 내 점수는 : "+this.players[0].score);
+          // 게임 결과 보내기
+          console.log('게임결과보내기2')
+          axios({
+            method: 'post',
+            url: 'http://localhost:5000/game/rank',
+            data: { type: 'pong', email: this.state.email, score: this.players[0].score },
+            headers: { 'Content-Type': 'application/json' },
+            })
+            .then( response => { this.drawRanking(this.players[0].score) } )
+            .catch( response => { console.log(response) } );
           cvs.addEventListener("click", () => {
             this.initialize();
           });
@@ -157,16 +198,77 @@ class PongGameView extends Component {
     });
   }
 
-  drawRanking() {
+  drawRanking = (my_score) => {
     let canvas = this.state.canvas;
     let ctx = this.state.context;
 
     ctx.fillStyle = this.state.boardColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, gameWidth, gameHeight);
+    ctx.fillStyle = "white";
+    ctx.font = "40px MaplestoryOTFBold";
+    ctx.fillText(
+      `RANKING`,
+      canvas.width / 2,
+      50
+    );
+    ctx.font = "20px MaplestoryOTFBold";
+    ctx.fillText(
+      `RANK  :     SCORE  :     NAME`,
+      canvas.width / 2,
+      100
+    );
+    console.log('랭킹 받아오기')
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'pong'}})
+      .then((Response) => {
+        const res = Response.data.data
+        const resLength = (res.length <5 ? 5 : res.length)
+        let meCheck = false
+        for (let i = 0; i < resLength; i++) {
+          // 나일 경우 다르게 표시하기
+          if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
+            ctx.fillStyle = "blue";
+            ctx.fillText(
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}       NEW!`,
+              canvas.width / 2,
+              100 + 50*(i+1)
+            );
+            meCheck = true;
+          } else {
+            ctx.fillStyle = "white";
+            ctx.fillText(
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}`,
+              canvas.width / 2,
+              100 + 50*(i+1)
+            );
+          }
+        }
+        if (!meCheck) {
+          ctx.fillStyle = "blue";
+          ctx.fillText(
+            `NEW!                ${my_score}점                ${this.state.myName}`,
+            canvas.width / 2,
+            100 + 50*(resLength + 1)
+          );
+        }
+        this.checkNewAchievement()
+      })
+      .catch((Error)=>{console.log(Error)})
 
     canvas.addEventListener("click", () => {
       this.initialize();
     });
+  }
+
+  checkNewAchievement() {
+    // 업적달성 확인
+    axios.get("http://localhost:5000/game/pong/new-achievement", {params:{email : this.state.email}})
+    .then((res)=>{
+      if (res.data.data.length >= 1) {
+        this.setState({ showPA: true, achievement: res.data.data})
+      }
+    }).catch((error)=>{
+        console.log("error :", error);
+    })
   }
 
   initialize() {
@@ -344,7 +446,7 @@ class PongGameView extends Component {
   }
 
   direction = (text) => {
-    console.log(text);
+    // console.log(text);
     this.setState({
       direction: text,
     });
@@ -369,9 +471,10 @@ class PongGameView extends Component {
 
   render() {
     return (
-      <div id="game">
-        <div id="pongCanvas">
-          <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
+      <div className="pong-container">
+        <h1>PingPong</h1>
+        <div className="pong-main">
+          <canvas ref="canvas" width={gameWidth} height={gameHeight} />
           <GestureRecognition direction={this.direction} />
         </div>
         <div>
@@ -387,7 +490,15 @@ class PongGameView extends Component {
             </button>
           </Link>
         </div>
-        <PongRule isOpen={this.state.showPR} close={() => this.setState({ showPR: false })} />
+        <PongRule
+          isOpen = {this.state.showPR}
+          close={()=> this.setState({showPR:false})}
+        />
+        <PongAchievement
+          isOpen={this.state.showPA}
+          close={() => this.setState({showPA: false})}
+          achievement={this.state.achievement}
+        />
       </div>
     );
   }
