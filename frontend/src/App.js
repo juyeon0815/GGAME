@@ -16,20 +16,20 @@ const isLogin = () => {
 }
 
 function App() {
-  let history = useHistory()
+  let history = useHistory();
   useEffect(() => {
     if (!isLogin()) {
-      history.push({pathname: "/login"})
+      history.push({ pathname: "/login" });
     }
-  })
+  }, []);
   return (
     <div>
       {/* temporary navigation Link */}
       <nav>
         <Link to="/">메인페이지</Link> |<Link to="/login"> 로그인</Link> |
-        <Link to="/mypage"> 마이페이지</Link> |
-        <Link to="/snake"> 뱀 게임</Link> |<Link to="/pong"> 탁구 게임</Link> |
-        <Link to="/ranking"> 랭킹</Link> |<Link to="/air-drawing/host"> 호스트 대기실</Link> |
+        <Link to="/mypage"> 마이페이지</Link> |<Link to="/snake"> 뱀 게임</Link> |
+        <Link to="/pong"> 탁구 게임</Link> |<Link to="/ranking"> 랭킹</Link> |
+        <Link to="/air-drawing/host"> 호스트 대기실</Link> |
         <Link to="/air-drawing/guest"> 게스트 대기실</Link> |
       </nav>
       {/* Router setting */}
