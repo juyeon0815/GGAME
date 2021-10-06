@@ -16,6 +16,15 @@ function isExistRoom(roomId) {
   return roomId in clientList;
 }
 
+function isExistNickname(name, roomId) {
+  console.log(name, roomId);
+  if (!(roomId in clientList)) return false;
+  for (let i = 0; i < clientList[roomId].list.length; i++) {
+    if (clientList[roomId].list[i].nickname === name) return false;
+  }
+  return true;
+}
+
 function createRoom(roomId) {
   clientList[roomId] = {
     idx: 0,
@@ -58,4 +67,5 @@ module.exports = {
   isExistRoom,
   startGame,
   nextOrder,
+  isExistNickname,
 };

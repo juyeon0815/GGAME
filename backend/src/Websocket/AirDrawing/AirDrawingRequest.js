@@ -5,6 +5,10 @@ exports.airDrawingRequest = function (app, pongStateModule) {
     res.send(pongStateModule.isExistRoom(req.query.roomId));
   });
 
+  app.get(URI + "/nickname-exist", (req, res) => {
+    res.send(pongStateModule.isExistNickname(req.query.nickname, req.query.roomId));
+  });
+
   // app.get("/sayHello", function (req, res) {
   //     res.send("hello world");
   // });

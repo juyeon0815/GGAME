@@ -24,7 +24,7 @@ const Mainpage = () => {
         icon.classList.toggle("menu-open");
       });
     }
-  }
+  };
   return (
     <div>
       {/* Menu Btn */}
