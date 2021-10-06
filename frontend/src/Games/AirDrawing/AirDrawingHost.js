@@ -62,7 +62,6 @@ const AirDrawingHost = (props) => {
       <p id="game_menu"></p>
       <div style={center}>
         <h1>대기실</h1>
-        <div style={center}>NAME : {nickName}</div>
 
         <div>
           <input
@@ -78,6 +77,7 @@ const AirDrawingHost = (props) => {
             복사
           </button>
         </div>
+        <div style={center}>NAME : {nickName}</div>
 
         <div className="game-row">
           <div className="game-left">

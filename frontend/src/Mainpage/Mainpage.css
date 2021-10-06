@@ -269,6 +269,12 @@
   top: 174px;
   cursor: pointer;
 }
+.icon-logout {
+  position: absolute;
+  color: #fff;
+  top: 248px;
+  cursor: pointer;
+}
 .icon-circle {
   visibility: hidden;
   background-color: #0088ff;

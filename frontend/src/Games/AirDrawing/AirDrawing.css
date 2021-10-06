@@ -36,12 +36,31 @@
 }
 
 .score-board {
-  display: inline-block;
+  display: flex;
+  text-align: center;
+  justify-content: center;
   margin-left: 10px;
 }
 
+.score-board > div:nth-child(1) {
+  background-color: gold;
+}
+
+.score-board > div:nth-child(2) {
+  background-color: silver;
+}
+
+.score-board > div:nth-child(3) {
+  background-color: brown;
+}
+
+.score-board .score {
+  margin-right: 30px;
+  font-size: 15pt;
+}
+
 .answer-form {
-  display: flex;
+  text-align: center;
 }
 
 /* Button */
@@ -86,19 +105,30 @@
 }
 
 div.game-row {
+  padding-top: 60px;
   width: 100%;
   height: 70%;
   display: flex;
+  text-align: center;
+  float: center;
 }
 
 div.game-left {
   width: 50%;
+  text-align: center;
   float: center;
 }
 
 div.game-right {
   width: 50%;
+  text-align: center;
   float: center;
+}
+
+.game-center {
+  width: 100%;
+  float: center;
+  text-align: center;
 }
 
 .recognize-cam {
@@ -117,4 +147,35 @@ div.game-right {
 }
 .gesture-cam {
   border-radius: 30px;
+}
+
+.btn-home {
+  position: absolute;
+  left: 48%;
+  top: 90%;
+  border: 2px solid #547aa5;
+  cursor: pointer;
+  background: none;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 17px;
+  transition: 0.25s;
+  font-family: "MaplestoryOTFBold";
+}
+
+.btn-home:hover {
+  box-shadow: inset 0 -3.25em 0 0 #547aa5;
+  border: none;
+  color: white;
+}
+
+.game-info {
+}
+
+.score {
+  background-color: #b3b3b39e;
+  border-radius: 50px;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
 }
