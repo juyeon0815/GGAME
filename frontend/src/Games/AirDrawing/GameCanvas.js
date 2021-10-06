@@ -23,7 +23,7 @@ function GameCanvas(props) {
   }, []);
 
   useEffect(() => {
-    let x = props.pos[0];
+    let x = 640 - props.pos[0];
     let y = props.pos[1];
 
     if (ctx) {
