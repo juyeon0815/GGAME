@@ -143,8 +143,9 @@ class SnakeGame extends Component {
       .get("http://localhost:5000/game/rank", { params: { type: "snake" } })
       .then((Response) => {
         const res = Response.data.data;
+        const resLength = (res.length <5 ? 5 : res.length)
         let meCheck = false;
-        for (let i = 0; i < res.length; i++) {
+        for (let i = 0; i < resLength; i++) {
           // 나일 경우 다르게 표시하기
           if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
             ctx.fillStyle = "blue";
@@ -170,7 +171,7 @@ class SnakeGame extends Component {
           ctx.fillText(
             `NEW!                ${my_score}점                ${this.state.myName}`,
             CANVAS_WIDTH / 5,
-            150 + 50 * (res.length + 1)
+            150 + 50 * (resLength + 1)
           );
         }
         this.checkNewAchievement();
