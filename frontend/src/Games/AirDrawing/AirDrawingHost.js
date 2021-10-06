@@ -88,12 +88,12 @@ const AirDrawingHost = (props) => {
           <span>Game Start</span>
         </button>
 
-        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+        <button className="btn-airdraw btn-airdraw-rule" onClick={() => setShowPR(true)}>
           게임방법
         </button>
         <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
         <Link to="/">
-          <button className="btn-snake btn-snake-out">게임 나가기</button>
+          <button className="btn-airdraw btn-airdraw-out">게임 나가기</button>
         </Link>
         <div>{currentUser}명 대기중..</div>
       </div>

@@ -128,6 +128,7 @@ const AirDrawingHost = (props) => {
                   isDrawing={isDrawing}
                   pos={pos}
                   drawer={drawer}
+                  nickname={props.location.nickName}
                 />
               </div>
               <div className="game-right">
