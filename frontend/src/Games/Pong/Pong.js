@@ -4,10 +4,7 @@ import PongGameView from "./PongGameView";
 const Pong = () => {
   return (
     <div>
-      <h1>PingPong</h1>
-      <div>
-        <PongGameView />
-      </div>
+      <PongGameView />
     </div>
   );
 };

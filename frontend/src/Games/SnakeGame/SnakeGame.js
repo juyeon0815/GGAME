@@ -143,11 +143,12 @@ class SnakeGame extends Component {
       .get("https://j5a104.p.ssafy.io/game/rank", { params: { type: "snake" } })
       .then((Response) => {
         const res = Response.data.data;
+        const resLength = (res.length <5 ? 5 : res.length)
         let meCheck = false;
-        for (let i = 0; i < res.length; i++) {
+        for (let i = 0; i < resLength; i++) {
           // 나일 경우 다르게 표시하기
-          if (res[i]["name"] === this.state.myName && res[i]["score"] === my_score) {
-            ctx.fillStyle = "red";
+          if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
+            ctx.fillStyle = "blue";
             ctx.fillText(
               `${i + 1}위                ${res[i]["score"]}점                ${
                 res[i]["name"]
@@ -157,6 +158,7 @@ class SnakeGame extends Component {
             );
             meCheck = true;
           } else {
+            ctx.fillStyle = "black";
             ctx.fillText(
               `${i + 1}위                ${res[i]["score"]}점                ${res[i]["name"]}`,
               CANVAS_WIDTH / 5,
@@ -165,11 +167,11 @@ class SnakeGame extends Component {
           }
         }
         if (!meCheck) {
-          ctx.fillStyle = "red";
+          ctx.fillStyle = "blue";
           ctx.fillText(
             `NEW!                ${my_score}점                ${this.state.myName}`,
             CANVAS_WIDTH / 5,
-            150 + 50 * (res.length + 1)
+            150 + 50 * (resLength + 1)
           );
         }
         this.checkNewAchievement();
