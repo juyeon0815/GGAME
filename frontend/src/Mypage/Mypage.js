@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from "react-router-dom";
 import './Mypage.css'
 import TrophyList from './TrophyList'
 import { getAchievement } from '../api'
+import { faArrow, faMypage, faRanking, faLogout } from "../assets/icons/menu_icon";
 
 const initTrophySnake = {
   'snake_first': [false, '첫 게임'],
@@ -55,19 +57,44 @@ const Mypage = () => {
       if (name === item) trophyAirDrawing[name][0] = true
     }
   }
-  
-  // const trophySnake = achievement === [] ? achievement.map((item) => {
-  //   let res = Object.assign({}, initTrophySnake)
-  //   res[item][0] = true
-  //   console.log(res)
-  //   return res
-  // }) : Object.assign({}, initTrophySnake)
+  const [isMenu, setIsMenu] = useState(false);
+  const visiblityChange = () => {
+    const icons = document.querySelectorAll(".icon-circle");
+    if (isMenu) {
+      setIsMenu(false);
+      icons.forEach((icon) => {
+        icon.style.visibility = "hidden";
+        icon.classList.toggle("menu-open");
+      });
+    } else {
+      setIsMenu(true);
+      icons.forEach((icon) => {
+        icon.style.visibility = "visible";
+        icon.classList.toggle("menu-open");
+      });
+    }
+  };
 
   const styleH1 = {
     margin: '5vh 3vh 0 3vh',
   }
   return (
     <div>
+      {/* Menu Btn */}
+      <div className={"menu-container"}>
+        <div onClick={visiblityChange} className={"icon-arrow"}>
+          {faArrow}
+        </div>
+        <Link to="/mypage" className={"icon-circle icon-mypage"}>
+          {faMypage}
+        </Link>
+        <Link to="/ranking" className={"icon-circle icon-ranking"}>
+          {faRanking}
+        </Link>
+        <Link to="/login" className={"icon-circle icon-logout"} onClick={() => sessionStorage.removeItem('token')}>
+          {faLogout}
+        </Link>
+      </div>
       <h1 style={styleH1}>업적 관리</h1>
       <div className="my-container">
         <TrophyList gameName="뱀과 사과" trophyList={trophySnake} />
