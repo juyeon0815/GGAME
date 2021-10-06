@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
+import { Link } from "react-router-dom";
 import { AirDrawingRule } from "./AirDrawingRule";
 
 const AirDrawingGuest = (props) => {
@@ -57,6 +58,9 @@ const AirDrawingGuest = (props) => {
           게임방법
         </button>
         <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
+        <Link to="/">
+          <button className="btn-snake btn-snake-out">게임 나가기</button>
+        </Link>
       </div>
     </div>
   );
