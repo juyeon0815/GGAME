@@ -39,6 +39,15 @@ function GameCanvas(props) {
     return () => {};
   }, [props.pos, isDrawing]);
 
+  useEffect(() => {
+    if (isDrawing) {
+      document.querySelector("#wait-canvas").style.border = "5px solid red";
+    } else {
+      document.querySelector("#wait-canvas").style.border = "5px solid blue";
+    }
+    return () => {};
+  }, [isDrawing]);
+
   const clearCanvas = () => {
     // 픽셀 정리
     if (ctx) {
@@ -66,6 +75,7 @@ function GameCanvas(props) {
         className="wait-canvas"
         ref={canvasRef}
         tabIndex="0"
+        id="wait-canvas"
         onKeyDown={startDrawing}
         onKeyUp={finishDrawing}
         width="700"
