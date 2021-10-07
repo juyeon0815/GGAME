@@ -50,7 +50,7 @@ exports.getToken = async(code)=>{
 
 
     let sql = "select * from user where email=?"
-    let params = [email];
+    let params = [userId];
     conn.query(sql,params,function(error,result){
         if(result.length===0){
             sql = "INSERT INTO user(name, email, user_id) VALUES(?,?,?)";
