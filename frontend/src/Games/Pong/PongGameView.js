@@ -151,7 +151,6 @@ class PongGameView extends Component {
           //컴퓨터가 이길때
           this.setState({ gameActive: false });
           // 게임 결과 보내기
-          console.log('게임결과보내기1')
           axios({
             method: 'post',
             url: 'http://localhost:5000/game/rank',
@@ -173,7 +172,6 @@ class PongGameView extends Component {
           this.drawRanking(this.players[0].score)
           // this.drawText("Game over! 내 점수는 : "+this.players[0].score);
           // 게임 결과 보내기
-          console.log('게임결과보내기2')
           axios({
             method: 'post',
             url: 'http://localhost:5000/game/rank',
@@ -217,7 +215,6 @@ class PongGameView extends Component {
       canvas.width / 2,
       100
     );
-    console.log('랭킹 받아오기')
     axios.get('http://localhost:5000/game/rank', {params:{type: 'pong'}})
       .then((Response) => {
         const res = Response.data.data

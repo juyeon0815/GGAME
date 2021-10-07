@@ -116,7 +116,6 @@ const AirDrawingHost = (props) => {
         <div>
           <VideoConference roomId={props.location.roomId} username={nickName} />
           <div className="game-info">
-            <h3>내 ID : {nickName}</h3>
             <h3>{drawer.nickname}님이 손을 움직이는 중...</h3>
           </div>
 
