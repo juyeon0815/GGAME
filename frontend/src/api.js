@@ -13,7 +13,6 @@ const getAchievement = async () => {
   let email = ''
   await userMeApi().then(res => {
     email = res.data.data[0].email
-    console.log(email)
   })
   return await axios.get("http://localhost:5000/user/achievement", {
     params: {

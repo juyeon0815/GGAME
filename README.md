@@ -10,33 +10,95 @@
 
 인공지능으로 제스처를 인식하는 다양한 게임들을 통해서 유저간 랭킹 경쟁, 개인 업적 해금 등의 재미를 느낄 수 있습니다.
 
+### 특징
+
+```
+- 인공지능을 활용한 신체 인식 아이스 브레이킹 게임
+- Socket.io를 통한 실시간 통신 멀티게임 
+- Hand Gesture Detection 모델을 이용한 손 인식
+- Teachable Machine을 이용한 이미지 학습 게임
+- Hand Gesture Detection 모델을 이용한 AI와 탁구 대결
+```
+
+### 개발기간
+
+2021.08.23 ~ 2021.10.08
+
+### 와이어 프레임
+
+![image-20211007175931049](README.assets/image-20211007175931049.png)
+
+### ERD
+
+![erd](README.assets/erd.png)
+
 
 
 ## 1. 실행 방법
 
-- 로컬에서 실행하기 위해서는 콘솔창 2개로 프론트엔드와 백엔드를 동시에 실행해야 합니다.
+- `로컬에서 실행`하기 위해서는 콘솔창 2개로 프론트엔드와 백엔드를 동시에 실행해야 합니다.
 
 ``` bash
 -- 프론트엔드 실행
 cd frontend/
+npm i
 npm start
+
+cd ..
 
 -- 백엔드 실행
 cd backend/
+npm i
 node server.js
 ```
 
 - 배포 링크 (막힐 수 있음)
 
   https://j5a104.p.ssafy.io/
+  
+- `통합 빌드 실행`
+
+``` bash
+-- 프론트엔드 실행
+cd frontend/
+npm i
+npm run build
+
+cd ..
+
+-- 백엔드 실행
+cd backend/
+npm i
+node server.js
+```
 
 
 
 ## 2. 개발 환경
 
+### 기술 스택
+
 ![img](https://cdn.discordapp.com/attachments/879577592984928291/895203376596406292/-.jpg)
 
+### 협업툴
 
+- **Jira** 
+
+  애자일 협업, 스케줄 관리
+
+  ![image-20211007164354134](README.assets/image-20211007164354134.png)
+
+- **Notion** 
+
+  문서화, 정보공유
+
+  https://www.notion.so/GGAEM-cb215da9a1114f668a2e2022541a4be4
+
+- **Git** 
+
+  - 코드 품질 관리, MR
+
+  - 커밋 메세지 컨벤션 사용, 브랜치 네이밍 규칙 사용
 
 ## 3. 기능
 
@@ -87,6 +149,8 @@ node server.js
 
 ![image-20211007153950382](README.assets/image-20211007153950382.png)
 
+![](https://cdn.discordapp.com/attachments/879577592984928290/895600313120215050/Oct-07-2021_18-15-43.gif)
+
 ![image-20211007154134525](README.assets/image-20211007154134525.png)
 
 ### 랭킹
@@ -106,11 +170,35 @@ node server.js
 
 - 오도경
   - 팀장, Back-end
+  - Tensorflow.js 핸드 제스처 인식 모델 활용
+  - 배포
+  - UCC 제작
 - 김주연
   - Back-end
+  - 소셜로그인
+  - DB설계
+  - REST API
+  - 싱글플레이(핑퐁 게임)
 - 이은총
-  - Front-End
+  - Front-End (React, JS, CSS)
+  - SPA 라우팅
+  - 메인 페이지
+  - 로그인 페이지
+  - 업적 페이지
+  - 공통 컴포넌트 개발(모달)
+  - 기타 CSS 작업
 - 조은지
   - Front-End
+  - 싱글플레이(뱀과 사과 게임)
+  - Tensorflow Teachable Machine 활용
+  - canvas 게임 구현
+  - 랭킹 페이지
+  - 기타 CSS 작업
 - 황성현
-  - Back-End
+  - Full-Stack
+  - [Front-End] 
+    - 멀티플레이(Air draw 게임)
+  - [Back-End] 
+    - 웹소켓 서버 구축 
+    - WebRTC 
+
