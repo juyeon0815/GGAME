@@ -66,7 +66,15 @@ node server.js
 
 ![img](https://cdn.discordapp.com/attachments/879577592984928291/895203376596406292/-.jpg)
 
+### 협업툴
 
+- Jira
+
+  ![image-20211007164354134](README.assets/image-20211007164354134.png)
+
+- Notion
+
+- Git
 
 ## 3. 기능
 
@@ -144,3 +152,4 @@ node server.js
   - Front-End
 - 황성현
   - Back-End, Front-End
+
