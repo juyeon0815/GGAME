@@ -3,7 +3,7 @@
 }
 .rank-container {
   width: 100%;
-  margin: 30px;
+  margin: 0 30px;
   max-width: 1000px;
   padding: 2em 0;
   display: grid;
@@ -167,4 +167,13 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
+}
+.home-link {
+  color: black;
+}
+.home-btn {
+  margin-top: 30px;
+  margin-left: 30px;
+  font-size: 1.3rem;
+  text-align: start;
 }

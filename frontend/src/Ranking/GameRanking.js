@@ -31,7 +31,6 @@ class GameRanking extends React.Component {
         </div>
         {/* 1-10위 전체순위 */}
         <div className="board">
-          <h2>Leaderboard</h2>
           <ul>
             {this.props.ranks&&this.props.ranks.map((info, index) => (
               <li key={index}>

@@ -54,7 +54,7 @@ exports.getToken = async(code)=>{
     conn.query(sql,params,function(error,result){
         if(result.length===0){
             sql = "INSERT INTO user(name, email, user_id) VALUES(?,?,?)";
-            params = [name,email,userId];
+            params = [name,userId,email];
             conn.query(sql,params,function(error,result){
                 if(error) console.log(error)
                 else console.log(result)
@@ -104,7 +104,7 @@ exports.userMe = async(token) =>{
 
     const user_id = user.data.id;
     return new Promise((resolve, reject)=>{
-        let sql = "select * from user where user_id=?"
+        let sql = "select * from user where email=?"
         let params = [user_id]
         conn.query(sql,params,function(error, result){
             if(error) {

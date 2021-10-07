@@ -1,6 +1,5 @@
 import Kakao from "../assets/images/kakao_login.png";
 import { kakao_auth_url } from "./OAuth";
-import Logo from "../assets/images/Logo.png";
 import "./Login.css";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
