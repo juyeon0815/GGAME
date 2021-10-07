@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 //요청
 app.get("/", (req, res) => {
-  // index.html 파일 응답
+  // index.html 파일 응답//
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
