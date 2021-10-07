@@ -2,7 +2,7 @@
 
 #### 로그인 화면
 
-![](C:\Users\SSAFY\Desktop\login.GIF)
+![](\senario.assets\login.GIF)
 
 | Component          | Description                                  |
 | ------------------ | -------------------------------------------- |
@@ -10,7 +10,7 @@
 
 #### 메인 화면
 
-![](C:\Users\SSAFY\Desktop\main.GIF)
+![](\senario.assets\main.GIF)
 
 Component|Description
 ---------|---------
@@ -24,9 +24,9 @@ Component|Description
 
 #### 도전하기(뱀 게임)
 
-![](C:\Users\SSAFY\Desktop\snake1.GIF)
+![](\senario.assets\snake1.GIF)
 
-![](C:\Users\SSAFY\Documents\카카오톡 받은 파일\dosnake.gif)
+![](\senario.assets\dosnake.gif)
 
 | Component          | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
@@ -42,7 +42,7 @@ Component|Description
 
 #### 혼자하기(핑퐁 게임)
 
-![](C:\Users\SSAFY\Downloads\Oct-07-2021_14-23-15.gif)
+![](\senario.assets\ponggif.gif)
 
 | Component          | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
@@ -54,7 +54,7 @@ Component|Description
 
 #### 같이하기(에어 드로잉 게임) - 게임 전
 
-![drawing2](C:\Users\SSAFY\Desktop\drawing2.GIF)
+![drawing2](\senario.assets\drawing2.GIF)
 
 | Component          | Description                                                  |
 | ------------------ | ------------------------------------------------------------ |
@@ -70,7 +70,7 @@ Component|Description
 
 #### 같이하기(에어 드로잉 게임) - 게임화면
 
-![](C:\Users\SSAFY\Downloads\Oct-07-2021_15-46-29.gif)
+![](\senario.assets\drawinggif.gif)
 
 | Component                      | Description                                                  |
 | ------------------------------ | ------------------------------------------------------------ |
@@ -85,7 +85,7 @@ Component|Description
 
 #### 마이페이지
 
-![](C:\Users\SSAFY\Desktop\achievement.GIF)
+![](\senario.assets\achievement.GIF)
 
 | Component | Description                                 |
 | --------- | ------------------------------------------- |
@@ -94,7 +94,7 @@ Component|Description
 
 #### 랭킹페이지
 
-![](C:\Users\SSAFY\Desktop\ranking.GIF)
+![](\senario.assets\ranking.GIF)
 
 | Component       | Description                                |
 | --------------- | ------------------------------------------ |
