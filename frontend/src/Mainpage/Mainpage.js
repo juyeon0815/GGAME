@@ -4,11 +4,10 @@ import "./Mainpage.css";
 import Pong from "../assets/images/pong.png";
 import Snake from "../assets/images/snake.png";
 import GameCard from "./MainpageCard";
-import { faArrow, faMypage, faRanking } from "../assets/icons/menu_icon";
+import { faArrow, faMypage, faRanking, faLogout } from "../assets/icons/menu_icon";
 import AirDrawing from "../assets/images/air_drawing.png";
 
 const Mainpage = () => {
-  const user = "user";
   const [isMenu, setIsMenu] = useState(false);
   const visiblityChange = () => {
     const icons = document.querySelectorAll(".icon-circle");
@@ -28,23 +27,24 @@ const Mainpage = () => {
   };
   return (
     <div>
+      {/* Logo */}
+      <div className="main-ggame-logo">깸</div>
+      {/* Menu Btn */}
       <div className={"menu-container"}>
         <div onClick={visiblityChange} className={"icon-arrow"}>
           {faArrow}
         </div>
-        <Link
-          to={{
-            pathname: `/mypage/${user}`,
-            state: { user: user },
-          }}
-          className={"icon-circle icon-mypage"}
-        >
+        <Link to="/mypage" className={"icon-circle icon-mypage"}>
           {faMypage}
         </Link>
         <Link to="/ranking" className={"icon-circle icon-ranking"}>
           {faRanking}
         </Link>
+        <Link to="/login" className={"icon-circle icon-logout"} onClick={() => sessionStorage.removeItem('token')}>
+          {faLogout}
+        </Link>
       </div>
+      {/* Game Card */}
       <div className={"main-container"}>
         <GameCard image={Snake} game="snake" />
         <GameCard image={Pong} game="pong" />

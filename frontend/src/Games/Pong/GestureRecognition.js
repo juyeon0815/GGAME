@@ -107,33 +107,25 @@ function GestureRecognition(props) {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          style={{
-            position: "absolute",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
+    <div>
+      <Webcam
+        ref={webcamRef}
+        style={{
+          position: "absolute",
+          zindex: 9,
+          width: 640,
+          height: 480,
+        }}
+      />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "relative",
-            // marginLeft: "auto",
-            // marginRight: "auto",
-            // left: 0,
-            // right: 0,
-            // textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-      </header>
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "relative",
+          width: 640,
+          height: 480,
+        }}
+      />
     </div>
   );
 }

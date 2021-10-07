@@ -1,44 +1,11 @@
-// const express = require('express')
-// const app = express()
-// const server = require('http').createServer(app)
-// const io = require('socket.io')(server,{
-//     cors : {
-//         origin :"*",
-//         credentials :true
-//         // origin: "http://localhost:3000",
-//         // methods: ["GET", "POST"],
-//     }
-// });
-
-// const cors = require('cors')
-// app.use(cors());
-
-// const Pong = require('./public/Pong/Pong')
-// // app.use('/pong',Pong)
-// Pong.pong(io,app)
-
-
-// const port = 5000;
-// server.listen(port, ()=>console.log(`Listening on port ${port}`));
-
-const express = require('express');
-const path = require("path"); // react build 파일에 접근하기 위해 필요함
+const express = require("express");
+// const path = require("path"); // react build 파일에 접근하기 위해 필요함
 const port = process.env.PORT || 5000;
 
 const app = express();
 
-const cors = require('cors')
+const cors = require("cors");
 app.use(cors());
-
-app.use(express.static(path.join(__dirname, "build")));
- 
-app.use("/", function (req, res, next) {
-  res.sendFile(path.join(__dirname + "/build", "index.html"));
-});
-
-app.listen(port, function () {
-  console.log("server works on port :" + port);
-});
 
 // back/app.js
 const httpServer = require("http").createServer();
@@ -50,16 +17,22 @@ const io = require("socket.io")(httpServer, {
   },
 });
 
-const pongModule = require('./public/Pong/Pong');
-// const charModule = require("./public/javascripts/Charade/Charade.js");
-const pongStateModule = require('./public/Pong/PongState'); // 같은 디렉토리에 있다고 가정
-const requestPongModule = require('./public/Pong/PongRequest'); // 같은 디렉토리에 있다고 가정
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-pongModule.pong(io,pongStateModule);
-// charModule.initChar(io,pongStateModule);
+const airDrawingModule = require("./src/Websocket/AirDrawing/AirDrawing");
+const airDrawingStateModule = require("./src/Websocket/AirDrawing/AirDrawingState"); // 같은 디렉토리에 있다고 가정
+const requestPongModule = require("./src/Websocket/AirDrawing/AirDrawingRequest"); // 같은 디렉토리에 있다고 가정
 
-requestPongModule.request_pong(app,pongStateModule);
+const user = require("./src/Routes/User");
+const game = require("./src/Routes/Game");
+// const achievement = require("./src/Routes/Achievement");
+app.use("/user", user);
+app.use("/game", game);
+// app.use("/achievement", achievement);
 
+airDrawingModule.airDrawing(io, airDrawingStateModule);
+requestPongModule.airDrawingRequest(app, airDrawingStateModule);
 httpServer.listen(80);
 
 module.exports = app;

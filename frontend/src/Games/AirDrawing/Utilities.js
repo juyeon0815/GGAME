@@ -52,18 +52,26 @@ export const drawHand = (predictions, ctx) => {
 
           // Draw path
           ctx.beginPath();
-          ctx.moveTo(landmarks[firstJointIndex][0], landmarks[firstJointIndex][1]);
-          ctx.lineTo(landmarks[secondJointIndex][0], landmarks[secondJointIndex][1]);
+          ctx.moveTo(640 - landmarks[firstJointIndex][0], landmarks[firstJointIndex][1]);
+          ctx.lineTo(640 - landmarks[secondJointIndex][0], landmarks[secondJointIndex][1]);
           ctx.strokeStyle = "plum";
           ctx.lineWidth = 4;
           ctx.stroke();
         }
       }
 
+      const x = landmarks[7][0];
+      // Get y point
+      const y = landmarks[7][1];
+
+      // Set line color
+      ctx.fillStyle = style[0]["color"];
+      ctx.fill();
+
       // Loop through landmarks and draw em
       for (let i = 0; i < landmarks.length; i++) {
         // Get x point
-        const x = landmarks[i][0];
+        const x = 640 - landmarks[i][0];
         // Get y point
         const y = landmarks[i][1];
         // Start drawing

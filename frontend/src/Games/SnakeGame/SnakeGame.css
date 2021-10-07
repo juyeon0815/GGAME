@@ -1,8 +1,3 @@
-@font-face {
-  font-family: "arcade-font";
-  src: url("../../assets/fonts/ARCADECLASSIC.TTF");
-}
-
 .snake-container {
   display: flex;
   margin-top: 10vh;
@@ -25,6 +20,7 @@
   padding: 10px;
   font-size: 17px;
   transition: 0.25s;
+  font-family: 'MaplestoryOTFBold';
 }
 
 .btn-snake:hover {
@@ -52,7 +48,7 @@
   height: 600px;
 }
 
-video {
+.snake-video {
   position: absolute;
   top: 350px;
   right: 350px;
@@ -103,4 +99,84 @@ video {
 .snake-infotext {
   text-align: center;
   margin: 0;
+}
+
+.snake-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.snake-open-modal {
+  display: flex;
+  align-items: center;
+  animation: modal-show .3s;
+}
+
+.snake-modal button {
+  outline: none;
+  cursor: pointer;
+  border: 0;
+}
+.snake-modal header button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 30px;
+  font-size: 25px;
+  /* font-weight: bold; */
+  text-align: center;
+  margin: .3rem;
+  color: rgb(150, 150, 150);
+  background-color: transparent;
+}
+.snake-modal header {
+  position: relative;
+  padding: 1.2rem 1.2rem 1.5rem 1.2rem;
+  /* background-color: rgb(204, 247, 255); */
+  background-color: lightblue;
+}
+.snake-modal section {
+  width: 90%;
+  max-width: 700px;
+  margin:0 auto;
+  border-radius: .5rem;
+  /* background-color: rgb(204, 247, 255); */
+  background-color: lightblue;
+  overflow: auto;
+}
+@keyframes modal-show {
+  from {
+      opacity: 0;
+      margin-top: -10%;
+  }
+  to {
+      opacity: 1;
+      margin-top: 0;
+  }
+}
+.snake-modal main {
+  padding: 1rem;
+}
+.snake-modal .main-box {
+opacity: 0.7;
+width: 85%;
+margin: .3rem auto;
+border-radius: .5rem;
+background-color: #ffffff;
+}
+.snake-modal footer {
+  padding: .8rem;
+  text-align: right;
+}
+.snake-modal footer button {
+  padding: .3rem 1rem;
+  color: #ffffff;
+  background-color: #0088ff;
+  border-radius: 5px;
+  font-size: 1.25rem;
 }

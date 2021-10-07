@@ -20,8 +20,6 @@ const MakeRoomModal = (props) => {
       alert("방 이름과 닉네임은 필수 입력 사항입니다.");
     } else {
       // 서버에 소켓 넘버 요청
-      console.log("방 이름 : ", newRoom);
-      console.log("닉네임 : ", newNickname);
       setRoomNumber(parseInt(Math.floor(Math.random() * (10000 - 1000) + 1000)));
       setNickName(newNickname);
       setShowEnterHost(true);
@@ -115,22 +113,33 @@ const EnterRoomModal = (props) => {
     const enterRoom = document.querySelector("#enter_room_guest").value;
 
     axios
-      .get("http://localhost:5000/pong/room-exist", {
+      .get("http://localhost:5000/air-drawing/room-exist", {
         params: {
           roomId: parseInt(enterRoom),
         },
       })
       .then((res) => {
-        console.log("roomExist", res.data);
-
-        const newNickname = document.querySelector("#new_nickname").value;
-        if (newNickname === "") alert("닉네임은 필수 입력 사항입니다.");
-        else if (!res.data) alert("입장 코드가 잘못되었습니다.");
-        else
-          history.push({
-            pathname: "/air-drawing/guest",
-            roomId: parseInt(enterRoom),
-            newNickName: newNickname,
+        axios
+          .get("http://localhost:5000/air-drawing/nickname-exist", {
+            params: {
+              nickname: document.querySelector("#new_nickname").value,
+              roomId: parseInt(enterRoom),
+            },
+          })
+          .then((res2) => {
+            const newNickname = document.querySelector("#new_nickname").value;
+            if (newNickname === "") alert("닉네임은 필수 입력 사항입니다.");
+            else if (!res.data) alert("입장 코드가 잘못되었습니다.");
+            else if (!res2.data) alert("존재하는 닉네임 입니다.");
+            else
+              history.push({
+                pathname: "/air-drawing/guest",
+                roomId: parseInt(enterRoom),
+                newNickName: newNickname,
+              });
+          })
+          .catch((error) => {
+            console.log("error", error);
           });
       })
       .catch((error) => {

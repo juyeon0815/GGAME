@@ -11,15 +11,19 @@
 import React, { Component } from "react";
 import Ball from "./Ball";
 import Player from "./Player";
-// import VisionRecognition from './VisionRecognition';
+import PongAchievement from "./PongAchievement";
+import axios from 'axios'
 import "./Pong.css";
 
 import GestureRecognition from "./GestureRecognition";
+import { PongRule } from "./PongRule";
+import { Link } from "react-router-dom";
 
 let gameWidth = 600,
   gameHeight = 400;
-let rounds = [5, 3, 1];
-let colors = ["#202020", "#2ecc71", "#3498db"];
+
+let rounds = [3, 7, "computer 10 points game over"];
+let colors = ["#202020", "#4C4C4C", "#747474"];
 
 let beep = new Audio(
   "data:audio/wav;base64,//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAAAGDgYtAgAyN+QWaAAihwMWm4G8QQRDiMcCBcH3Cc+CDv/7xA4Tvh9Rz/y8QADBwMWgQAZG/ILNAARQ4GLTcDeIIIhxGOBAuD7hOfBB3/94gcJ3w+o5/5eIAIAAAVwWgQAVQ2ORaIQwEMAJiDg95G4nQL7mQVWI6GwRcfsZAcsKkJvxgxEjzFUgfHoSQ9Qq7KNwqHwuB13MA4a1q/DmBrHgPcmjiGoh//EwC5nGPEmS4RcfkVKOhJf+WOgoxJclFz3kgn//dBA+ya1GhurNn8zb//9NNutNuhz31f////9vt///z+IdAEAAAK4LQIAKobHItEIYCGAExBwe8jcToF9zIKrEdDYIuP2MgOWFSE34wYiR5iqQPj0JIeoVdlG4VD4XA67mAcNa1fhzA1jwHuTRxDUQ//iYBczjHiTJcIuPyKlHQkv/LHQUYkuSi57yQT//uggfZNajQ3Vmz+Zt//+mm3Wm3Q576v////+32///5/EOgAAADVghQAAAAA//uQZAUAB1WI0PZugAAAAAoQwAAAEk3nRd2qAAAAACiDgAAAAAAABCqEEQRLCgwpBGMlJkIz8jKhGvj4k6jzRnqasNKIeoh5gI7BJaC1A1AoNBjJgbyApVS4IDlZgDU5WUAxEKDNmmALHzZp0Fkz1FMTmGFl1FMEyodIavcCAUHDWrKAIA4aa2oCgILEBupZgHvAhEBcZ6joQBxS76AgccrFlczBvKLC0QI2cBoCFvfTDAo7eoOQInqDPBtvrDEZBNYN5xwNwxQRfw8ZQ5wQVLvO8OYU+mHvFLlDh05Mdg7BT6YrRPpCBznMB2r//xKJjyyOh+cImr2/4doscwD6neZjuZR4AgAABYAAAABy1xcdQtxYBYYZdifkUDgzzXaXn98Z0oi9ILU5mBjFANmRwlVJ3/6jYDAmxaiDG3/6xjQQCCKkRb/6kg/wW+kSJ5//rLobkLSiKmqP/0ikJuDaSaSf/6JiLYLEYnW/+kXg1WRVJL/9EmQ1YZIsv/6Qzwy5qk7/+tEU0nkls3/zIUMPKNX/6yZLf+kFgAfgGyLFAUwY//uQZAUABcd5UiNPVXAAAApAAAAAE0VZQKw9ISAAACgAAAAAVQIygIElVrFkBS+Jhi+EAuu+lKAkYUEIsmEAEoMeDmCETMvfSHTGkF5RWH7kz/ESHWPAq/kcCRhqBtMdokPdM7vil7RG98A2sc7zO6ZvTdM7pmOUAZTnJW+NXxqmd41dqJ6mLTXxrPpnV8avaIf5SvL7pndPvPpndJR9Kuu8fePvuiuhorgWjp7Mf/PRjxcFCPDkW31srioCExivv9lcwKEaHsf/7ow2Fl1T/9RkXgEhYElAoCLFtMArxwivDJJ+bR1HTKJdlEoTELCIqgEwVGSQ+hIm0NbK8WXcTEI0UPoa2NbG4y2K00JEWbZavJXkYaqo9CRHS55FcZTjKEk3NKoCYUnSQ0rWxrZbFKbKIhOKPZe1cJKzZSaQrIyULHDZmV5K4xySsDRKWOruanGtjLJXFEmwaIbDLX0hIPBUQPVFVkQkDoUNfSoDgQGKPekoxeGzA4DUvnn4bxzcZrtJyipKfPNy5w+9lnXwgqsiyHNeSVpemw4bWb9psYeq//uQZBoABQt4yMVxYAIAAAkQoAAAHvYpL5m6AAgAACXDAAAAD59jblTirQe9upFsmZbpMudy7Lz1X1DYsxOOSWpfPqNX2WqktK0DMvuGwlbNj44TleLPQ+Gsfb+GOWOKJoIrWb3cIMeeON6lz2umTqMXV8Mj30yWPpjoSa9ujK8SyeJP5y5mOW1D6hvLepeveEAEDo0mgCRClOEgANv3B9a6fikgUSu/DmAMATrGx7nng5p5iimPNZsfQLYB2sDLIkzRKZOHGAaUyDcpFBSLG9MCQALgAIgQs2YunOszLSAyQYPVC2YdGGeHD2dTdJk1pAHGAWDjnkcLKFymS3RQZTInzySoBwMG0QueC3gMsCEYxUqlrcxK6k1LQQcsmyYeQPdC2YfuGPASCBkcVMQQqpVJshui1tkXQJQV0OXGAZMXSOEEBRirXbVRQW7ugq7IM7rPWSZyDlM3IuNEkxzCOJ0ny2ThNkyRai1b6ev//3dzNGzNb//4uAvHT5sURcZCFcuKLhOFs8mLAAEAt4UWAAIABAAAAAB4qbHo0tIjVkUU//uQZAwABfSFz3ZqQAAAAAngwAAAE1HjMp2qAAAAACZDgAAAD5UkTE1UgZEUExqYynN1qZvqIOREEFmBcJQkwdxiFtw0qEOkGYfRDifBui9MQg4QAHAqWtAWHoCxu1Yf4VfWLPIM2mHDFsbQEVGwyqQoQcwnfHeIkNt9YnkiaS1oizycqJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU="
@@ -31,6 +35,7 @@ class PongGameView extends Component {
   ) {
     super(props);
     this.state = {
+      showPR: false,
       canvas: null,
       context: null,
       vision: null,
@@ -38,6 +43,9 @@ class PongGameView extends Component {
       round: 0,
       boardColor: "#202020",
       direction: 2, //0 = UP, 1 = DOWN, 2 = IDDLE //초기 dirction 멈춤
+      step : 1,
+      showPA: false,
+      achievement: []
     };
     this.initialSpeed = 250;
     this.ball = null;
@@ -48,8 +56,26 @@ class PongGameView extends Component {
   componentDidMount() {
     //컴포넌트 마운트된 직후 호출
     const context = this.refs.canvas.getContext("2d"); //드로잉 컨텍스트에 액세스
+    // this.drawText("Game over!");
     this.setState({ context: context });
-    this.setVisionRecognition();
+
+    // 회원 정보 얻어오기
+    let token = sessionStorage.getItem('token')
+    axios.get("http://localhost:5000/user/me",{
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((result)=>{
+      this.setState({ email: result.data.data[0].email})
+      this.setState({ myName: result.data.data[0].name})
+    })
+    .catch((error) => {
+      // 로그인 안되어 있을 시 로그인창으로 되돌리기
+      console.log(error)
+      alert('로그인이 필요한 페이지입니다.')
+      document.location.href="/login"
+    })
+
     this.initialize();
     requestAnimationFrame(() => {
       this.update();
@@ -107,62 +133,140 @@ class PongGameView extends Component {
       // });
       // console.log("방향~",this.state.direction);
       this.movePlayer();
-    }
 
-    //if the player won the round
-    if (this.players[0].score == rounds[this.state.round]) {
-      //if it's the last round, stop the game
-      if (!rounds[this.state.round + 1]) {
-        setTimeout(() => {
-          this.drawText("Congrats! You won the game!");
-        }, 1000);
-        this.setState({
-          gameActive: false,
-        });
-        cvs.addEventListener("click", () => {
-          this.initialize();
-        });
+      if (this.state.step < 3) {
+        //1,2라운드일 경우 =>
+        if (this.players[0].score === rounds[this.state.round]) {
+          //내가 이기는 방법
+          this.ball.vel.x *= 1.3;
+          this.ball.vel.y *= 1.3;
+
+          let nextRound = this.state.round + 1;
+          this.setState({
+            step: this.state.step + 1,
+            round: nextRound,
+            boardColor: colors[nextRound],
+          });
+        } else if (this.players[1].score === rounds[this.state.round]) {
+          //컴퓨터가 이길때
+          this.setState({ gameActive: false });
+          // 게임 결과 보내기
+          axios({
+            method: 'post',
+            url: 'http://localhost:5000/game/rank',
+            data: { type: 'pong', email: this.state.email, score: this.players[0].score },
+            headers: { 'Content-Type': 'application/json' },
+            })
+            .then( response => { this.drawRanking(this.players[0].score) } )
+            .catch( response => { console.log(response) } );
+          
+          cvs.addEventListener("click", () => {
+            this.initialize();
+          });
+        }
       } else {
-        //if there are rounds left, reset score and increase difficulty (speed)
-        //setTimeout(() => { this.drawText("You won this round! On to the next one!"); }, 1000);
-
-        this.players.forEach((player) => (player.score = 0));
-
-        this.ball.vel.x *= 1.3;
-        this.ball.vel.y *= 1.3;
-
-        let nextRound = this.state.round + 1;
-        this.setState({
-          round: nextRound,
-          boardColor: colors[nextRound],
-        });
+        //3라운드일경우 => 무한대
+        if (this.players[1].score === 10) {
+          //컴퓨터가 이겨서 끝나는 조건만 체크
+          this.setState({ gameActive: false });
+          this.drawRanking(this.players[0].score)
+          // this.drawText("Game over! 내 점수는 : "+this.players[0].score);
+          // 게임 결과 보내기
+          axios({
+            method: 'post',
+            url: 'http://localhost:5000/game/rank',
+            data: { type: 'pong', email: this.state.email, score: this.players[0].score },
+            headers: { 'Content-Type': 'application/json' },
+            })
+            .then( response => { this.drawRanking(this.players[0].score) } )
+            .catch( response => { console.log(response) } );
+          cvs.addEventListener("click", () => {
+            this.initialize();
+          });
+        }
       }
-    }
-
-    //if the AI won the game
-    else if (this.players[1].score == rounds[this.state.round]) {
-      this.setState({ gameActive: false });
-      setTimeout(() => {
-        this.drawText("Game over!");
-      }, 500);
+    } else {
       cvs.addEventListener("click", () => {
         this.initialize();
       });
     }
-
     // Next frame
     requestAnimationFrame(() => {
       this.update();
     });
   }
 
-  setVisionRecognition() {
-    //Display webcam + training model for recognition
-    // let vision = GestureRecognition;
-    // this.setState({
-    //   vision: vision
-    // });
-    // // console.log("vision ", vision)
+  drawRanking = (my_score) => {
+    let canvas = this.state.canvas;
+    let ctx = this.state.context;
+
+    ctx.fillStyle = this.state.boardColor;
+    ctx.fillRect(0, 0, gameWidth, gameHeight);
+    ctx.fillStyle = "white";
+    ctx.font = "40px MaplestoryOTFBold";
+    ctx.fillText(
+      `RANKING`,
+      canvas.width / 2,
+      50
+    );
+    ctx.font = "20px MaplestoryOTFBold";
+    ctx.fillText(
+      `RANK  :     SCORE  :     NAME`,
+      canvas.width / 2,
+      100
+    );
+    axios.get('http://localhost:5000/game/rank', {params:{type: 'pong'}})
+      .then((Response) => {
+
+        const res = Response.data.data
+        const resLength = (res.length <5 ? res.length : 5)
+        let meCheck = false
+        for (let i = 0; i < resLength; i++) {
+          // 나일 경우 다르게 표시하기
+          if (res[i]['name'] === this.state.myName && res[i]['score'] === my_score) {
+            ctx.fillStyle = "blue";
+            ctx.fillText(
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}       NEW!`,
+              canvas.width / 2,
+              100 + 50*(i+1)
+            );
+            meCheck = true;
+          } else {
+            ctx.fillStyle = "white";
+            ctx.fillText(
+              `${i+1}위                ${res[i]['score']}점                ${res[i]['name']}`,
+              canvas.width / 2,
+              100 + 50*(i+1)
+            );
+          }
+        }
+        if (!meCheck) {
+          ctx.fillStyle = "blue";
+          ctx.fillText(
+            `NEW!                ${my_score}점                ${this.state.myName}`,
+            canvas.width / 2,
+            100 + 50*(resLength + 1)
+          );
+        }
+        this.checkNewAchievement()
+      })
+      .catch((Error)=>{console.log(Error)})
+
+    canvas.addEventListener("click", () => {
+      this.initialize();
+    });
+  }
+
+  checkNewAchievement() {
+    // 업적달성 확인
+    axios.get("http://localhost:5000/game/pong/new-achievement", {params:{email : this.state.email}})
+    .then((res)=>{
+      if (res.data.data.length >= 1) {
+        this.setState({ showPA: true, achievement: res.data.data})
+      }
+    }).catch((error)=>{
+        console.log("error :", error);
+    })
   }
 
   initialize() {
@@ -175,6 +279,7 @@ class PongGameView extends Component {
       context: context,
       gameActive: true,
       round: 0,
+      step: 1,
       boardColor: "#202020",
       direction: 2, //초기 상태는 멈춤
     });
@@ -189,9 +294,6 @@ class PongGameView extends Component {
     this.players.forEach((p) => {
       p.pos.y = cvs.height / 2;
     });
-
-    // document.getElementById("game_menu").innerHTML = "Train the images for UP, DOWN, and IDLE" +
-    //                        "<br />"+ "<span>Then click the game to begin!</span>";
 
     this.reset(cvs);
     this.listen(cvs);
@@ -221,17 +323,18 @@ class PongGameView extends Component {
   }
 
   listen(canvas) {
-    canvas.addEventListener("click", () => this.play()); // canvas 클릭 시 게임 시작
+    canvas.addEventListener("click", () => {
+      this.play();
+    }); // canvas 클릭 시 게임 시작
 
-    canvas.addEventListener("mousemove", (event) => {
-      // paddle mouse로 조작가능
-      const scale = event.offsetY / event.target.getBoundingClientRect().height;
-      this.players[0].pos.y = canvas.height * scale;
-    });
+    // canvas.addEventListener("mousemove", (event) => {
+    //   // paddle mouse로 조작가능
+    //   const scale = event.offsetY / event.target.getBoundingClientRect().height;
+    //   this.players[0].pos.y = canvas.height * scale;
+    // });
   }
 
   play() {
-    document.getElementById("game_menu").innerHTML = "";
     const b = this.ball;
     if (b.vel.x === 0 && b.vel.y === 0) {
       b.vel.x = 200 * (Math.random() > 0.5 ? 1 : -1);
@@ -268,10 +371,10 @@ class PongGameView extends Component {
     if (!(this.ball.vel.x < 50 && this.ball.vel.x > -50)) {
       this.helpPlayer();
     }
-    if (this.state.direction == 0) {
+    if (this.state.direction === 0) {
       //위로
       this.players[0].pos.y -= 10;
-    } else if (this.state.direction == 1) {
+    } else if (this.state.direction === 1) {
       //아래로
       this.players[0].pos.y += 10;
     }
@@ -311,7 +414,8 @@ class PongGameView extends Component {
     let ctx = this.state.context;
     //round info
     let roundText = "Round " + (this.state.round + 1);
-    let roundPts = rounds[this.state.round] + " pts";
+    let roundPts = rounds[this.state.round];
+    if (this.state.step < 3) roundPts += " pts";
     ctx.fillStyle = "#fff";
     ctx.shadowBlur = 0;
     ctx.font = 15 + "px oswald";
@@ -340,19 +444,59 @@ class PongGameView extends Component {
   }
 
   direction = (text) => {
-    console.log(text);
+    // console.log(text);
     this.setState({
       direction: text,
     });
   };
 
+  stopVideo() {
+    if (this.videoStream) {
+      console.log(this.videoStream);
+      this.videoStream.getVideoTracks().forEach((track) => {
+        track.stop();
+      });
+      this.videoStream.getAudioTracks().forEach((track) => {
+        track.stop();
+      });
+
+      this.videoStream = null;
+      this.videoTag.current.srcObject = null;
+    }
+
+    this.initialize();
+  }
+
   render() {
     return (
-      <div id="game">
-        <div id="pongCanvas">
-          <canvas ref="canvas" width={gameWidth} height={gameHeight} id="pong" />
+      <div className="pong-container">
+        <h1>PingPong</h1>
+        <div className="pong-main">
+          <canvas ref="canvas" width={gameWidth} height={gameHeight} />
           <GestureRecognition direction={this.direction} />
         </div>
+        <div>
+          <button
+            className="btn-pong btn-pong-rule"
+            onClick={() => this.setState({ showPR: true })}
+          >
+            게임방법
+          </button>
+          <Link to="/">
+            <button className="btn-pong btn-pong-out" onClick={() => this.stopVideo()}>
+              게임나가기
+            </button>
+          </Link>
+        </div>
+        <PongRule
+          isOpen = {this.state.showPR}
+          close={()=> this.setState({showPR:false})}
+        />
+        <PongAchievement
+          isOpen={this.state.showPA}
+          close={() => this.setState({showPA: false})}
+          achievement={this.state.achievement}
+        />
       </div>
     );
   }

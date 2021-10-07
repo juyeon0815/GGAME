@@ -3,39 +3,46 @@ import { useHistory } from "react-router-dom";
 import io from "socket.io-client";
 import GameCanvas from "./GameCanvas";
 import GestureRecognition from "./GestureRecognition";
+import { AirDrawingRule } from "./AirDrawingRule";
+import "./AirDrawingHost.css";
+import { Link } from "react-router-dom";
+import AnswerPopup from "./AnswerPopup";
 
 let socket;
-const PongWaitingHost = (props) => {
+
+const AirDrawingHost = (props) => {
   let history = useHistory();
   const roomNumber = props.history.location.newRoom;
   const nickName = props.history.location.newNickName;
 
   const [currentUser, setCurrentUser] = useState();
-  const [direction, setdirection] = useState();
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [pos, setPos] = useState([0, 0]);
+  const [showPR, setShowPR] = useState();
 
   const enterCode = useRef();
 
   useEffect(() => {
-    socket = io.connect("http://localhost:80/pong");
+    socket = io.connect("http://localhost:80/air-drawing");
     socket.emit("join room", roomNumber, nickName);
 
     socket.on("userList", (data) => {
-      console.log(data);
-      console.log(data.length);
       setCurrentUser(data.length);
     });
   }, []);
 
-  useEffect(() => {
-    // console.log(direction);
-  }, [direction]);
-
   const gameStart = () => {
-    socket.emit("game start", roomNumber);
-    history.push({
-      pathname: "/pong",
-      socket: socket,
-    });
+    if (currentUser < 2) {
+      alert("최소 2명의 플레이어가 필요합니다.");
+    } else {
+      socket.emit("game start", roomNumber);
+      history.push({
+        pathname: "/air-drawing",
+        socket: socket,
+        nickName: nickName,
+        roomId: roomNumber,
+      });
+    }
   };
 
   const style = {
@@ -47,42 +54,51 @@ const PongWaitingHost = (props) => {
     textAlign: "center",
   };
   return (
-    <div>
-      <h1>PongWaitingHost</h1>
+    <div className="air-drawing">
+      <p id="game_menu"></p>
+      <div style={center}>
+        <h1>대기실</h1>
 
-      <div>
+        <div>
+          <input
+            type="text"
+            id="enter_room_host"
+            className="modal-input"
+            value={roomNumber}
+            ref={enterCode}
+            style={style}
+            disabled
+          />
+          <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>
+            복사
+          </button>
+        </div>
         <div style={center}>NAME : {nickName}</div>
-        {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
-        <p id="game_menu"></p>
-        <div style={center}>
-          <div>
-            <input
-              type="text"
-              id="enter_room_host"
-              className="modal-input"
-              value={roomNumber}
-              ref={enterCode}
-              style={style}
-              disabled
-            />
-            <button onClick={() => navigator.clipboard.writeText(enterCode.current.value)}>
-              복사
-            </button>
-          </div>
 
-          <div>
-            <GameCanvas />
-            <GestureRecognition direction={setdirection} />
+        <div className="game-row">
+          <div className="game-left">
+            <GameCanvas isDrawing={isDrawing} pos={pos} />
           </div>
-
-          <div>
-            {currentUser}명 대기중..
-            <button onClick={gameStart}>게임시작</button>
+          <div className="game-right">
+            <GestureRecognition isDrawing={setIsDrawing} setPos={setPos} />
           </div>
         </div>
+
+        <button className="btn-start" onClick={gameStart}>
+          <span>Game Start</span>
+        </button>
+
+        <button className="btn-airdraw btn-airdraw-rule" onClick={() => setShowPR(true)}>
+          게임방법
+        </button>
+        <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
+        <Link to="/">
+          <button className="btn-airdraw btn-airdraw-out">게임 나가기</button>
+        </Link>
+        <div>{currentUser}명 대기중..</div>
       </div>
     </div>
   );
 };
 
-export default PongWaitingHost;
+export default AirDrawingHost;
