@@ -40,7 +40,6 @@ const Mypage = () => {
   useEffect(() => {
     // res.data.data
     getAchievement().then((res) => {
-      console.log(res)
       // let tmp = ['medal', 'pong_first', 'snake_first', 'mind_reader', 'very_stupid']
       // setAchievement(tmp)
       setAchievement(res.data.data)
