@@ -7,7 +7,7 @@ class AirDrawingRule extends React.Component {
   render() {
     const { isOpen, close } = this.props;
     return (
-      <Modal isOpen={isOpen} close={close} footerBtn="submit">
+      <Modal isOpen={isOpen} close={close} footerBtn={close} footerBtnName="close">
         <h1>게임 방법</h1>
         <p>GGAME의 Air Drawing Game은 👋으로 그림을 그릴 수 있어요!</p>
         <p>* 키보드 'd'를 누르고 있어야 그릴 수 있어요!</p>
