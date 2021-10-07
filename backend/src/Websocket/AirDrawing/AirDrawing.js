@@ -40,7 +40,12 @@ exports.airDrawing = function (io, state) {
         let nxtDrawer = state.clientList[socket.roomId].drawOrder[idx];
         let nxtProblem = state.clientList[socket.roomId].problem[idx];
         if (state.clientList[socket.roomId].idx === state.clientList[socket.roomId].list.length) {
-          namespace.to(socket.roomId).emit("game end", state.clientList[socket.roomId].list);
+          namespace.to(socket.roomId).emit(
+            "game end",
+            state.clientList[socket.roomId].list.sort(function (a, b) {
+              return b.score - a.score;
+            })
+          );
         } else {
           console.log(idx + 1, "번째 그리는 사람 : ", nxtDrawer);
           console.log(idx + 1, "번째 문제 : ", nxtProblem);
