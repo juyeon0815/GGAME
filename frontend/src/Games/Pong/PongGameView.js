@@ -444,7 +444,7 @@ class PongGameView extends Component {
   }
 
   direction = (text) => {
-    // console.log(text);
+    // console.log(text); //
     this.setState({
       direction: text,
     });
