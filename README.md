@@ -26,7 +26,7 @@
 
 ### ERD
 
-![](README.assets/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7730095f-a6d9-414d-992d-ba5595322147%2FUntitled.png)
+![erd](README.assets/erd.png)
 
 
 
