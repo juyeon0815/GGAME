@@ -26,7 +26,7 @@
 
 ### ERD
 
-![img](README.assets/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7730095f-a6d9-414d-992d-ba5595322147%2FUntitled.png)
+![https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7730095f-a6d9-414d-992d-ba5595322147%2FUntitled](README.assets/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7730095f-a6d9-414d-992d-ba5595322147%2FUntitled.png)
 
 
 
@@ -84,7 +84,7 @@ node server.js
 
   ![image-20211007164354134](README.assets/image-20211007164354134.png)
 
-- Notion 
+- **Notion** 
 
   문서화, 정보공유
 
@@ -177,12 +177,12 @@ node server.js
   - 싱글플레이(핑퐁 게임)
 - 이은총
   - Front-End (React, JS, CSS)
-    - SPA 라우팅
-    - 메인 페이지
-    - 로그인 페이지
-    - 업적 페이지
-    - 공통 컴포넌트 개발(모달)
-    - 기타 CSS 작업
+  - SPA 라우팅
+  - 메인 페이지
+  - 로그인 페이지
+  - 업적 페이지
+  - 공통 컴포넌트 개발(모달)
+  - 기타 CSS 작업
 - 조은지
   - Front-End
   - 싱글플레이(뱀과 사과 게임)
