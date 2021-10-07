@@ -20,6 +20,14 @@
 - Hand Gesture Detection 모델을 이용한 AI와 탁구 대결
 ```
 
+### 와이어 프레임
+
+![image-20211007175931049](README.assets/image-20211007175931049.png)
+
+### ERD
+
+![img](README.assets/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F7730095f-a6d9-414d-992d-ba5595322147%2FUntitled.png)
+
 
 
 ## 1. 실행 방법
@@ -64,17 +72,29 @@ node server.js
 
 ## 2. 개발 환경
 
+### 기술 스택
+
 ![img](https://cdn.discordapp.com/attachments/879577592984928291/895203376596406292/-.jpg)
 
 ### 협업툴
 
-- Jira
+- **Jira** 
+
+  애자일 협업, 스케줄 관리
 
   ![image-20211007164354134](README.assets/image-20211007164354134.png)
 
-- Notion
+- Notion 
 
-- Git
+  문서화, 정보공유
+
+  https://www.notion.so/GGAEM-cb215da9a1114f668a2e2022541a4be4
+
+- **Git** 
+
+  - 코드 품질 관리, MR
+
+  - 커밋 메세지 컨벤션 사용, 브랜치 네이밍 규칙 사용
 
 ## 3. 기능
 
@@ -125,6 +145,8 @@ node server.js
 
 ![image-20211007153950382](README.assets/image-20211007153950382.png)
 
+![](https://cdn.discordapp.com/attachments/879577592984928290/895600313120215050/Oct-07-2021_18-15-43.gif)
+
 ![image-20211007154134525](README.assets/image-20211007154134525.png)
 
 ### 랭킹
@@ -144,12 +166,35 @@ node server.js
 
 - 오도경
   - 팀장, Back-end
+  - Tensorflow.js 핸드 제스처 인식 모델 활용
+  - 배포
+  - UCC 제작
 - 김주연
   - Back-end
+  - 소셜로그인
+  - DB설계
+  - REST API
+  - 싱글플레이(핑퐁 게임)
 - 이은총
-  - Front-End
+  - Front-End (React, JS, CSS)
+    - SPA 라우팅
+    - 메인 페이지
+    - 로그인 페이지
+    - 업적 페이지
+    - 공통 컴포넌트 개발(모달)
+    - 기타 CSS 작업
 - 조은지
   - Front-End
+  - 싱글플레이(뱀과 사과 게임)
+  - Tensorflow Teachable Machine 활용
+  - canvas 게임 구현
+  - 랭킹 페이지
+  - 기타 CSS 작업
 - 황성현
-  - Back-End, Front-End
+  - Full-Stack
+  - [Front-End] 
+    - 멀티플레이(Air draw 게임)
+  - [Back-End] 
+    - 웹소켓 서버 구축 
+    - WebRTC 
 
