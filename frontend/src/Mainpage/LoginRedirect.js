@@ -7,10 +7,10 @@ const LoginRedirect = () => {
 
     useEffect(()=>{
         let code = new URL(window.location.href).searchParams.get("code");
-        console.log("code :", code);
+        // console.log("code :", code);
         axios.get("http://localhost:5000/user/auth/requestKakaoToken", {params:{code : code}})
         .then((res)=>{
-            console.log("msg", res.data);
+            // console.log("msg", res.data);
             sessionStorage.setItem("token", res.data);
             history.push("/");
         }).catch((error)=>{
