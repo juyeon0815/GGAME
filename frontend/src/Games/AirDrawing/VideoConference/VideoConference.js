@@ -54,6 +54,9 @@ class VideoConference extends Component {
     let index = subscribers.indexOf(streamManager, 0);
     if (index > -1) {
       subscribers.splice(index, 1);
+      this.setState({
+        subscribers: subscribers,
+      });
     }
   }
 
@@ -77,6 +80,9 @@ class VideoConference extends Component {
           var subscriber = mySession.subscribe(event.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
+          this.setState({
+            subscribers: subscribers,
+          });
 
           // Update the state with the new subscribers
         });
@@ -169,13 +175,6 @@ class VideoConference extends Component {
       <div className="video-container">
         {this.state.session !== undefined ? (
           <div id="session">
-            {/* {this.state.mainStreamManager !== undefined ? (
-              // 그림 그리는 사람 카메라
-              <div id="main-video" className="col-md-6">
-                <UserVideoComponent streamManager={this.state.mainStreamManager} />
-              </div>
-            ) : null} */}
-
             <div id="video-container">
               {this.state.publisher !== undefined ? (
                 <div

@@ -21,6 +21,10 @@ let problemList = [
   "우산",
   "손바닥",
   "넥타이",
+  "장갑",
+  "휴지",
+  "의자",
+  "책상",
 ];
 
 function isExistRoom(roomId) {
