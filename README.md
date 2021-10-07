@@ -143,4 +143,4 @@ node server.js
 - 조은지
   - Front-End
 - 황성현
-  - Back-End
+  - Back-End, Front-End
