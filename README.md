@@ -24,21 +24,41 @@
 
 ## 1. 실행 방법
 
-- 로컬에서 실행하기 위해서는 콘솔창 2개로 프론트엔드와 백엔드를 동시에 실행해야 합니다.
+- `로컬에서 실행`하기 위해서는 콘솔창 2개로 프론트엔드와 백엔드를 동시에 실행해야 합니다.
 
 ``` bash
 -- 프론트엔드 실행
 cd frontend/
+npm i
 npm start
+
+cd ..
 
 -- 백엔드 실행
 cd backend/
+npm i
 node server.js
 ```
 
 - 배포 링크 (막힐 수 있음)
 
   https://j5a104.p.ssafy.io/
+  
+- `통합 빌드 실행`
+
+``` bash
+-- 프론트엔드 실행
+cd frontend/
+npm i
+npm run build
+
+cd ..
+
+-- 백엔드 실행
+cd backend/
+npm i
+node server.js
+```
 
 
 
