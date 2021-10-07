@@ -54,7 +54,7 @@ function MultiGameCanvas(props) {
   }, [isDrawing]);
 
   useEffect(() => {
-    let x = props.pos[0];
+    let x = 640 - props.pos[0];
     let y = props.pos[1];
 
     if (ctx && props.socket.id === props.drawer.socketId) {
@@ -104,10 +104,11 @@ function MultiGameCanvas(props) {
         height={CANVAS_HEIGHT}
       />
       <br />
-
-      <button className="btn-reset" onClick={sendClear}>
-        초기화
-      </button>
+      {props.drawer.nickname === props.nickname ? (
+        <button className="btn-reset" onClick={sendClear}>
+          초기화
+        </button>
+      ) : null}
     </div>
   );
 }

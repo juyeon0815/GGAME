@@ -6,6 +6,7 @@ import GestureRecognition from "./GestureRecognition";
 import { AirDrawingRule } from "./AirDrawingRule";
 import "./AirDrawingHost.css";
 import { Link } from "react-router-dom";
+import AnswerPopup from "./AnswerPopup";
 
 let socket;
 
@@ -54,7 +55,6 @@ const AirDrawingHost = (props) => {
   };
   return (
     <div className="air-drawing">
-      {/* 여기에 pingpon게임이랑 webcam 컴포넌트 추가!!!!! */}
       <p id="game_menu"></p>
       <div style={center}>
         <h1>대기실</h1>
@@ -88,12 +88,12 @@ const AirDrawingHost = (props) => {
           <span>Game Start</span>
         </button>
 
-        <button className="btn-pong btn-pong-rule" onClick={() => setShowPR(true)}>
+        <button className="btn-airdraw btn-airdraw-rule" onClick={() => setShowPR(true)}>
           게임방법
         </button>
         <AirDrawingRule isOpen={showPR} close={() => setShowPR(false)} />
         <Link to="/">
-          <button className="btn-snake btn-snake-out">게임 나가기</button>
+          <button className="btn-airdraw btn-airdraw-out">게임 나가기</button>
         </Link>
         <div>{currentUser}명 대기중..</div>
       </div>

@@ -8,6 +8,7 @@ import { div } from "@tensorflow/tfjs-core";
 import VideoConference from "./VideoConference/VideoConference";
 import "./AirDrawing.css";
 import Leaderboard from "./Leaderboard";
+import AnswerPopup from "./AnswerPopup";
 
 const AirDrawingHost = (props) => {
   let history = useHistory();
@@ -19,6 +20,10 @@ const AirDrawingHost = (props) => {
   const [drawer, setDrawer] = useState({}); // 현재 그리는 사람
   const [gamePlaying, setGamePlaying] = useState(true); // 게임이 진행중이지 않으면 false
   const [scoreBoard, setScoreBoard] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [answerUser, setAnswerUser] = useState("");
+  const [beforeAnswer, setBeforeAnswer] = useState("");
+  const [endModal, setEndModal] = useState(false);
 
   const onChange = (e) => {
     setAnswer(e.target.value);
@@ -51,48 +56,52 @@ const AirDrawingHost = (props) => {
 
     // 게임이 종료되었는가?
     props.location.socket.on("game end", (data) => {
-      setGamePlaying(false);
+      setEndModal(true);
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        let myRank, myScore;
 
-      let myRank, myScore;
-
-      console.log(data);
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].nickname === nickName) {
-          myRank = i + 1;
-          myScore = data[i].score;
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].nickname === nickName) {
+            myRank = i + 1;
+            myScore = data[i].score;
+          }
         }
-      }
 
-      let token = sessionStorage.getItem("token");
-      axios
-        .get("http://localhost:5000/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          axios({
-            method: "post",
-            url: "http://localhost:5000/game/air-draw",
-            data: { email: res.data.data[0].email, rank: myRank, score: myScore },
-            headers: { "Content-Type": "application/json" },
+        let token = sessionStorage.getItem("token");
+        axios
+          .get("http://localhost:5000/user/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           })
-            .then((response) => {
-              console.log("res ::", response)
-              axios
-                .get("http://localhost:5000/game/air-draw/new-achievement", {
-                  params: { email: res.data.data[0].email, rank: myRank },
-                })
-                .then((res) => {})
-                .catch((error) => {});
+          .then((res) => {
+            axios({
+              method: "post",
+              url: "http://localhost:5000/game/air-draw",
+              data: { email: res.data.data[0].email, rank: myRank, score: myScore },
+              headers: { "Content-Type": "application/json" },
             })
-            .catch((response) => {
-              console.log(response);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+              .then((response) => {
+                console.log("res ::", response);
+                axios
+                  .get("http://localhost:5000/game/air-draw/new-achievement", {
+                    params: { email: res.data.data[0].email, rank: myRank },
+                  })
+                  .then((res) => {})
+                  .catch((error) => {});
+              })
+              .catch((response) => {
+                console.log(response);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }, 3000);
+      setGamePlaying(false);
     });
 
     props.location.socket.on("score board", (data) => {
@@ -100,19 +109,39 @@ const AirDrawingHost = (props) => {
       setScoreBoard(newScoreBoard);
     });
 
-    props.location.socket.on("receive drawer", (d) => {
-      if (d.socketId !== props.location.socket.id) {
-        setProblem("");
+    props.location.socket.on("receive drawer", (d, a, ans) => {
+      if (a && ans) {
+        setShowPopup(true);
+        setAnswerUser(a);
+        setBeforeAnswer(ans);
+        setTimeout(() => {
+          setShowPopup(false);
+          if (d.socketId !== props.location.socket.id) {
+            setProblem("");
+          }
+          setDrawer(d);
+        }, 3000);
+      } else {
+        if (d.socketId !== props.location.socket.id) {
+          setProblem("");
+        }
+        setDrawer(d);
       }
-      setDrawer(d);
     });
     return () => {
       props.location.socket.close();
     };
   }, []);
+  ////
 
   return (
     <div className="air-drawing">
+      <AnswerPopup
+        endModal={endModal}
+        openPopup={showPopup}
+        ans={beforeAnswer}
+        user={answerUser}
+      ></AnswerPopup>
       {gamePlaying ? (
         <div>
           <VideoConference roomId={props.location.roomId} username={nickName} />
@@ -129,6 +158,7 @@ const AirDrawingHost = (props) => {
                   isDrawing={isDrawing}
                   pos={pos}
                   drawer={drawer}
+                  nickname={props.location.nickName}
                 />
               </div>
               <div className="game-right">

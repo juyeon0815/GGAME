@@ -63,6 +63,7 @@
 }
 
 .answer-form {
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -150,6 +151,9 @@ div.game-right {
 }
 .gesture-cam {
   border-radius: 30px;
+
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 .btn-home {
