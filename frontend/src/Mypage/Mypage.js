@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import './Mypage.css'
 import TrophyList from './TrophyList'
 import { getAchievement } from '../api'
-import { faArrow, faMypage, faRanking, faLogout } from "../assets/icons/menu_icon";
+import { faArrow, faMain, faRanking, faLogout } from "../assets/icons/menu_icon";
 
 const initTrophySnake = {
   'snake_first': [false, '첫 게임'],
@@ -85,8 +85,8 @@ const Mypage = () => {
         <div onClick={visiblityChange} className={"icon-arrow"}>
           {faArrow}
         </div>
-        <Link to="/mypage" className={"icon-circle icon-mypage"}>
-          {faMypage}
+        <Link to="/" className={"icon-circle icon-main"}>
+          {faMain}
         </Link>
         <Link to="/ranking" className={"icon-circle icon-ranking"}>
           {faRanking}

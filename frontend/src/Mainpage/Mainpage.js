@@ -27,6 +27,8 @@ const Mainpage = () => {
   };
   return (
     <div>
+      {/* Logo */}
+      <div className="main-ggame-logo">깸</div>
       {/* Menu Btn */}
       <div className={"menu-container"}>
         <div onClick={visiblityChange} className={"icon-arrow"}>

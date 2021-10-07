@@ -74,11 +74,12 @@
     transform: translateY(5px);
   }
 }
-.icon-mypage {
+.icon-main {
   position: absolute;
   color: #fff;
   top: 100px;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 .icon-ranking {
   position: absolute;
@@ -91,6 +92,7 @@
   color: #fff;
   top: 248px;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 .icon-circle {
   visibility: hidden;
@@ -103,7 +105,7 @@
   overflow: hidden;
   /* vertical-align: middle; */
   text-align: center;
-  line-height: 60px;
+  line-height: 65px;
   padding: 5px;
 }
 .menu-open {

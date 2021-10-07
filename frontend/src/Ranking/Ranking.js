@@ -2,6 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import GameRanking from './GameRanking'
 import './Ranking.css';
+import { faBack } from '../assets/icons/menu_icon'
+import { Link } from "react-router-dom";
 
 class Ranking extends React.Component {
   constructor(props) {
@@ -64,17 +66,22 @@ class Ranking extends React.Component {
 
   render() {
     return (
-      <div className="rankings">
-        <GameRanking 
-          game="Snake"
-          ranks={this.state.snake_ranks}
-          top3={this.state.snake_top3}
-        />
-        <GameRanking 
-          game="PingPong"
-          ranks={this.state.pong_ranks}
-          top3={this.state.pong_top3}
-        />
+      <div>
+        <div className="home-btn">
+          <Link to="/" className="home-link">{ faBack }</Link>
+        </div>
+        <div className="rankings">
+          <GameRanking 
+            game="Snake"
+            ranks={this.state.snake_ranks}
+            top3={this.state.snake_top3}
+          />
+          <GameRanking 
+            game="PingPong"
+            ranks={this.state.pong_ranks}
+            top3={this.state.pong_top3}
+          />
+        </div>
       </div>
     )
   }
